@@ -1,0 +1,23 @@
+{
+  "name": "@fylib/adapter-angular",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@angular/common": "^17.0.0 || ^18.0.0 || ^21.0.0",
+    "@angular/core": "^17.0.0 || ^18.0.0 || ^21.0.0"
+  },
+  "dependencies": {
+    "@fylib/core": "workspace:*",
+    "@fylib/theme": "workspace:*",
+    "@fylib/animation": "workspace:*",
+    "@fylib/catalog": "workspace:*",
+    "@fylib/config": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "~5.2.2",
+    "@angular/common": "^21.1.4",
+    "@angular/core": "^21.1.4"
+  }
+}

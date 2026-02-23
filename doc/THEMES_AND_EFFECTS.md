@@ -1,0 +1,383 @@
+# 🎨 Sistema de Temas e Efeitos
+
+Este documento descreve como funciona o sistema de temas, animações e efeitos do fyLib, e como você pode estendê-lo usando plugins.
+
+## Sistema de Temas (@fylib/theme)
+
+O sistema de temas é baseado em **Design Tokens** e permite a customização total da aparência da biblioteca.
+
+### Ícones Externos
+
+O fyLib utiliza bibliotecas de ícones externas (ex.: Phosphor, Font Awesome, MDI). A escolha do set e o estilo global são controlados por tokens:
+- `icons.defaultSet`: `'ph' | 'fa' | 'mdi'` (definição do set padrão)
+- `icons.variant`: `'thin' | 'light' | 'regular' | 'bold' | 'fill' | 'duotone'`
+- `icons.size.sm|md|lg`, `icons.strokeWidth`, `icons.color`
+
+Observação: para que os ícones sejam renderizados, a aplicação precisa incluir o CSS do set escolhido. Exemplo (Phosphor Web):
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/duotone/style.css" />
+```
+
+### Criando um Novo Tema
+
+Para criar um novo tema, você deve definir um objeto que siga a interface `ThemeDefinition`:
+
+```typescript
+import { ThemeDefinition } from '@fylib/core';
+
+export const myCustomTheme: ThemeDefinition = {
+  name: 'my-custom-theme',
+  tokens: {
+    colors: {
+      primary: '#ff0000',
+      background: '#ffffff',
+      text: '#000000'
+    }
+  },
+  darkTokens: {
+    colors: {
+      primary: '#ff4444',
+      background: '#000000',
+      text: '#ffffff'
+    }
+  }
+};
+```
+
+### Temas Disponíveis
+
+- `default`: tema neutro, baseado em escala de cinza/azul, com efeitos simples em `effects.button`, `effects.window` e `effects.input`.
+- `christmas`: tema sazonal (Natal), com cores e tokens próprios e `effects.card` ajustado para um visual festivo.
+- `windows-xp`: tema inspirado no Windows XP, com:
+  - Gradientes fortes em `effects.button.background` e `effects.window.background`.
+  - Sombras mais marcadas para criar efeito de janela flutuante.
+  - `effects.input` configurado para caixas de texto claras com borda mais escura.
+- `windows-7`: tema inspirado no Windows 7, com:
+  - Gradientes suaves azulados em botões.
+  - `effects.window` com glow mais difuso.
+  - `effects.input` com leve relevo interno.
+- `finey-workbench-1`: tema inspirado no macOS (geração 2015/2016), com:
+  - Cores baseadas no design system do macOS (accent azul `primary`, superfícies cinza-claro e texto escuro).
+  - Janela com aparência de “workbench” usando `effects.window.background` em gradiente suave e sombra mais profunda.
+  - Botões com gradientes discretos, borda fina e `effects.button.textColor` alinhado ao texto macOS.
+  - Inputs com radius levemente maior, placeholder em cinza médio e ícones internos com `effects.input.icons`.
+  - Cartões com sombras mais pronunciadas em `effects.card.shadow`, lembrando janelas flutuantes do macOS.
+
+Todos os temas registram animações específicas em `componentAnimations` para `fy-button`, `fy-input`, `fy-layout` e `fy-slot:sidebar`, podendo ser sobrescritos pelo sistema de configuração. Temas como `finey-workbench-1` utilizam nomes de animação próprios (`layout-macos-window-enter`, `sidebar-macos-slide-in`, `input-focus-macos-glow`, `card-macos-fade-in`, etc.), que são registrados em `@fylib/animation`.
+Além disso, `fy-card` utiliza `effects.card` (background, borderColor, shadow, dividerColor) e animação `card-fade-in` como padrão.
+
+### Alternando entre Modos (Light/Dark)
+
+A engine suporta nativamente a troca de modos, o que automaticamente mescla os `darkTokens` sobre os tokens base.
+
+```typescript
+import { themeEngine } from '@fylib/theme';
+
+// Mudar para modo escuro
+themeEngine.setMode('dark');
+
+// Obter tokens (agora com overrides de dark mode aplicados)
+const tokens = themeEngine.getTokens();
+```
+
+### Usando Plugins de Tema
+
+Plugins permitem interceptar e modificar os tokens em tempo de execução. Isso é útil para aplicar filtros globais, como modo escuro automático ou temas sazonais.
+
+```typescript
+import { ThemePlugin, themeEngine } from '@fylib/theme';
+
+const myPlugin: ThemePlugin = {
+  name: 'grayscale-plugin',
+  apply(tokens) {
+    // Lógica para transformar cores em escala de cinza
+    return modifiedTokens;
+  }
+};
+
+themeEngine.registerPlugin(myPlugin);
+```
+
+### Controle Dinâmico por Arquivo ou Objeto (Config System)
+
+O fyLib pode ser configurado dinamicamente através de:
+- Um arquivo JSON externo.
+- Um objeto TypeScript que implemente o contrato `AppConfig` de `@fylib/config` (usado no playground Angular).
+
+O contrato completo (`AppConfig`, `ComponentSelector`, `UIEventKey`, `EffectName`, `ThemeName`, `DeepPartial`) está em [`packages/config/src/types.ts`](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/config/src/types.ts) e é totalmente tipado.
+
+#### Via JSON
+
+1.  **Estrutura do Arquivo:** Crie um arquivo em `/fylib/theme-control/theme-controller.json`.
+2.  **Formato (expandido):**
+    ```json
+    {
+      "theme": "windows-xp",
+      "animationsEnabled": true,
+      "effectsEnabled": true,
+      "disableAnimationsForComponents": ["fy-button", "fy-input"],
+      "disableEffectsForComponents": ["fy-slot:sidebar"],
+      "tokenOverrides": {
+        "colors": {
+          "primary": "#3a6ea5"
+        },
+        "layout": {
+          "header": {
+            "height": "32px"
+          }
+        }
+      },
+      "componentAnimationsOverrides": {
+        "fy-button": {
+          "hover": "button-hover-glow",
+          "click": "button-click-press"
+        },
+        "fy-input": {
+          "focus": "input-focus-glow",
+          "error": "input-error-shake"
+        },
+        "fy-slot:sidebar": {
+          "open": "sidebar-macos-slide-in",
+          "close": "sidebar-macos-slide-out"
+        },
+        "fy-card": {
+          "enter": "card-macos-fade-in"
+        }
+      },
+      "effectTriggers": {
+        "fy-button.click": "confetti",
+        "fy-input.focus": "confetti",
+        "fy-layout.enter": "window-open",
+        "fy-slot:sidebar.open": "sidebar-slide-in",
+        "fy-slot:sidebar.close": "sidebar-slide-out",
+        "fy-card.submit": "confetti"
+      }
+    }
+    ```
+3.  **Funcionamento:** O `FyLibService` pode monitorar este arquivo e aplicar o tema automaticamente se ele estiver registrado na engine. Se o tema informado não existir, um erro será logado no console e o tema anterior será mantido. Quaisquer `tokenOverrides` são mesclados sobre os tokens do tema ativo antes de serem expostos para os componentes. Os campos `componentAnimationsOverrides` e `effectTriggers` são lidos a cada atualização para controlar animações por componente/evento e disparo de efeitos globais.
+
+#### Via Objeto TypeScript (AppConfig)
+
+Em aplicações TypeScript (como o playground Angular), você pode declarar um objeto `AppConfig` com tipagens fortes para todos os campos:
+
+```ts
+import { AppConfig } from '@fylib/config';
+
+export const themeControllerConfig: AppConfig = {
+  theme: 'finey-workbench-1',
+  animationsEnabled: true,
+  effectsEnabled: true,
+  disableAnimationsForComponents: ['fy-input'],
+  disableEffectsForComponents: ['fy-slot:sidebar'],
+  tokenOverrides: {
+    colors: { primary: '#0a84ff' }
+  },
+  componentAnimationsOverrides: {
+    'fy-button': {
+      hover: 'button-hover-soft',
+      click: 'button-click-press'
+    },
+    'fy-slot:sidebar': {
+      open: 'sidebar-macos-slide-in',
+      close: 'sidebar-macos-slide-out'
+    }
+  },
+  effectTriggers: {
+    'fy-button.click': 'confetti',
+    'fy-layout.enter': 'window-open',
+    'fy-slot:sidebar.open': 'sidebar-slide-in',
+    'fy-slot:sidebar.close': 'sidebar-slide-out',
+    'fy-card.submit': 'confetti'
+  }
+};
+```
+
+Ao usar `AppConfig`, você ganha IntelliSense completo para:
+- Nomes de tema (`ThemeName`).
+- Seletores de componentes (`ComponentSelector`).
+- Eventos de UI (`UIEventKey`).
+- Nomes de efeitos (`EffectName`).
+- Árvore de tokens (`DesignTokens` via `DeepPartial`).
+
+### Tokens de Layout e Toggles
+
+Além de cores, espaçamento e tipografia, os temas expõem tokens estruturais:
+
+- `layout.app.gap`: espaçamento entre regiões do layout.
+- `layout.header.height`, `layout.header.padding`, `layout.header.shadow`.
+- `layout.sidebar.width`, `layout.sidebar.padding`.
+- `layout.content.padding`.
+
+Controles de toggle do header e sidebar:
+
+ - `layout.header.toggle.background`, `layout.header.toggle.textColor`, `layout.header.toggle.borderColor`, `layout.header.toggle.borderRadius`, `layout.header.toggle.icon`.
+ - `layout.sidebar.toggle.background`, `layout.sidebar.toggle.textColor`, `layout.sidebar.toggle.borderColor`, `layout.sidebar.toggle.borderRadius`, `layout.sidebar.toggle.icon`.
+- `layout.sidebar.toggle.mode`: controla se o botão de toggle aparece como:
+  - `floating`: botão arredondado flutuando no canto da tela.
+  - `tongue`: lingueta acoplada à borda do sidebar.
+- `layout.sidebar.toggle.tonguePosition`: posição da lingueta (`top`, `middle`, `bottom`).
+
+Esses tokens são convertidos em variáveis CSS, por exemplo:
+
+- `layout.header.toggle.background` → `--fy-layout-header-toggle-background`
+- `layout.sidebar.toggle.borderRadius` → `--fy-layout-sidebar-toggle-borderRadius`
+ - `layout.header.toggle.borderColor` → `--fy-layout-header-toggle-borderColor`
+ - `layout.sidebar.toggle.borderColor` → `--fy-layout-sidebar-toggle-borderColor`
+
+Campos adicionais suportados nos toggles:
+- `layout.header.toggle.openIcon` (opcional): ícone exibido quando o menu do header está aberto.
+- `layout.sidebar.toggle.openIcon` (opcional): ícone exibido quando o sidebar móvel está aberto.
+ 
+ ### Intensidade de Recolorização de Logo no Dark Mode
+ 
+ Para suavizar o branco quando logos são recoloridas no modo escuro, o tema pode expor:
+ - `layout.header.logoFilterDarkOpacity`: opacidade aplicada ao filtro de recolor da logo no header durante o dark mode.
+ - `layout.sidebar.logoFilterDarkOpacity`: opacidade aplicada ao filtro de recolor da logo no sidebar durante o dark mode.
+ 
+ Esses valores são lidos pelo adapter Angular e aplicados somente sobre o bloco de imagem da logo (`fy-logo__image`), preservando badges e demais conteúdos.
+ 
+ ### Animações Padrão Atualizadas
+ 
+ Alguns temas podem configurar animações padrão para menus e overlays:
+ - Header: `'header-menu-dropdown-in'`, `'header-menu-dropdown-out'` (substituem variantes antigas como `slide-in/out`).
+ - Sidebar: `'sidebar-slide-in'`, `'sidebar-slide-out'`.
+ - Layout: `'window-open'` (efeito global), `'layout-enter'`.
+ 
+ Todos os nomes devem estar registrados em `@fylib/animation` e podem ser sobrescritos via `componentAnimationsOverrides` no `AppConfig`.
+
+### Tokens de Efeitos por Componente
+
+Grupo `effects.button`:
+- `background`, `borderColor`, `shadow`, `textColor`.
+
+Grupo `effects.window`:
+- `background`, `shadow`.
+
+Grupo `effects.input`:
+- `background`, `borderColor`, `shadow`, `placeholderColor`, `borderWidth`, `borderRadius`.
+- `effects.input.icons`:
+  - `mode`: `'inside' | 'inside-static' | 'outside'` (contrato para adapters).
+  - `name`: nome do ícone sugerido.
+  - `position`: `'left' | 'right'`.
+  - `outsideGap`: espaçamento quando `mode="outside"`.
+  - `color`: cor base do ícone.
+
+Grupo `effects.card`:
+- `background`, `borderColor`, `shadow`, `dividerColor`.
+- `effects.card.icons.header` e `effects.card.icons.footer`: ícones padrão sugeridos para header/footer de `fy-card`.
+
+Grupo `effects.badge`:
+- `background`, `textColor`, `borderRadius`
+- `animation`: `'shine' | 'none'` – animação de brilho em loop para chamar atenção (ex.: rótulos “BETA”/“NEW”).
+
+Grupo `icons`:
+- `icons.defaultSet`: set padrão de ícones (ex.: `'ph'`, `'fa'`, `'mdi'`).
+- `icons.size.sm|md|lg`: tamanhos sugeridos.
+- `icons.color`, `icons.strokeWidth`, `icons.variant`.
+
+### Desativação Global e por Componente de Animações
+
+A flag `animationsEnabled` no arquivo de configuração controla se as transições e animações CSS serão executadas globalmente.
+
+- **Mecanismo Global:** Quando `false`, a diretiva `fyThemeVars` adiciona a classe CSS `.fy-animations-disabled` ao elemento. Quando `true`, cada componente ainda pode desativar animações localmente.
+- **Desativação por Componente:** A lista `disableAnimationsForComponents` recebe seletores como `"fy-button"`, `"fy-layout"` ou `"fy-slot"` e faz com que todos os componentes daquele tipo sejam marcados como sem animação.
+- **Override por Instância:** Além disso, componentes expõem a propriedade `activeAnimations`. Quando `false`, as animações são desativadas apenas para aquela instância, mesmo que globalmente estejam habilitadas.
+- **Efeito:** A classe `.fy-animations-disabled` aplica `transition: none !important` e `animation: none !important` a todos os descendentes, garantindo que o comportamento seja respeitado por todos os componentes do fyLib de forma padronizada.
+
+---
+
+## 🎬 Sistema de Animações e Efeitos (@fylib/animation)
+
+O sistema de animações gerencia microinterações e efeitos visuais globais.
+
+### Criando Novas Animações
+
+Animações são definidas por contratos que descrevem o comportamento desejado:
+
+```typescript
+import { AnimationDefinition, animationEngine } from '@fylib/animation';
+
+const pulseAnimation: AnimationDefinition = {
+  name: 'pulse',
+  duration: 300,
+  easing: 'ease-in-out'
+};
+
+animationEngine.registerAnimation(pulseAnimation);
+```
+
+### Criando Plugins de Efeitos (Plugins)
+
+Você pode criar plugins que reagem a eventos de animação ou renderizam efeitos globais (como confetes ou neve).
+
+```typescript
+import { GlobalEffectPlugin, animationEngine } from '@fylib/animation';
+
+const confettiPlugin: GlobalEffectPlugin = {
+  name: 'confetti-renderer',
+  renderEffect(effect) {
+    if (effect.name === 'confetti') {
+      // Lógica para disparar confetes na tela
+    }
+  }
+};
+
+animationEngine.registerGlobalEffectPlugin(confettiPlugin);
+```
+
+### Disparando Efeitos
+
+```typescript
+animationEngine.triggerEffect('confetti');
+```
+
+Em aplicações Angular usando o adapter do fyLib, o fluxo recomendado é configurar `effectTriggers` no `theme-controller.json` e deixar que os componentes disparem eventos sem conhecer o motor de efeitos. A regra de prioridade é:
+- Se existir `effectTriggers[eventKey]` no AppConfig, ele prevalece para TODOS os componentes daquele seletor.
+- Caso contrário, se o componente fornecer um `EffectName` por props (instância), ele será usado apenas para o seletor corrente.
+- Se nenhum existir, nenhum efeito é disparado.
+
+- `fy-button` dispara `fy-button.click`.
+- `fy-input` dispara `fy-input.focus`.
+- `fy-layout` dispara `fy-layout.enter`.
+- `fy-slot` com `name="sidebar"` dispara `fy-slot:sidebar.open` e `fy-slot:sidebar.close`.
+
+O `FyLibService` converte esses eventos em chamadas `animationEngine.triggerEffect` usando o mapa configurado e o nome passado por instância como fallback.
+
+### Efeitos Disponíveis por Padrão
+
+- `confetti`: partículas coloridas sobre a tela (plugin Canvas).
+- `window-open`: flash suave branco em toda a janela (plugin DOM overlay).
+- `sidebar-slide-in`: glow azul na borda esquerda (plugin DOM overlay).
+- `sidebar-slide-out`: glow vermelho na borda esquerda (plugin DOM overlay).
+  
+Animações padrão adicionais:
+- `card-fade-in`: entrada suave para cartões do tipo `fy-card`.
+
+### Registro dos Efeitos
+
+Os efeitos acima são registrados automaticamente via:
+- [default-effects.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/animation/src/effects/default-effects.ts)
+- Registradores de plugins no adapter Angular:
+  - [confetti.plugin.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/confetti.plugin.ts)
+  - [ui-effects.plugin.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/ui-effects.plugin.ts)
+  - [register-all.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/register-all.ts) – ponto único para registrar todos os plugins.
+
+Para desativar globalmente:
+```json
+{
+  "effectsEnabled": false
+}
+```
+
+Para desativar por componente:
+```json
+{
+  "disableEffectsForComponents": ["fy-button", "fy-input"]
+}
+```
+
+Para desativar por instância:
+```html
+<fy-button [activeEffects]="false"></fy-button>
+```
