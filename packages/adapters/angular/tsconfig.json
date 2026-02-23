@@ -1,0 +1,26 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "@fylib/core": ["../../core/src/index"],
+      "@fylib/theme": ["../../theme/src/index"],
+      "@fylib/animation": ["../../animation/src/index"],
+      "@fylib/catalog": ["../../catalog/src/index"],
+      "@fylib/config": ["../../config/src/index"]
+    }
+  },
+  "references": [
+    { "path": "../../core" },
+    { "path": "../../theme" },
+    { "path": "../../animation" },
+    { "path": "../../catalog" },
+    { "path": "../../config" }
+  ],
+  "include": ["src"]
+}

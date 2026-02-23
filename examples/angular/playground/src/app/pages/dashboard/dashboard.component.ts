@@ -1,0 +1,170 @@
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FyLibService } from '@fylib/adapter-angular';
+
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent],
+  template: `
+    <fy-layout>
+      <fy-slot
+        name="header"
+        [headerLogoSvgSrc]="'/assets/finey_bw_nobg.svg'"
+        [headerLogoBadgeText]="'BETA'"
+        [headerLogoBadgeShine]="false"
+        [headerLogoColorDark]="'white'"
+        [headerLogoColorLight]="'white'"
+        [copyrightText]="'Finey'">
+
+        <nav fy-header-links-center class="actions">
+          <fy-nav-link label="Home" to="/" iconName="house"></fy-nav-link>
+          <fy-nav-link label="Configurações" to="/settings" iconName="gear"></fy-nav-link>
+        </nav>
+
+        <nav fy-header-links-right class="actions">
+          <fy-button
+            size="sm"
+            variant="ghost"
+            iconName="moon"
+            (click)="toggleMode()"
+            label="Alternar modo">
+          </fy-button>
+        </nav>
+      </fy-slot>
+
+      <fy-slot
+        name="sidebar"
+        [fixedSidebar]="true"
+        [activeAnimations]="true"
+        [activeEffects]="true"
+        [copyrightText]="'Finey'">
+        <div fy-sidebar-logo class="profile">
+          <img class="avatar" src="assets/me.png" alt="Avatar">
+          <div class="profile-info">
+            <p class="name">Victor</p>
+            <p class="role">CEO</p>
+          </div>
+        </div>
+        <nav fy-sidebar-links>
+          <div>
+            <fy-nav-link label="Home" to="/" iconName="house"></fy-nav-link>
+            <fy-nav-link label="Configurações" to="/settings" iconName="gear"></fy-nav-link>
+            <fy-nav-link label="Relatórios" to="/reports" iconName="chart-bar"></fy-nav-link>
+          </div>
+        </nav>
+
+        <div fy-sidebar-footer>
+          <fy-button
+            [hoverAnimation]="'button-hover-glow'"
+            [clickAnimation]="'button-click-press'"
+            label="Sair da conta"
+            iconName="sign-out"
+            variant="ghost"></fy-button>
+        </div>
+      </fy-slot>
+
+      <fy-slot name="content">
+        <div class="page-content">
+          <h1>Dashboard (Full Layout)</h1>
+          <p>Esta página utiliza o <code>app-layout</code> completo com Header, Sidebar e Content.</p>
+
+          <fy-card
+            title="Formulário de acesso rápido"
+            mode="form"
+            [scrollContent]="false"
+            [mutedHeader]="true"
+            [mutedFooter]="true"
+            footerText="Campos obrigatórios marcados com *"
+          >
+            <div>
+              <label for="demo-name">Nome completo</label>
+              <fy-input
+                id="demo-name"
+                placeholder="Digite seu nome"
+                size="md"
+                status="default"
+                iconLeftName="user"
+              ></fy-input>
+            </div>
+
+            <div>
+              <label for="demo-email">E-mail</label>
+              <fy-input
+                id="demo-email"
+                placeholder="email@exemplo.com"
+                type="email"
+                size="md"
+                status="success"
+                iconLeftName="envelope"
+              ></fy-input>
+            </div>
+
+            <div>
+              <label for="demo-password">Senha</label>
+              <fy-input
+                id="demo-password"
+                type="password"
+                [showPasswordToggle]="true"
+                placeholder="Mínimo 8 caracteres"
+                size="md"
+                status="error"
+                iconLeftName="lock"
+              ></fy-input>
+            </div>
+
+            <div fy-card-actions>
+              <fy-button
+                label="Salvar alterações"
+                variant="primary"
+                size="md"
+                [hoverAnimation]="'button-hover-glow'"
+                [clickAnimation]="'button-click-press'"
+                [clickEffect]="'confetti'"
+              ></fy-button>
+            </div>
+          </fy-card>
+        </div>
+      </fy-slot>
+    </fy-layout>
+  `,
+  styles: [`
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: var(--fy-spacing-md, 16px);
+    }
+    .profile .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--fy-borderRadius-full, 9999px);
+      object-fit: cover;
+      box-shadow: 0 0 0 1px var(--fy-colors-border, rgba(255,255,255,0.08));
+    }
+    .profile .profile-info .name {
+      font-weight: var(--fy-typography-fontWeight-bold, 700);
+    }
+    .profile .profile-info .role {
+      font-size: var(--fy-typography-fontSize-sm, 12px);
+
+      opacity: 0.9;
+    }
+    .page-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--fy-spacing-lg, 24px);
+      width: 100%;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: var(--fy-spacing-lg, 24px);
+    }
+  `]
+})
+export class DashboardComponent {
+  private fylib = inject(FyLibService);
+  toggleMode() {
+    const current = this.fylib.getMode();
+    this.fylib.setMode(current === 'light' ? 'dark' : 'light');
+  }
+}

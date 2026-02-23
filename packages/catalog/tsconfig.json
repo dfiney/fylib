@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@fylib/core": ["../core/src/index"],
+      "@fylib/theme": ["../theme/src/index"],
+      "@fylib/animation": ["../animation/src/index"]
+    }
+  },
+  "references": [
+    { "path": "../core" },
+    { "path": "../theme" },
+    { "path": "../animation" }
+  ],
+  "include": ["src"]
+}
