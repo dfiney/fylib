@@ -132,6 +132,9 @@ export class FySelectComponent
   @Input() size: 'sm' | 'md' | 'lg' = 'md';
   @Input() status: 'default' | 'success' | 'error' = 'default';
   @Input() iconRightName?: string;
+  @Input() searchable?: boolean;
+  @Input() showCheckbox?: boolean;
+  @Input() closeOnSelect?: boolean;
 
   @Input() onChange?: (value: string | string[]) => void;
   @Input() onFocus?: () => void;
@@ -183,7 +186,7 @@ export class FySelectComponent
   }
 
   selectOption(val: string) {
-    if (this.type === 'checkbox') {
+    if (this === 'checkbox') {
       const arr = Array.isArray(this.value) ? [...this.value] : [];
       const index = arr.indexOf(val);
       if (index >= 0) arr.splice(index, 1);
