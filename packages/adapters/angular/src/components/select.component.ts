@@ -132,6 +132,7 @@ import { ElementRef } from '@angular/core';
       border: none;
       outline: none;
       border-bottom: 1px solid rgba(0,0,0,.1);
+      background-color: transparent;
     }
   `],
   encapsulation: ViewEncapsulation.None
