@@ -5,12 +5,14 @@ import {
   EventEmitter,
   ViewEncapsulation,
   HostBinding,
+  HostListener,
   inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SelectProps } from '@fylib/catalog';
+import { SelectProps, SelectDefinition } from '@fylib/catalog';
 import { FyIconComponent } from './icon.component';
 import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
+import { ElementRef } from '@angular/core';
 
 @Component({
   selector: 'fy-select',
@@ -24,8 +26,15 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
       [class.fy-select--lg]="size === 'lg'"
       [class.fy-select--status-success]="status === 'success'"
       [class.fy-select--status-error]="status === 'error'"
+      [class]="animationClassSuffix"
     >
-      <div class="fy-select__control" (click)="toggleOpen()" tabindex="0">
+      <div
+        class="fy-select__control"
+        tabindex="0"
+        (click)="toggleOpen()"
+        (focus)="onFocusHandler()"
+        (blur)="onBlurHandler()"
+      >
         <span class="fy-select__value">
           {{ displayValue || placeholder }}
         </span>
@@ -37,7 +46,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
 
       @if (open) {
         <div class="fy-select__dropdown">
-          @if (type === 'searchable') {
+          @if (searchable) {
             <input
               class="fy-select__search"
               type="text"
@@ -52,7 +61,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
               [class.fy-select__option--selected]="isSelected(opt.value)"
               (click)="selectOption(opt.value)"
             >
-              @if (type === 'checkbox') {
+              @if (showCheckbox) {
                 <input
                   type="checkbox"
                   [checked]="isSelected(opt.value)"
@@ -71,28 +80,35 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
       position: relative;
       width: 100%;
       font: inherit;
+      display: inline-flex;
+      align-items: center;
+      border: var(--fy-effects-select-borderWidth, 1px) solid var(--fy-effects-select-borderColor, rgba(0,0,0,.15));
+      background: var(--fy-effects-select-background, #fff);
+      border-radius: var(--fy-effects-select-borderRadius, var(--fy-borderRadius-md));
+      box-shadow: var(--fy-effects-select-shadow, none);
+      min-height: 36px;
+      padding: 0 10px;
+      gap: 6px;
+      transition: box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
     }
 
     .fy-select__control {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: var(--fy-effects-input-borderWidth, 1px) solid var(--fy-effects-input-borderColor, rgba(0,0,0,.15));
-      background: var(--fy-effects-input-background, #fff);
-      border-radius: var(--fy-borderRadius-md);
-      padding: 6px 10px;
+      width: 100%;
       cursor: pointer;
-      min-height: 36px;
     }
 
     .fy-select__dropdown {
       position: absolute;
-      width: 100%;
-      margin-top: 4px;
-      background: #fff;
-      border: 1px solid rgba(0,0,0,.1);
+      left: 0;
+      right: 0;
+      top: calc(100% + 4px);
+      background: var(--fy-effects-select-background, #fff);
+      border: 1px solid var(--fy-effects-select-borderColor, rgba(0,0,0,.1));
       border-radius: var(--fy-borderRadius-md);
-      box-shadow: var(--fy-effects-input-shadow, none);
+      box-shadow: var(--fy-effects-select-shadow, none);
       max-height: 240px;
       overflow-y: auto;
       z-index: 1000;
@@ -107,7 +123,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
     }
 
     .fy-select__option--selected {
-      background: rgba(0,0,0,.05);
+      background: rgba(var(--fy-colors-primary-rgb, 59,130,246), 0.08);
     }
 
     .fy-select__search {
@@ -127,10 +143,10 @@ export class FySelectComponent
   @Input() options: { label: string; value: string; disabled?: boolean }[] = [];
   @Input() value?: string | string[];
   @Input() placeholder?: string;
-  @Input() disabled: boolean = false;
-  @Input() readonly: boolean = false;
-  @Input() size: 'sm' | 'md' | 'lg' = 'md';
-  @Input() status: 'default' | 'success' | 'error' = 'default';
+  @Input() disabled: boolean = SelectDefinition.defaultProps!.disabled!;
+  @Input() readonly: boolean = SelectDefinition.defaultProps!.readonly!;
+  @Input() size: 'sm' | 'md' | 'lg' = SelectDefinition.defaultProps!.size!;
+  @Input() status: 'default' | 'success' | 'error' = SelectDefinition.defaultProps!.status!;
   @Input() iconRightName?: string;
   @Input() searchable?: boolean;
   @Input() showCheckbox?: boolean;
@@ -148,6 +164,11 @@ export class FySelectComponent
   @Output() fyFocus = new EventEmitter<void>();
   @Output() fyBlur = new EventEmitter<void>();
 
+  @HostBinding('class.fy-animations-disabled')
+  get animationsDisabled(): boolean {
+    return !this.isAnimationsActive(this.activeAnimations);
+  }
+
   @HostBinding('style')
   get hostStyles(): string {
     return this.getHostStyles(this.customStyles);
@@ -158,7 +179,9 @@ export class FySelectComponent
 
   constructor() {
     super(inject(require('../services/fylib.service').FyLibService), 'fy-select');
+    this.hostEl = inject(ElementRef);
   }
+  private hostEl: ElementRef<HTMLElement>;
 
   get filteredOptions() {
     if (!this.searchTerm) return this.options;
@@ -178,15 +201,83 @@ export class FySelectComponent
     return this.options.find(o => o.value === this.value)?.label || '';
   }
 
+  get animationClassSuffix(): string {
+    const focus = this.resolveAnim(
+      'focus',
+      undefined,
+      (SelectDefinition.features as any)?.animations?.focus as string | undefined
+    ) as string | undefined;
+    const key = this.status === 'success' ? 'success' : (this.status === 'error' ? 'error' : undefined);
+    const state = key
+      ? this.resolveAnim(
+          key,
+          undefined,
+          (SelectDefinition.features as any)?.animations?.[key] as string | undefined
+        )
+      : undefined;
+    return this.composeAnimClasses(focus, state as string | undefined);
+  }
+
   toggleOpen() {
     if (this.disabled || this.readonly) return;
     this.open = !this.open;
-    if (this.open && this.onFocus) this.onFocus();
-    if (!this.open && this.onBlur) this.onBlur();
+    if (this.isAnimationsActive(this.activeAnimations)) {
+      const anim = this.open ? 'header-menu-dropdown-in' : 'header-menu-dropdown-out';
+      this.fylib.playAnimation(anim);
+    }
+    if (this.open) {
+      this.onFocusHandler();
+    } else {
+      this.onBlurHandler();
+    }
+  }
+
+  onFocusHandler() {
+    if (this.isAnimationsActive(this.activeAnimations)) {
+      const name = this.resolveAnim(
+        'focus',
+        undefined,
+        (SelectDefinition.features as any)?.animations?.focus as string | undefined
+      );
+      if (name) this.fylib.playAnimation(name);
+      this.triggerByEvent('fy-select.focus', undefined, this.activeEffects);
+    }
+    if (this.onFocus) this.onFocus();
+    this.fyFocus.emit();
+  }
+
+  onBlurHandler() {
+    if (this.onBlur) this.onBlur();
+    this.fyBlur.emit();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.open) return;
+    const target = event.target as Node;
+    if (!this.hostEl.nativeElement.contains(target)) {
+      this.open = false;
+      if (this.isAnimationsActive(this.activeAnimations)) {
+        this.fylib.playAnimation('header-menu-dropdown-out');
+      }
+      this.onBlurHandler();
+    }
+  }
+
+  @HostListener('keydown', ['$event'])
+  onKeydown(event: KeyboardEvent) {
+    if (!this.open) return;
+    if (event.key === 'Escape') {
+      this.open = false;
+      if (this.isAnimationsActive(this.activeAnimations)) {
+        this.fylib.playAnimation('header-menu-dropdown-out');
+      }
+      this.onBlurHandler();
+    }
   }
 
   selectOption(val: string) {
-    if (this === 'checkbox') {
+    if (this.showCheckbox) {
       const arr = Array.isArray(this.value) ? [...this.value] : [];
       const index = arr.indexOf(val);
       if (index >= 0) arr.splice(index, 1);
@@ -194,7 +285,9 @@ export class FySelectComponent
       this.value = arr;
     } else {
       this.value = val;
-      this.open = false;
+      if (this.closeOnSelect !== false) {
+        this.open = false;
+      }
     }
 
     if (this.onChange) this.onChange(this.value!);

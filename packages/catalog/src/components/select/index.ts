@@ -45,9 +45,9 @@ export const SelectDefinition: UIComponentDefinition<SelectProps> = {
   features: {
     requiresLicenseFeature: 'basic-components',
     animations: {
-      focus: 'select-focus-glow',
-      error: 'select-error-shake',
-      success: 'select-success-pulse',
+      focus: 'input-focus-glow',
+      error: 'input-error-shake',
+      success: 'input-success-pulse',
     },
   },
 };

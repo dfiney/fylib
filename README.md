@@ -42,7 +42,7 @@ Passo a passo do zero, no Windows:
    - Se preferir: npm install -g typescript
 5. Build de todos os módulos
    - Execute: tools/build-all.bat
-   - Esse script roda em cada pacote: npm ci (se necessário) e npm run build
+   - Esse script usa pnpm: instala dependências do workspace (se necessário) e roda pnpm run build em cada pacote
 
 Após o build, os pacotes em packages/ estarão compilados. O playground Angular em examples/angular/playground pode ser usado para testar as integrações do adapter.
 

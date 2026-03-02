@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FyLibService } from '@fylib/adapter-angular';
+import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FyLibService, FySelectComponent } from '@fylib/adapter-angular';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent],
+  imports: [CommonModule, FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FySelectComponent],
   template: `
     <fy-layout>
       <fy-slot
@@ -14,7 +14,7 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
         [headerLogoBadgeText]="'BETA'"
         [headerLogoBadgeShine]="false"
         [headerLogoColorDark]="'white'"
-        [headerLogoColorLight]="'white'"
+        [headerLogoColorLight]="'black'"
         [copyrightText]="'Finey'">
 
         <nav fy-header-links-center class="actions">
@@ -101,6 +101,32 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
             </div>
 
             <div>
+              <label for="demo-role">Função</label>
+              <fy-select
+                id="demo-role"
+                [options]="selectOptions"
+                [placeholder]="'Selecione sua função'"
+                [iconRightName]="'caret-down'"
+                [searchable]="true"
+                [closeOnSelect]="true"
+                (fyChange)="onRoleChange($event)"
+              ></fy-select>
+            </div>
+
+            <div>
+              <label for="demo-tags">Tags</label>
+              <fy-select
+                id="demo-tags"
+                [options]="checkboxOptions"
+                [placeholder]="'Selecione tags'"
+                [showCheckbox]="true"
+                [searchable]="true"
+                [closeOnSelect]="false"
+                (fyChange)="onTagsChange($event)"
+              ></fy-select>
+            </div>
+
+            <div>
               <label for="demo-password">Senha</label>
               <fy-input
                 id="demo-password"
@@ -163,8 +189,27 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
 })
 export class DashboardComponent {
   private fylib = inject(FyLibService);
+  selectOptions = [
+    { label: 'Administrador', value: 'admin' },
+    { label: 'Editor', value: 'editor' },
+    { label: 'Leitor', value: 'reader' }
+  ];
+  checkboxOptions = [
+    { label: 'Financeiro', value: 'finance' },
+    { label: 'Vendas', value: 'sales' },
+    { label: 'Marketing', value: 'marketing' },
+    { label: 'Operações', value: 'ops' }
+  ];
+  selectedRole?: string;
+  selectedTags: string[] = [];
   toggleMode() {
     const current = this.fylib.getMode();
     this.fylib.setMode(current === 'light' ? 'dark' : 'light');
+  }
+  onRoleChange(v: string | string[]) {
+    this.selectedRole = Array.isArray(v) ? v[0] : v;
+  }
+  onTagsChange(v: string | string[]) {
+    this.selectedTags = Array.isArray(v) ? v : [v];
   }
 }
