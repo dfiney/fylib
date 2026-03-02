@@ -99,6 +99,13 @@ export const christmasTheme: ThemeDefinition = {
           color: 'currentColor'
         }
       },
+      select: {
+        background: '#ffffff',
+        borderColor: 'rgba(47, 82, 51, 0.25)',
+        shadow: 'none',
+        borderWidth: '1px',
+        borderRadius: '16px'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(47, 82, 51, 0.15)',
@@ -140,6 +147,13 @@ export const christmasTheme: ThemeDefinition = {
         background: '#0f1a12',
         borderColor: 'rgba(255,255,255,0.12)',
         placeholderColor: '#b7ccb9'
+      },
+      select: {
+        background: '#0f1a12',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: 'none',
+        borderWidth: '1px',
+        borderRadius: '16px'
       }
     }
   }

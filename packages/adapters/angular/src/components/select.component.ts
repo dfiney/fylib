@@ -66,6 +66,7 @@ import { ElementRef } from '@angular/core';
                   type="checkbox"
                   [checked]="isSelected(opt.value)"
                   (click)="$event.stopPropagation()"
+                  (change)="onCheckboxChange($event, opt.value)"
                 />
               }
               {{ opt.label }}
@@ -250,6 +251,11 @@ export class FySelectComponent
   onBlurHandler() {
     if (this.onBlur) this.onBlur();
     this.fyBlur.emit();
+  }
+
+  onCheckboxChange(event: Event, val: string) {
+    event.stopPropagation();
+    this.selectOption(val);
   }
 
   @HostListener('document:click', ['$event'])

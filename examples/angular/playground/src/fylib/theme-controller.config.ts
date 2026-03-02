@@ -1,7 +1,7 @@
 import { AppConfig } from '@fylib/config';
 
 export const themeControllerConfig: AppConfig = {
-  theme: "default",
+  theme: "windows-7",
   animationsEnabled: true,
   effectsEnabled: false,
   disableAnimationsForComponents: [],
