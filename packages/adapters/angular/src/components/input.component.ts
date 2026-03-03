@@ -36,7 +36,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
         [attr.placeholder]="placeholder || null"
         [disabled]="disabled"
         [readOnly]="readonly"
-        [value]="value"
+        [value]="value ?? ''"
         (input)="onInputHandler($event)"
         (change)="onChangeHandler($event)"
         (focus)="onFocusHandler()"

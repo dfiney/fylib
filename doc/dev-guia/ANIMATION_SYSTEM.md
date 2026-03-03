@@ -52,7 +52,7 @@ export interface ThemeDefinition {
 
 Os nomes de animações específicos por componente/evento são tipados em `@fylib/animation` (por exemplo, `ButtonHoverAnimationName`, `InputFocusAnimationName`, `LayoutAnimationName`, `SidebarAnimationName`, `CardAnimationName`), enquanto os seletores, eventos de UI, nomes de tema e efeitos são tipados em `@fylib/config`:
 
-- `ThemeName` – `'default' | 'finey-workbench-1' | 'windows-xp' | 'windows-7' | 'christmas'`.
+- `ThemeName` – `'default' | 'finey-workbench-1' | 'finey-workbench-2' | 'windows-xp' | 'windows-7' | 'christmas'`.
 - `ComponentSelector` – `'fy-button' | 'fy-input' | 'fy-layout' | 'fy-slot' | 'fy-slot:sidebar' | 'fy-card'`.
 - `UIEventKey` – `'fy-button.click' | 'fy-input.focus' | 'fy-layout.enter' | 'fy-slot:sidebar.open' | 'fy-slot:sidebar.close' | 'fy-card.enter' | 'fy-card.submit'`.
 - `EffectName` – `'confetti' | 'window-open' | 'sidebar-slide-in' | 'sidebar-slide-out' | 'window-macos-sheet-open' | 'window-macos-sheet-close'`.
@@ -97,6 +97,7 @@ Contrato principal (arquivo de tipos centralizado em [`packages/config/src/types
 export type ThemeName =
   | 'default'
   | 'finey-workbench-1'
+  | 'finey-workbench-2'
   | 'windows-xp'
   | 'windows-7'
   | 'christmas';

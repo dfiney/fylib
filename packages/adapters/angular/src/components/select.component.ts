@@ -45,7 +45,7 @@ import { ElementRef } from '@angular/core';
       </div>
 
       @if (open) {
-        <div class="fy-select__dropdown">
+        <div class="fy-select__dropdown" [class]="dropdownAnimClass">
           @if (searchable) {
             <input
               class="fy-select__search"
@@ -135,6 +135,12 @@ import { ElementRef } from '@angular/core';
       border-bottom: 1px solid rgba(0,0,0,.1);
       background-color: transparent;
     }
+    .fy-select__icon {
+      transition: transform .2s ease;
+    }
+    .fy-select.fy-select--open .fy-select__icon {
+      transform: rotate(180deg);
+    }
   `],
   encapsulation: ViewEncapsulation.None
 })
@@ -178,6 +184,7 @@ export class FySelectComponent
 
   open = false;
   searchTerm = '';
+  dropdownAnimClass: string = '';
 
   constructor() {
     super(inject(require('../services/fylib.service').FyLibService), 'fy-select');
@@ -226,6 +233,9 @@ export class FySelectComponent
     if (this.isAnimationsActive(this.activeAnimations)) {
       const anim = this.open ? 'header-menu-dropdown-in' : 'header-menu-dropdown-out';
       this.fylib.playAnimation(anim);
+      this.dropdownAnimClass = `fy-anim-${anim}`;
+      const timeout = this.open ? 250 : 250;
+      setTimeout(() => { this.dropdownAnimClass = ''; }, timeout);
     }
     if (this.open) {
       this.onFocusHandler();
@@ -266,6 +276,8 @@ export class FySelectComponent
       this.open = false;
       if (this.isAnimationsActive(this.activeAnimations)) {
         this.fylib.playAnimation('header-menu-dropdown-out');
+        this.dropdownAnimClass = 'fy-anim-header-menu-dropdown-out';
+        setTimeout(() => { this.dropdownAnimClass = ''; }, 250);
       }
       this.onBlurHandler();
     }
@@ -278,6 +290,8 @@ export class FySelectComponent
       this.open = false;
       if (this.isAnimationsActive(this.activeAnimations)) {
         this.fylib.playAnimation('header-menu-dropdown-out');
+        this.dropdownAnimClass = 'fy-anim-header-menu-dropdown-out';
+        setTimeout(() => { this.dropdownAnimClass = ''; }, 250);
       }
       this.onBlurHandler();
     }

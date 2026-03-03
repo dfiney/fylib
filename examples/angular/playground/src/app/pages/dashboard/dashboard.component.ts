@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FyLibService, FySelectComponent } from '@fylib/adapter-angular';
+import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FyLibService, FySelectComponent, FyModalComponent, FyAccordionComponent, FyNotificationMenuComponent, FyNotificationService } from '@fylib/adapter-angular';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FySelectComponent],
+  imports: [CommonModule, FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FySelectComponent, FyModalComponent, FyAccordionComponent, FyNotificationMenuComponent],
   template: `
     <fy-layout>
       <fy-slot
@@ -18,11 +18,21 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
         [copyrightText]="'Finey'">
 
         <nav fy-header-links-center class="actions">
-          <fy-nav-link label="Home" to="/" iconName="house"></fy-nav-link>
-          <fy-nav-link label="Configurações" to="/settings" iconName="gear"></fy-nav-link>
+          <fy-nav-link label="Home" to="/" iconName="house" [active]="true"></fy-nav-link>
+          <fy-nav-link label="Segurança" to="/crypto-demo" iconName="shield-check"></fy-nav-link>
+          <fy-nav-link label="Tabelas" to="/table-demo" iconName="table"></fy-nav-link>
+          <fy-nav-link label="Gráficos" to="/chart-demo" iconName="chart-pie"></fy-nav-link>
         </nav>
 
-        <nav fy-header-links-right class="actions">
+        <nav fy-header-links-right class="actions" style="align-items: center;">
+          <fy-notification-menu
+            [notifications]="notifications"
+            [unreadCount]="unreadCount"
+            (fyClearAll)="onClearNotifications()"
+            (fyViewAll)="onViewAllNotifications()"
+
+          ></fy-notification-menu>
+
           <fy-button
             size="sm"
             variant="ghost"
@@ -48,9 +58,10 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
         </div>
         <nav fy-sidebar-links>
           <div>
-            <fy-nav-link label="Home" to="/" iconName="house"></fy-nav-link>
-            <fy-nav-link label="Configurações" to="/settings" iconName="gear"></fy-nav-link>
-            <fy-nav-link label="Relatórios" to="/reports" iconName="chart-bar"></fy-nav-link>
+            <fy-nav-link label="Home" to="/" iconName="house" [active]="true"></fy-nav-link>
+            <fy-nav-link label="Segurança" to="/crypto-demo" iconName="shield-check"></fy-nav-link>
+            <fy-nav-link label="Tabelas" to="/table-demo" iconName="table"></fy-nav-link>
+            <fy-nav-link label="Gráficos" to="/chart-demo" iconName="chart-pie"></fy-nav-link>
           </div>
         </nav>
 
@@ -77,6 +88,23 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
             [mutedFooter]="true"
             footerText="Campos obrigatórios marcados com *"
           >
+            <fy-accordion
+              [items]="accordionItems"
+              [expandMode]="'multiple'"
+              [bordered]="true"
+              [lazy]="true"
+              (fyChange)="onAccordionChange($event)"
+            ></fy-accordion>
+
+            <div>
+              <fy-button
+                label="Abrir modal"
+                variant="primary"
+                size="sm"
+                (fyClick)="openDemoModal()"
+              ></fy-button>
+            </div>
+
             <div>
               <label for="demo-name">Nome completo</label>
               <fy-input
@@ -141,6 +169,18 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
 
             <div fy-card-actions>
               <fy-button
+                label="Testar Toast Sucesso"
+                variant="ghost"
+                size="sm"
+                (fyClick)="testSuccessToast()"
+              ></fy-button>
+              <fy-button
+                label="Testar Toast Erro"
+                variant="ghost"
+                size="sm"
+                (fyClick)="testErrorToast()"
+              ></fy-button>
+              <fy-button
                 label="Salvar alterações"
                 variant="primary"
                 size="md"
@@ -150,6 +190,19 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
               ></fy-button>
             </div>
           </fy-card>
+          <fy-modal
+            [visible]="demoModalOpen"
+            [title]="'Exemplo de Modal'"
+            [size]="'sm'"
+            [showFooter]="true"
+            [showConfirmButton]="true"
+            [showCancelButton]="true"
+            (fyClose)="demoModalOpen = false"
+            (fyConfirm)="onModalConfirm()"
+            (fyCancel)="onModalCancel()"
+          >
+            <p>Este é um conteúdo simples dentro do fy-modal.</p>
+          </fy-modal>
         </div>
       </fy-slot>
     </fy-layout>
@@ -189,6 +242,62 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
 })
 export class DashboardComponent {
   private fylib = inject(FyLibService);
+  private notify = inject(FyNotificationService);
+
+  notifications = [
+    {
+      id: '1',
+      title: 'Nova mensagem',
+      description: 'Você recebeu uma nova mensagem de Victor.',
+      date: new Date(),
+      read: false,
+      details: 'A mensagem diz: "Olá, vamos testar o novo sistema de notificações do Workbench 3!"'
+    },
+    {
+      id: '2',
+      title: 'Atualização de Sistema',
+      description: 'Uma nova versão do fyLib está disponível.',
+      date: new Date(Date.now() - 3600000),
+      read: false,
+      details: 'Versão 2.0.4 traz melhorias no sistema de temas e novos componentes de Toast.'
+    },
+    {
+      id: '3',
+      title: 'Alerta de Segurança',
+      description: 'Um novo acesso foi detectado em sua conta.',
+      date: new Date(Date.now() - 86400000),
+      read: true,
+      details: 'Acesso realizado de um dispositivo desconhecido em São Paulo, SP.'
+    }
+  ];
+
+  get unreadCount() {
+    return this.notifications.filter(n => !n.read).length;
+  }
+
+  onClearNotifications() {
+    this.notifications = [];
+    this.notify.info('Todas as notificações foram limpas.');
+  }
+
+  onViewAllNotifications() {
+    this.notify.info('Redirecionando para a página de notificações...');
+  }
+
+  testSuccessToast() {
+    this.notify.success('Operação realizada com sucesso!', 'Sucesso');
+  }
+
+  testErrorToast() {
+    this.notify.error('Ocorreu um erro ao processar sua solicitação.', 'Erro do Sistema');
+  }
+
+  demoModalOpen = false;
+  accordionItems = [
+    { id: 'acc-1', title: 'Seção 1', subtitle: 'Descrição da seção 1', content: 'Conteúdo da seção 1' },
+    { id: 'acc-2', title: 'Seção 2', subtitle: 'Descrição da seção 2', content: 'Conteúdo da seção 2' },
+    { id: 'acc-3', title: 'Seção 3', subtitle: 'Descrição da seção 3', content: 'Conteúdo da seção 3' },
+  ];
   selectOptions = [
     { label: 'Administrador', value: 'admin' },
     { label: 'Editor', value: 'editor' },
@@ -212,4 +321,14 @@ export class DashboardComponent {
   onTagsChange(v: string | string[]) {
     this.selectedTags = Array.isArray(v) ? v : [v];
   }
+  openDemoModal() {
+    this.demoModalOpen = true;
+  }
+  onModalConfirm() {
+    this.demoModalOpen = false;
+  }
+  onModalCancel() {
+    this.demoModalOpen = false;
+  }
+  onAccordionChange(_v: any) {}
 }

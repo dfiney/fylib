@@ -1,46 +1,66 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set ROOT=%~dp0..
+:: Cores simples para o terminal Windows (se suportado)
+set "GREEN=[32m"
+set "RED=[31m"
+set "CYAN=[36m"
+set "RESET=[0m"
 
+echo [fyLib] Iniciando Build do Workspace...
+
+:: Garante que estamos na raiz do projeto (um nível acima da pasta tools)
+set "SCRIPT_DIR=%~dp0"
+cd /d "%SCRIPT_DIR%.."
+
+:: Verifica se o pnpm está disponível
 where pnpm >nul 2>&1
-if errorlevel 1 (
-  echo pnpm nao encontrado. Habilite com "corepack enable" e "corepack prepare pnpm@latest --activate"
-  exit /b 1
+if %ERRORLEVEL% neq 0 (
+    echo %RED%[Erro] pnpm nao encontrado. Por favor, instale o pnpm.%RESET%
+    pause
+    exit /b 1
 )
 
-pushd "%ROOT%" >nul
-if exist node_modules (
-  echo Dependencias do workspace ja instaladas
+:: Verifica se o Turbo Repo está disponível para um build mais inteligente
+where turbo >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    echo [fyLib] Usando Turbo Repo para build otimizado...
+    call pnpm exec turbo run build
 ) else (
-  call pnpm install --frozen-lockfile
-  if not %ERRORLEVEL%==0 (
-    echo Falha ao instalar dependencias do workspace (%ERRORLEVEL%)
-    popd >nul
-    exit /b %ERRORLEVEL%
-  )
+    echo [fyLib] Turbo nao encontrado. Usando pnpm recursive build...
+    echo [fyLib] Build deterministico via TypeScript Project References...
+    call pnpm exec tsc -b packages/core packages/crypto packages/animation packages/config packages/theme packages/catalog packages/adapters/angular
 )
-popd >nul
 
-call :build "%ROOT%\packages\core"
-call :build "%ROOT%\packages\config"
-call :build "%ROOT%\packages\animation"
-call :build "%ROOT%\packages\theme"
-call :build "%ROOT%\packages\catalog"
-call :build "%ROOT%\packages\adapters\angular"
-
-echo Build concluido
-exit /b 0
-
-:build
-set PKG=%~1
-if not exist "%PKG%\package.json" goto :eof
-pushd "%PKG%" >nul
-call pnpm run build
-set ERR=%ERRORLEVEL%
-popd >nul
-if not %ERR%==0 (
-  echo Falha no build em %PKG% (%ERR%)
-  exit /b %ERR%
+:: Instala dependências dos servidores de teste
+if exist "test-servers\sse-server\package.json" (
+    echo [fyLib] Instalando dependencias do SSE server...
+    pushd test-servers\sse-server
+    call npm install
+    popd
 )
-goto :eof
+
+if exist "test-servers\crypto-server\package.json" (
+    echo [fyLib] Instalando dependencias do Crypto server...
+    pushd test-servers\crypto-server
+    call npm install
+    popd
+)
+
+:: Build do Playground Angular (opcional, se presente)
+where pnpm >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+  echo [fyLib] Build do Playground Angular...
+  call pnpm --filter playground build
+)
+
+if %ERRORLEVEL% equ 0 (
+    echo.
+    echo %GREEN%[fyLib] Todos os modulos foram compilados com sucesso!%RESET%
+) else (
+    echo.
+    echo %RED%[fyLib] Ocorreu um erro durante o build de um ou mais modulos.%RESET%
+    echo Verifique os logs acima para identificar o erro.
+)
+
+pause

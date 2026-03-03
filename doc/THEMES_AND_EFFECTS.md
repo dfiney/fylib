@@ -63,8 +63,21 @@ export const myCustomTheme: ThemeDefinition = {
   - Botões com gradientes discretos, borda fina e `effects.button.textColor` alinhado ao texto macOS.
   - Inputs com radius levemente maior, placeholder em cinza médio e ícones internos com `effects.input.icons`.
   - Cartões com sombras mais pronunciadas em `effects.card.shadow`, lembrando janelas flutuantes do macOS.
+  - Tabelas com `effects.table` seguindo o visual clean do Finder/macOS.
+- `finey-workbench-2`: tema inspirado no macOS Mojave (2018), com:
+  - Cores sóbrias e tipografia San Francisco.
+  - Suporte nativo a Dark Mode com superfícies em cinza escuro (`#2d2d2d`).
+  - Botões com gradientes sutis e bordas cinzas, inspirados no estilo pré-Big Sur.
+  - Inputs com sombras internas leves e cantos levemente arredondados (`5px`).
+  - Layout mais compacto e funcional, ideal para ferramentas de produtividade.
+- `finey-workbench-3`: tema inspirado no macOS Sonoma/Sequoia (2024), com:
+  - Estética ultra-moderna baseada em **Glassmorphism** (transparências e desfoque).
+  - Uso extensivo de cores vibrantes e gradientes suaves.
+  - Cantos muito arredondados (`10px` a `16px`) para um visual amigável.
+  - Efeitos de profundidade e elevação usando sombras suaves e camadas translúcidas.
+  - Dark Mode profundo, otimizado para telas OLED, mantendo o efeito de vidro.
 
-Todos os temas registram animações específicas em `componentAnimations` para `fy-button`, `fy-input`, `fy-layout` e `fy-slot:sidebar`, podendo ser sobrescritos pelo sistema de configuração. Temas como `finey-workbench-1` utilizam nomes de animação próprios (`layout-macos-window-enter`, `sidebar-macos-slide-in`, `input-focus-macos-glow`, `card-macos-fade-in`, etc.), que são registrados em `@fylib/animation`.
+Todos os temas registram animações específicas em `componentAnimations` para `fy-button`, `fy-input`, `fy-layout`, `fy-slot:sidebar`, `fy-card` e `fy-table`. Temas como `finey-workbench-1`, `finey-workbench-2` e `finey-workbench-3` utilizam nomes de animação próprios (`layout-macos-window-enter`, `sidebar-macos-slide-in`, `input-focus-macos-glow`, `card-macos-fade-in`, etc.), que são registrados em `@fylib/animation`.
 Além disso, `fy-card` utiliza `effects.card` (background, borderColor, shadow, dividerColor) e animação `card-fade-in` como padrão.
 
 ### Alternando entre Modos (Light/Dark)
@@ -229,6 +242,57 @@ Campos adicionais suportados nos toggles:
 - `layout.header.toggle.openIcon` (opcional): ícone exibido quando o menu do header está aberto.
 - `layout.sidebar.toggle.openIcon` (opcional): ícone exibido quando o sidebar móvel está aberto.
  
+ ### Configuração de SSE (Real-time)
+ 
+ O fyLib suporta nativamente a integração com Server-Sent Events (SSE) através da propriedade `sse` no objeto global `AppConfig`. Isso permite que a aplicação reaja a eventos do servidor em tempo real (ex.: notificações, atualizações de sistema).
+ 
+ - `sse.enabled`: `boolean` (habilita/desabilita o serviço).
+ - `sse.endpoint`: `string` (URL do servidor SSE).
+ - `sse.reconnectDelay`: `number` (tempo em ms para tentativa de reconexão).
+ - `sse.events`: objeto mapeando nomes de eventos vindos do servidor para funções de callback.
+ 
+ No playground Angular, recomenda-se criar um arquivo separado `sse.config.ts`:
+
+ ```typescript
+ import { SSEConfig } from '@fylib/core';
+
+ export const sseConfig: SSEConfig = {
+   enabled: true,
+   endpoint: 'http://localhost:3000/events',
+   reconnectDelay: 5000,
+   events: {
+     'new-notification': (data, services) => {
+       services.notification.show({ message: data.text });
+     }
+   }
+ };
+ ```
+
+ E integrá-lo ao `AppConfig`:
+
+ ```typescript
+ import { AppConfig } from '@fylib/config';
+ import { sseConfig } from './sse.config';
+
+ export const themeControllerConfig: AppConfig = {
+   theme: 'default',
+   sse: sseConfig,
+   // ...
+ };
+ ```
+
+ Exemplo via JSON (`theme-controller.json`):
+ ```json
+ {
+   "theme": "default",
+   "sse": {
+     "enabled": true,
+     "endpoint": "http://localhost:3000/events",
+     "reconnectDelay": 5000
+   }
+ }
+ ```
+ 
  ### Intensidade de Recolorização de Logo no Dark Mode
  
  Para suavizar o branco quando logos são recoloridas no modo escuro, o tema pode expor:
@@ -341,6 +405,8 @@ Em aplicações Angular usando o adapter do fyLib, o fluxo recomendado é config
 - `fy-input` dispara `fy-input.focus`.
 - `fy-layout` dispara `fy-layout.enter`.
 - `fy-slot` com `name="sidebar"` dispara `fy-slot:sidebar.open` e `fy-slot:sidebar.close`.
+- `fy-card.submit` dispara o evento de submissão do card.
+- `fy-table.rowClick` dispara o evento de clique na linha da tabela.
 
 O `FyLibService` converte esses eventos em chamadas `animationEngine.triggerEffect` usando o mapa configurado e o nome passado por instância como fallback.
 
@@ -353,6 +419,8 @@ O `FyLibService` converte esses eventos em chamadas `animationEngine.triggerEffe
   
 Animações padrão adicionais:
 - `card-fade-in`: entrada suave para cartões do tipo `fy-card`.
+- `table-fade-in`: animação de entrada da tabela.
+- `table-row-enter`: animação de entrada de novas linhas.
 
 ### Registro dos Efeitos
 

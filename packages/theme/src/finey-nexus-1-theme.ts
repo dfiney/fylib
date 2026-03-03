@@ -95,6 +95,15 @@ export const fineyNexus1Theme: ThemeDefinition = {
         shadow: '0 12px 40px rgba(0,0,0,0.55)',
         borderColor: 'rgba(255,255,255,0.08)'
       },
+      modal: {
+        background: '#0c1319',
+        borderColor: 'rgba(255,255,255,0.16)',
+        shadow: '0 28px 70px rgba(0,0,0,0.65)',
+        overlayColor: 'rgba(0,0,0,0.55)',
+        borderWidth: '1px',
+        borderRadius: '14px',
+        dividerColor: 'rgba(255,255,255,0.12)'
+      },
       input: {
         background: '#0a0f12',
         borderColor: 'rgba(255,255,255,0.16)',
@@ -117,6 +126,14 @@ export const fineyNexus1Theme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: '14px'
       },
+      accordion: {
+        background: '#0c1319',
+        borderColor: 'rgba(255,255,255,0.16)',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.12)',
+        borderRadius: '14px',
+        headerBackground: 'transparent'
+      },
       card: {
         background: '#0c1319',
         borderColor: 'rgba(34,197,94,0.7)',
@@ -132,6 +149,46 @@ export const fineyNexus1Theme: ThemeDefinition = {
         textColor: '#0b0f14',
         borderRadius: '9999px',
         animation: 'shine'
+      },
+      toast: {
+        background: '#0c1319',
+        borderColor: '#22c55e',
+        textColor: '#eafaf2',
+        shadow: '0 0 20px rgba(34, 197, 94, 0.3)',
+        borderRadius: '12px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: '#22c55e',
+          icon: 'bell',
+          badgeBackground: '#ef4444',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: '#0c1319',
+          borderColor: 'rgba(34, 197, 94, 0.4)',
+          shadow: '0 20px 50px rgba(0,0,0,0.8), 0 0 15px rgba(34, 197, 94, 0.15)',
+          width: '320px',
+          maxHeight: '420px',
+          borderRadius: '14px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'rgba(34, 197, 94, 0.1)',
+          textColor: '#eafaf2',
+          descriptionColor: '#93b5a6',
+          dividerColor: 'rgba(255,255,255,0.08)',
+          unreadIndicator: '#22c55e'
+        },
+        config: {
+          showAll: false,
+          limit: 5,
+          allowClear: true,
+          accordionMode: true,
+          showViewAll: true,
+          viewAllPosition: 'footer-right'
+        }
       }
     },
     icons: {
@@ -155,6 +212,15 @@ export const fineyNexus1Theme: ThemeDefinition = {
       surface: '#0f172a'
     },
     effects: {
+      modal: {
+        background: '#0f172a',
+        borderColor: 'rgba(255,255,255,0.18)',
+        shadow: '0 32px 80px rgba(0,0,0,0.75)',
+        overlayColor: 'rgba(0,0,0,0.55)',
+        borderWidth: '1px',
+        borderRadius: '14px',
+        dividerColor: 'rgba(255,255,255,0.12)'
+      },
       input: {
         borderColor: 'rgba(255,255,255,0.18)',
         placeholderColor: '#a3a3a3',
@@ -166,11 +232,50 @@ export const fineyNexus1Theme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: '14px'
       },
+      accordion: {
+        borderColor: 'rgba(255,255,255,0.18)',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.12)',
+        borderRadius: '14px',
+        headerBackground: 'transparent'
+      },
       button: {
         textColor: '#0b0f14'
       },
       card: {
         shadow: '0 24px 50px rgba(0,0,0,0.6)'
+      },
+      toast: {
+        background: '#0f172a',
+        borderColor: '#22c55e',
+        textColor: '#e5e7eb',
+        shadow: '0 0 25px rgba(34, 197, 94, 0.4)',
+        borderRadius: '12px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: '#22c55e',
+          icon: 'bell',
+          badgeBackground: '#ef4444',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: '#0f172a',
+          borderColor: 'rgba(34, 197, 94, 0.5)',
+          shadow: '0 20px 60px rgba(0,0,0,0.9), 0 0 20px rgba(34, 197, 94, 0.2)',
+          width: '320px',
+          maxHeight: '420px',
+          borderRadius: '14px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'rgba(34, 197, 94, 0.15)',
+          textColor: '#e5e7eb',
+          descriptionColor: '#9ca3af',
+          dividerColor: 'rgba(255,255,255,0.1)',
+          unreadIndicator: '#22c55e'
+        }
       }
     }
   },
@@ -196,6 +301,14 @@ export const fineyNexus1Theme: ThemeDefinition = {
     'fy-slot:sidebar': {
       open: 'sidebar-slide-in',
       close: 'sidebar-slide-out'
+    },
+    'fy-notification-menu': {
+        open: 'dropdown-in',
+        close: 'dropdown-out'
+    },
+    'fy-accordion': {
+        expand: 'accordion-expand',
+        collapse: 'accordion-collapse'
     },
     'fy-card': {
       enter: 'card-fade-in'

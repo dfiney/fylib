@@ -47,3 +47,7 @@ desktop.ini
 # Frameworks (precaução em exemplos)
 .next/
 .nuxt/
+
+test-servers/**/logs/
+**/logs/
+node_modules

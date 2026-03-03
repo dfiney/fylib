@@ -2,6 +2,7 @@ import { Component, Input, ViewEncapsulation, inject, computed } from '@angular/
 import { CommonModule } from '@angular/common';
 import { FyLibService } from '../services/fylib.service';
 import { iconRegistry, IconVariant } from '../icons/registry';
+import { IconSet } from '@fylib/config';
 
 type IconSize = 'sm' | 'md' | 'lg';
 
@@ -49,7 +50,7 @@ export class FyIconComponent {
   @Input() color?: string | null;
   @Input() strokeWidth?: string | number | null;
   @Input() variant?: IconVariant | null;
-  @Input() set?: 'ph' | 'fa' | 'mdi';
+  @Input() set?: IconSet;
 
   wrapperStyle = computed(() => {
     const style: Record<string, string> = {};

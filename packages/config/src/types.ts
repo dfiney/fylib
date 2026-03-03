@@ -1,4 +1,5 @@
-import { DesignTokens } from '@fylib/core';
+import { DesignTokens, SSEConfig } from '@fylib/core';
+import { CryptoConfig } from '@fylib/crypto';
 import {
   ButtonClickAnimationName,
   ButtonHoverAnimationName,
@@ -7,17 +8,23 @@ import {
   InputStateAnimationName,
   LayoutAnimationName,
   SidebarAnimationName,
-  CardAnimationName
+  CardAnimationName,
+  TableAnimationName,
+  ChartAnimationName
 } from '@fylib/animation';
 
 export type ThemeName = 
   | 'default'
   | 'finey-workbench-1'
+  | 'finey-workbench-2'
+  | 'finey-workbench-3'
   | 'windows-xp'
   | 'windows-7'
   | 'christmas'
   | 'finey-nexus-1';
 
+
+export type IconSet = 'ph' | 'fa' | 'mdi';
 
 export type ComponentSelector =
   | 'fy-button'
@@ -27,7 +34,13 @@ export type ComponentSelector =
   | 'fy-slot'
   | 'fy-slot:sidebar'
   | 'fy-slot:header'
-  | 'fy-card';
+  | 'fy-card'
+  | 'fy-table'
+  | 'fy-modal'
+  | 'fy-accordion'
+  | 'fy-chart'
+  | 'fy-toast'
+  | 'fy-notification-menu';
 
 export type UIEventKey =
   | 'fy-button.click'
@@ -37,7 +50,14 @@ export type UIEventKey =
   | 'fy-slot:sidebar.open'
   | 'fy-slot:sidebar.close'
   | 'fy-card.enter'
-  | 'fy-card.submit';
+  | 'fy-card.submit'
+  | 'fy-table.enter'
+  | 'fy-table.rowClick'
+  | 'fy-chart.enter'
+  | 'fy-chart.dataClick'
+  | 'fy-toast.open'
+  | 'fy-notification-menu.open'
+  | 'fy-notification-menu.clearAll';
 
 export type EffectName =
   | 'confetti'
@@ -77,10 +97,20 @@ export interface CardEventsMap {
   enter?: CardAnimationName;
 }
 
+export interface TableEventsMap {
+  enter?: TableAnimationName;
+  rowEnter?: TableAnimationName;
+}
+
 export interface SelectEventsMap {
   focus?: InputFocusAnimationName;
   success?: InputStateAnimationName;
   error?: InputStateAnimationName;
+}
+
+export interface ChartEventsMap {
+  enter?: ChartAnimationName;
+  update?: ChartAnimationName;
 }
 
 export type ComponentAnimationsOverrides =
@@ -90,10 +120,23 @@ export type ComponentAnimationsOverrides =
     'fy-select'?: Partial<SelectEventsMap>;
     'fy-layout'?: Partial<LayoutEventsMap>;
     'fy-slot:sidebar'?: Partial<SidebarEventsMap>;
+    'fy-slot:header'?: Partial<SidebarEventsMap>;
     'fy-card'?: Partial<CardEventsMap>;
+    'fy-table'?: Partial<TableEventsMap>;
+    'fy-chart'?: Partial<ChartEventsMap>;
   } & {
     [selector: string]: { [event: string]: string | undefined } | undefined;
   };
+
+export interface HttpConfig {
+  baseUrl?: string;
+  timeout?: number;
+  retries?: number;
+  retryDelay?: number;
+  headers?: Record<string, string>;
+  cryptoEnabled?: boolean;
+  autoNotify?: boolean;
+}
 
 export interface AppConfig {
   theme: ThemeName;
@@ -101,6 +144,9 @@ export interface AppConfig {
   disableAnimationsForComponents?: ComponentSelector[];
   tokenOverrides?: DeepPartial<DesignTokens>;
   componentAnimationsOverrides?: ComponentAnimationsOverrides;
+  sse?: SSEConfig;
+  crypto?: CryptoConfig;
+  http?: HttpConfig;
   effectsEnabled?: boolean;
   disableEffectsForComponents?: ComponentSelector[];
   effectTriggers?: Partial<Record<UIEventKey, EffectName>>;

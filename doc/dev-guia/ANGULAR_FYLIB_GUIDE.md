@@ -4,7 +4,7 @@
 - `@fylib/catalog`: define contratos dos componentes (props, variantes).
 - `@fylib/theme`: registra temas e gera Design Tokens.
 - `@fylib/config`: expõe o contrato tipado `AppConfig` (tema, animações, efeitos, overrides) e lê a configuração ativa (via JSON ou objeto TS).
-- `@fylib/adapter-angular`: transforma contratos em componentes Angular (`fy-button`, `fy-input`, `fy-layout`, `fy-slot`, `fy-card`).
+- `@fylib/adapter-angular`: transforma contratos em componentes Angular (`fy-button`, `fy-input`, `fy-layout`, `fy-slot`, `fy-card`, `fy-table`).
 
 ## Padrão Base de Componente
 - Todos os componentes podem herdar funcionalidades comuns via `BaseFyComponent`:
@@ -19,6 +19,7 @@
   - Button: `hoverEffect`, `clickEffect`, `successEffect`, `errorEffect`
   - Input: `focusEffect`, `successEffect`, `errorEffect`
   - Card: `submitEffect`
+  - Table: `rowClickEffect`
   - Layout: `enterEffect`
   - Slot (sidebar): `openEffect`, `closeEffect`
 - Prioridade: mapeamento global (`AppConfig.effectTriggers`) > prop da instância
@@ -47,12 +48,27 @@ export const themeControllerConfig: AppConfig = {
   effectsEnabled: true,
   disableAnimationsForComponents: [],
   disableEffectsForComponents: [],
+  sse: {
+    enabled: true,
+    endpoint: 'http://localhost:3000/events',
+    reconnectDelay: 3000,
+    events: {
+      'new-notification': (data, services) => {
+        services.notification.show({ message: data.message });
+      }
+    }
+  },
   tokenOverrides: {
     // colors: { primary: '#ff0000' }
   },
   componentAnimationsOverrides: {},
   effectTriggers: {
-    'fy-button.click': 'confetti'
+    'fy-button.click': 'confetti',
+    'fy-layout.enter': 'window-open',
+    'fy-slot:sidebar.open': 'sidebar-slide-in',
+    'fy-slot:sidebar.close': 'sidebar-slide-out',
+    'fy-card.submit': 'confetti',
+    'fy-table.rowClick': 'confetti'
   }
 };
 ```
@@ -104,20 +120,40 @@ Formato compatível com `AppConfig`:
     "fy-input.focus": "confetti",
     "fy-layout.enter": "window-open",
     "fy-slot:sidebar.open": "sidebar-slide-in",
-    "fy-slot:sidebar.close": "sidebar-slide-out"
+    "fy-slot:sidebar.close": "sidebar-slide-out",
+    "fy-card.submit": "confetti",
+    "fy-table.rowClick": "confetti"
   }
 }
 ```
 
 Campos (tipados em `AppConfig`):
-- `theme: ThemeName` – nome do tema registrado na engine (`default`, `christmas`, `windows-xp`, `windows-7`, `finey-workbench-1`, etc).
+- `theme: ThemeName` – nome do tema registrado na engine (`default`, `christmas`, `windows-xp`, `windows-7`, `finey-workbench-1`, `finey-workbench-2`, etc).
 - `animationsEnabled: boolean` – liga/desliga TODAS as animações/transitions da biblioteca.
+- `sse: SSEConfig` – configuração de comunicação em tempo real (Server-Sent Events).
 - `effectsEnabled?: boolean` – liga/desliga todos os efeitos globais.
 - `disableAnimationsForComponents?: ComponentSelector[]` – lista de seletores (`'fy-button'`, `'fy-layout'`, `'fy-slot'`, `'fy-slot:sidebar'`, `'fy-card'`) que terão animações desativadas globalmente.
 - `disableEffectsForComponents?: ComponentSelector[]` – lista de seletores com efeitos desativados globalmente.
 - `tokenOverrides?: DeepPartial<DesignTokens>` – árvore parcial de tokens para sobrescrever medidas/cores/efeitos do tema ativo.
 - `componentAnimationsOverrides?: ComponentAnimationsOverrides` – mapa de animações por componente/evento que sobrescreve as animações sugeridas pelo tema.
 - `effectTriggers?: Partial<Record<UIEventKey, EffectName>>` – mapa de eventos de UI para efeitos globais cadastrados na engine.
+- `http?: HttpConfig` – configuração global do WebClient (baseUrl, timeout, retries, etc).
+
+### Configuração do WebClient (HttpConfig)
+
+O `FyWebClientService` utiliza as seguintes opções globais que podem ser definidas no `AppConfig`:
+
+```ts
+export interface HttpConfig {
+  baseUrl?: string;      // URL base para todas as requisições (ex: 'http://api.meusite.com')
+  timeout?: number;      // Tempo limite padrão em ms (default: 15000)
+  retries?: number;      // Número de tentativas em caso de falha (default: 0)
+  retryDelay?: number;   // Intervalo entre tentativas em ms (default: 1000)
+  headers?: Record<string, string>; // Headers padrão para todas as requisições
+  cryptoEnabled?: boolean; // Habilita criptografia transparente se o @fylib/crypto estiver ativo
+  autoNotify?: boolean;    // Dispara Toasts automaticamente em sucesso/erro (default: true)
+}
+```
 
 ### Tokens de Tema Relevantes
 
@@ -229,6 +265,47 @@ Selector:
 
 Inputs:
 - `name: 'header' | 'sidebar' | 'content' | 'footer' | string` – mapeia para `grid-area`.
+
+---
+
+## WebClient: FyWebClientService
+
+O `FyWebClientService` é o serviço reativo para comunicação HTTP no fyLib Angular. Ele estende as capacidades do `HttpClient` nativo com:
+
+- **Configuração Centralizada**: `baseUrl`, `headers`, `timeouts` e `retries` via `AppConfig`.
+- **Criptografia Transparente**: Integração nativa com `@fylib/crypto`. Se habilitado, dados de POST/PUT são criptografados antes do envio e payloads de resposta são descriptografados antes de chegarem ao componente.
+- **Notificações Automáticas**: Dispara `FyNotificationService` automaticamente para informar sucesso ou falha na conexão.
+- **Reatividade RxJS**: Retorna Observables com suporte a timeouts e tentativas automáticas.
+
+### Exemplo de Uso
+
+```ts
+import { FyWebClientService } from '@fylib/adapter-angular';
+
+@Component({ ... })
+export class MyComponent {
+  private webClient = inject(FyWebClientService);
+
+  loadData() {
+    this.webClient.get('/api/data', { 
+      timeout: 5000, 
+      retries: 3 
+    }).subscribe({
+      next: data => console.log('Dados recebidos:', data),
+      error: err => console.error('Erro:', err)
+    });
+  }
+
+  saveData(payload: any) {
+    // Se o crypto estiver ativo, o payload será criptografado automaticamente
+    this.webClient.post('/api/save', payload).subscribe(...);
+  }
+}
+```
+
+---
+
+## Outros Componentes Disponíveis
 - `activeAnimations?: boolean | null` – mesma regra do `fy-layout`.
 - `activeEffects?: boolean | null` – mesma regra de efeitos.
 - `customStyles?: Record<string, string>` – estilos inline aplicados diretamente no host (`fy-slot`).
@@ -489,6 +566,78 @@ Uso com reactive forms:
 form = new FormGroup({
   password: new FormControl('', { nonNullable: true })
 });
+
+---
+
+### fy-table (tabela de dados)
+
+Selector:
+- `fy-table`
+
+Inputs principais (vindos do catálogo):
+- `data: any[]`
+- `columns: TableColumn[]`
+- `title?: string`
+- `subtitle?: string`
+- `loading?: boolean`
+- `showSearch?: boolean`
+- `showPagination?: boolean`
+- `currentPage: number`
+- `pageSize: number`
+- `totalItems: number`
+- `actions?: TableAction[]`
+- `rowClickable: boolean`
+- `variant: 'default' | 'striped' | 'bordered' | 'compact'`
+
+Inputs de controle de UI:
+- `activeAnimations?: boolean | null`
+- `activeEffects?: boolean | null`
+- `customStyles?: Record<string, string>`
+
+Outputs:
+- `fySearch: EventEmitter<string>`
+- `fySort: EventEmitter<TableColumn>`
+- `fyPageChange: EventEmitter<number>`
+- `fyRowClick: EventEmitter<any>`
+
+Uso básico:
+
+```html
+<fy-table
+  title="Usuários"
+  [data]="users"
+  [columns]="cols"
+  [showSearch]="true"
+  [showPagination]="true"
+  [totalItems]="100"
+  (fySearch)="onSearch($event)"
+></fy-table>
+```
+
+Customização de células via Template:
+
+```html
+<fy-table [data]="users" [columns]="cols">
+  <ng-template #cellTemplate let-row let-column="column">
+    <span *ngIf="column.key === 'status'" [class]="row.statusClass">
+      {{ row.status }}
+    </span>
+    <span *ngIf="column.key !== 'status'">
+      {{ row[column.key] }}
+    </span>
+  </ng-template>
+</fy-table>
+```
+
+Ações e Ferramentas:
+
+```html
+<fy-table [data]="users" [columns]="cols" [actions]="actions">
+  <div fy-table-tools>
+    <fy-button label="Novo" variant="primary" iconName="plus"></fy-button>
+  </div>
+</fy-table>
+```
 
 ---
 
