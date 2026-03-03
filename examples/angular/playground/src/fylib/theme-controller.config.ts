@@ -1,7 +1,7 @@
 import { AppConfig } from '@fylib/config';
 
 export const themeControllerConfig: AppConfig = {
-  theme: "finey-nexus-1",
+  theme: "windows-7",
   animationsEnabled: true,
   effectsEnabled: false,
   disableAnimationsForComponents: [],

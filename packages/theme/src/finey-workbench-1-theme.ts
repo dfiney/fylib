@@ -123,6 +123,13 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
           color: 'rgba(0,0,0,0.45)'
         }
       },
+      select: {
+        background: '#ffffff',
+        borderColor: 'rgba(0,0,0,0.18)',
+        shadow: '0 0 0 1px rgba(255,255,255,0.8)',
+        borderWidth: '1px',
+        borderRadius: '8px'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(0,0,0,0.08)',
@@ -167,6 +174,13 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
         background: '#2c2c2e',
         borderColor: 'rgba(255,255,255,0.12)',
         placeholderColor: '#a1a1a1'
+      },
+      select: {
+        background: '#2c2c2e',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: 'none',
+        borderWidth: '1px',
+        borderRadius: '8px'
       }
     }
   },

@@ -3,6 +3,25 @@ setlocal enabledelayedexpansion
 
 set ROOT=%~dp0..
 
+where pnpm >nul 2>&1
+if errorlevel 1 (
+  echo pnpm nao encontrado. Habilite com "corepack enable" e "corepack prepare pnpm@latest --activate"
+  exit /b 1
+)
+
+pushd "%ROOT%" >nul
+if exist node_modules (
+  echo Dependencias do workspace ja instaladas
+) else (
+  call pnpm install --frozen-lockfile
+  if not %ERRORLEVEL%==0 (
+    echo Falha ao instalar dependencias do workspace (%ERRORLEVEL%)
+    popd >nul
+    exit /b %ERRORLEVEL%
+  )
+)
+popd >nul
+
 call :build "%ROOT%\packages\core"
 call :build "%ROOT%\packages\config"
 call :build "%ROOT%\packages\animation"
@@ -17,11 +36,7 @@ exit /b 0
 set PKG=%~1
 if not exist "%PKG%\package.json" goto :eof
 pushd "%PKG%" >nul
-if exist node_modules (
-  call npm run build
-) else (
-  call npm ci && call npm run build
-)
+call pnpm run build
 set ERR=%ERRORLEVEL%
 popd >nul
 if not %ERR%==0 (

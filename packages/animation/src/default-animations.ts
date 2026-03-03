@@ -144,6 +144,36 @@ const cardAnimationsCss = `
 }
 `;
 
+const selectAnimationsCss = `
+.fy-anim-select-focus-glow:focus-within {
+  box-shadow: 0 0 0 2px rgba(var(--fy-colors-primary-rgb, 59,130,246), 0.45);
+  border-color: rgba(var(--fy-colors-primary-rgb, 59,130,246), 0.7);
+}
+
+.fy-anim-select-focus-soft:focus-within {
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.35);
+}
+
+.fy-anim-select-success-pulse {
+  animation: fy-select-success-pulse 0.4s ease-out;
+}
+
+.fy-anim-select-error-shake {
+  animation: fy-select-error-shake 0.3s ease-in-out;
+}
+
+@keyframes fy-select-success-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+  100% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+}
+
+@keyframes fy-select-error-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+`;
+
 const macosAnimationsCss = `
 .fy-anim-layout-macos-window-enter {
   animation: fy-layout-macos-window-enter 0.45s ease-out;

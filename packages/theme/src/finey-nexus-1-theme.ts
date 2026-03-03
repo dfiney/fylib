@@ -110,6 +110,13 @@ export const fineyNexus1Theme: ThemeDefinition = {
           color: 'currentColor'
         }
       },
+      select: {
+        background: '#0a0f12',
+        borderColor: 'rgba(255,255,255,0.16)',
+        shadow: '0 0 0 1px rgba(255,255,255,0.08) inset',
+        borderWidth: '1px',
+        borderRadius: '14px'
+      },
       card: {
         background: '#0c1319',
         borderColor: 'rgba(34,197,94,0.7)',
@@ -152,6 +159,12 @@ export const fineyNexus1Theme: ThemeDefinition = {
         borderColor: 'rgba(255,255,255,0.18)',
         placeholderColor: '#a3a3a3',
         shadow: 'none'
+      },
+      select: {
+        borderColor: 'rgba(255,255,255,0.18)',
+        shadow: 'none',
+        borderWidth: '1px',
+        borderRadius: '14px'
       },
       button: {
         textColor: '#0b0f14'

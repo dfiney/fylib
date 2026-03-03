@@ -124,6 +124,13 @@ export const windowsXpTheme: ThemeDefinition = {
           color: 'currentColor'
         }
       },
+      select: {
+        background: '#ffffff',
+        borderColor: 'rgba(0,0,0,0.35)',
+        shadow: 'inset 0 1px 0 rgba(255,255,255,0.7)',
+        borderWidth: '1px',
+        borderRadius: '6px'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(0,0,0,0.18)',
@@ -177,6 +184,13 @@ export const windowsXpTheme: ThemeDefinition = {
         background: '#132a4f',
         borderColor: 'rgba(255,255,255,0.18)',
         placeholderColor: '#cbd5e1'
+      },
+      select: {
+        background: '#132a4f',
+        borderColor: 'rgba(255,255,255,0.18)',
+        shadow: 'none',
+        borderWidth: '1px',
+        borderRadius: '6px'
       },
       button: {
         textColor: '#000000ff'

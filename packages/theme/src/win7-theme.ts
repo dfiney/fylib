@@ -125,6 +125,13 @@ export const windows7Theme: ThemeDefinition = {
           color: 'currentColor'
         }
       },
+      select: {
+        background: '#ffffff',
+        borderColor: 'rgba(15,23,42,0.25)',
+        shadow: 'inset 0 1px 0 rgba(255,255,255,0.9)',
+        borderWidth: '1px',
+        borderRadius: '4px'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(15, 23, 42, 0.12)',

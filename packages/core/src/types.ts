@@ -147,6 +147,14 @@ export interface InputEffectsTokens extends TokenTree {
   icons?: InputEffectsIconsTokens;
 }
 
+export interface SelectEffectsIconsTokens extends TokenTree {
+  mode?: 'inside' | 'inside-static' | 'outside';
+  name?: TokenPrimitive;
+  position?: 'left' | 'right';
+  outsideGap?: TokenPrimitive;
+  color?: TokenPrimitive;
+}
+
 export interface CardEffectsTokens extends TokenTree {
   background?: TokenPrimitive;
   borderColor?: TokenPrimitive;

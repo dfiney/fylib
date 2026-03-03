@@ -6,6 +6,7 @@ export * from './components/input.component';
 export * from './components/icon.component';
 export * from './components/nav-link.component';
 export * from './components/card.component';
+export * from './components/select.component';
 export * from './layouts/layout.component';
 export * from './layouts/slot.component';
 export * from './icons/registry';

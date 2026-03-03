@@ -109,6 +109,13 @@ export const defaultTheme: ThemeDefinition = {
           color: 'currentColor'
         }
       },
+      select: {
+        background: '#ffffff',
+        borderColor: 'rgba(15, 23, 42, 0.12)',
+        shadow: '0 6px 16px rgba(15, 23, 42, 0.08)',
+        borderWidth: '1px',
+        borderRadius: 'var(--fy-borderRadius-md)'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(15, 23, 42, 0.08)',
@@ -159,6 +166,13 @@ export const defaultTheme: ThemeDefinition = {
         placeholderColor: '#9ca3af',
         shadow: 'none'
       },
+      select: {
+        background: '#111827',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: '0 6px 16px rgba(15, 23, 42, 0.08)',
+        borderWidth: '1px',
+        borderRadius: 'var(--fy-borderRadius-md)'
+      },
       button: {
         textColor: '#ffffff'
       }
@@ -172,6 +186,11 @@ export const defaultTheme: ThemeDefinition = {
         error: 'button-error-shake'
     },
     'fy-input': {
+      focus: 'input-focus-glow',
+      success: 'input-success-pulse',
+      error: 'input-error-shake'
+    },
+    'fy-select': {
       focus: 'input-focus-glow',
       success: 'input-success-pulse',
       error: 'input-error-shake'

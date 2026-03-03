@@ -22,6 +22,7 @@ export type ThemeName =
 export type ComponentSelector =
   | 'fy-button'
   | 'fy-input'
+  | 'fy-select'
   | 'fy-layout'
   | 'fy-slot'
   | 'fy-slot:sidebar'
@@ -31,6 +32,7 @@ export type ComponentSelector =
 export type UIEventKey =
   | 'fy-button.click'
   | 'fy-input.focus'
+  | 'fy-select.focus'
   | 'fy-layout.enter'
   | 'fy-slot:sidebar.open'
   | 'fy-slot:sidebar.close'
@@ -75,10 +77,17 @@ export interface CardEventsMap {
   enter?: CardAnimationName;
 }
 
+export interface SelectEventsMap {
+  focus?: InputFocusAnimationName;
+  success?: InputStateAnimationName;
+  error?: InputStateAnimationName;
+}
+
 export type ComponentAnimationsOverrides =
   {
     'fy-button'?: Partial<ButtonEventsMap>;
     'fy-input'?: Partial<InputEventsMap>;
+    'fy-select'?: Partial<SelectEventsMap>;
     'fy-layout'?: Partial<LayoutEventsMap>;
     'fy-slot:sidebar'?: Partial<SidebarEventsMap>;
     'fy-card'?: Partial<CardEventsMap>;
