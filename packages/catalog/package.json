@@ -11,5 +11,9 @@
     "@fylib/core": "workspace:*",
     "@fylib/theme": "workspace:*",
     "@fylib/animation": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
   }
 }

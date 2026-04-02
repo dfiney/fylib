@@ -13,9 +13,9 @@ export interface UIComponentDefinition<P = any> {
   };
 }
 
-export type TokenPrimitive = string | number;
+export type TokenPrimitive = string | number | boolean;
 export interface TokenTree {
-  [key: string]: TokenPrimitive | TokenTree | undefined;
+  [key: string]: any;
 }
 
 export interface DesignTokens extends TokenTree {
@@ -26,6 +26,31 @@ export interface DesignTokens extends TokenTree {
   layout?: LayoutTokens;
   effects?: EffectsTokens;
   icons?: IconsTokens;
+}
+
+export interface SSEServices {
+  notification: {
+    show: (options: any) => void;
+    success: (message: string, title?: string) => void;
+    error: (message: string, title?: string) => void;
+    warning: (message: string, title?: string) => void;
+    info: (message: string, title?: string) => void;
+  };
+  menu: {
+    addNotification: (notification: any) => void;
+    clearNotifications: () => void;
+  };
+}
+
+export interface SSEConfig {
+  enabled: boolean;
+  endpoint: string;
+  withCredentials?: boolean;
+  heartbeatTimeout?: number;
+  reconnectDelay?: number;
+  events?: {
+    [eventName: string]: (data: any, services: SSEServices) => void;
+  };
 }
 
 export interface ThemeComponentAnimations {
@@ -166,12 +191,73 @@ export interface CardEffectsTokens extends TokenTree {
   };
 }
 
+export interface ChartEffectsTokens {
+  background?: TokenPrimitive;
+  borderColor?: TokenPrimitive;
+  shadow?: TokenPrimitive;
+  gridColor?: TokenPrimitive;
+  labelColor?: TokenPrimitive;
+  colors?: TokenPrimitive[];
+  fontFamily?: TokenPrimitive;
+}
+
 export interface EffectsTokens extends TokenTree {
   button?: ButtonEffectsTokens;
   window?: WindowEffectsTokens;
   input?: InputEffectsTokens;
   card?: CardEffectsTokens;
+  chart?: ChartEffectsTokens;
+  toast?: ToastTokens;
+  notificationMenu?: NotificationMenuTokens;
   [key: string]: any;
+}
+
+export interface ToastTokens {
+  background: string;
+  borderColor: string;
+  textColor: string;
+  shadow: string;
+  borderRadius: string;
+  icons?: {
+    info?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
+  };
+}
+
+export interface NotificationMenuTokens {
+  button?: {
+    background: string;
+    textColor: string;
+    icon: string;
+    badgeBackground: string;
+    badgeTextColor: string;
+  };
+  dropdown?: {
+    background: string;
+    borderColor: string;
+    shadow: string;
+    width: string;
+    maxHeight: string;
+    borderRadius: string;
+  };
+  item?: {
+    background: string;
+    hoverBackground: string;
+    textColor: string;
+    descriptionColor: string;
+    dividerColor: string;
+    unreadIndicator: string;
+  };
+  config?: {
+    showAll: boolean;
+    limit: number;
+    allowClear: boolean;
+    accordionMode: boolean;
+    showViewAll: boolean;
+    viewAllPosition: 'header-left' | 'header-right' | 'footer-left' | 'footer-right';
+  };
 }
 
 export interface IconsTokens extends TokenTree {

@@ -5,7 +5,6 @@ import {
   ButtonClickAnimationName,
   ButtonStateAnimationName
 } from '@fylib/animation';
-import { text } from 'stream/consumers';
 
 const win7ButtonAnimations: {
   hover: ButtonHoverAnimationName;
@@ -110,6 +109,15 @@ export const windows7Theme: ThemeDefinition = {
           'linear-gradient(to bottom, #e5f0ff 0%, #c2d7f2 40%, #a6c4e8 100%)',
         shadow: '0 4px 16px rgba(0,0,0,0.45)'
       },
+      modal: {
+        background: '#ffffff',
+        borderColor: '#3b5a9a',
+        shadow: '0 24px 60px rgba(0,0,0,0.5)',
+        overlayColor: 'rgba(0,0,0,0.45)',
+        borderWidth: '1px',
+        borderRadius: '4px',
+        dividerColor: 'rgba(15,23,42,0.15)'
+      },
       input: {
         background: '#ffffff',
         borderColor: 'rgba(15,23,42,0.25)',
@@ -132,6 +140,21 @@ export const windows7Theme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: '4px'
       },
+      table: {
+        background: '#ffffff',
+        borderColor: '#99bce8',
+        headerBackground: 'linear-gradient(to bottom, #f2f7ff 0%, #d7e7fb 100%)',
+        rowHoverBackground: '#eaf2ff',
+        stripedBackground: '#f5f9ff'
+      },
+      accordion: {
+        background: '#ffffff',
+        borderColor: 'rgba(15,23,42,0.25)',
+        shadow: 'none',
+        dividerColor: 'rgba(15,23,42,0.12)',
+        borderRadius: '4px',
+        headerBackground: 'transparent'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(15, 23, 42, 0.12)',
@@ -140,6 +163,52 @@ export const windows7Theme: ThemeDefinition = {
         icons: {
           header: '',
           footer: ''
+        }
+      },
+      badge: {
+        background: '#d32f2f',
+        textColor: '#ffffff',
+        borderRadius: '9999px',
+        animation: 'shine'
+      },
+      toast: {
+        background: 'rgba(255, 255, 255, 0.9)',
+        borderColor: '#3b5a9a',
+        textColor: '#0f172a',
+        shadow: '0 4px 12px rgba(0,0,0,0.3)',
+        borderRadius: '4px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: '#ffffff',
+          icon: 'bell',
+          badgeBackground: '#ffb300',
+          badgeTextColor: '#0f172a'
+        },
+        dropdown: {
+          background: 'rgba(255, 255, 255, 0.95)',
+          borderColor: '#3b5a9a',
+          shadow: '0 8px 24px rgba(0,0,0,0.4)',
+          width: '300px',
+          maxHeight: '380px',
+          borderRadius: '4px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'linear-gradient(to bottom, #eaf2ff 0%, #d7e7fb 100%)',
+          textColor: '#0f172a',
+          descriptionColor: '#4b5563',
+          dividerColor: 'rgba(0,0,0,0.1)',
+          unreadIndicator: '#2979ff'
+        },
+        config: {
+          showAll: false,
+          limit: 5,
+          allowClear: true,
+          accordionMode: true,
+          showViewAll: true,
+          viewAllPosition: 'footer-right'
         }
       }
     },
@@ -158,6 +227,64 @@ export const windows7Theme: ThemeDefinition = {
       secondary: '#334e7b',
       textOverlay: '#0f172a',
       text: '#f9fafb'
+    },
+    effects: {
+      modal: {
+        background: '#1e293b',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: '0 32px 80px rgba(0,0,0,0.75)',
+        overlayColor: 'rgba(0,0,0,0.6)',
+        borderWidth: '1px',
+        borderRadius: '4px',
+        dividerColor: 'rgba(255,255,255,0.12)'
+      },
+      table: {
+        background: '#1e293b',
+        borderColor: 'rgba(255,255,255,0.12)',
+        headerBackground: 'rgba(255,255,255,0.08)',
+        rowHoverBackground: 'rgba(41, 121, 255, 0.15)',
+        stripedBackground: 'rgba(255,255,255,0.02)'
+      },
+      accordion: {
+        background: '#1e293b',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.12)',
+        borderRadius: '4px',
+        headerBackground: 'transparent'
+      },
+      toast: {
+        background: '#1e293b',
+        borderColor: '#4c8dff',
+        textColor: '#f9fafb',
+        shadow: '0 4px 12px rgba(0,0,0,0.6)',
+        borderRadius: '4px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: 'var(--fy-colors-text)',
+          icon: 'bell',
+          badgeBackground: '#ffb300',
+          badgeTextColor: '#0f172a'
+        },
+        dropdown: {
+          background: '#1e293b',
+          borderColor: '#4c8dff',
+          shadow: '0 8px 24px rgba(0,0,0,0.8)',
+          width: '300px',
+          maxHeight: '380px',
+          borderRadius: '4px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'rgba(255, 255, 255, 0.05)',
+          textColor: '#f9fafb',
+          descriptionColor: '#94a3b8',
+          dividerColor: 'rgba(255,255,255,0.1)',
+          unreadIndicator: '#4c8dff'
+        }
+      }
     }
   },
   componentAnimations: {
@@ -177,6 +304,14 @@ export const windows7Theme: ThemeDefinition = {
     'fy-slot:sidebar': {
       open: 'sidebar-slide-in',
       close: 'sidebar-slide-out'
+    },
+    'fy-notification-menu': {
+        open: 'dropdown-in',
+        close: 'dropdown-out'
+    },
+    'fy-accordion': {
+        expand: 'accordion-expand',
+        collapse: 'accordion-collapse'
     }
   }
 };

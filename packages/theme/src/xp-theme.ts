@@ -109,6 +109,15 @@ export const windowsXpTheme: ThemeDefinition = {
           'linear-gradient(to bottom, #4b7bd1 0%, #2b4f9d 40%, #214173 100%)',
         shadow: '0 2px 6px rgba(0,0,0,0.6)'
       },
+      modal: {
+        background: '#ffffff',
+        borderColor: 'rgba(0,0,0,0.35)',
+        shadow: '0 24px 60px rgba(0,0,0,0.45)',
+        overlayColor: 'rgba(0,0,0,0.45)',
+        borderWidth: '1px',
+        borderRadius: '6px',
+        dividerColor: 'rgba(0,0,0,0.2)'
+      },
       input: {
         background: '#ffffff',
         borderColor: 'rgba(0,0,0,0.35)',
@@ -131,6 +140,21 @@ export const windowsXpTheme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: '6px'
       },
+      table: {
+        background: '#ffffff',
+        borderColor: '#91a7b4',
+        headerBackground: '#e5ecf9',
+        rowHoverBackground: '#f1f5fb',
+        stripedBackground: '#f7f9fc'
+      },
+      accordion: {
+        background: '#ffffff',
+        borderColor: 'rgba(0,0,0,0.35)',
+        shadow: 'none',
+        dividerColor: 'rgba(0,0,0,0.2)',
+        borderRadius: '6px',
+        headerBackground: 'transparent'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(0,0,0,0.18)',
@@ -146,6 +170,46 @@ export const windowsXpTheme: ThemeDefinition = {
         textColor: '#000000',
         borderRadius: '8px',
         animation: 'shine'
+      },
+      toast: {
+        background: '#ffffff',
+        borderColor: '#315b8a',
+        textColor: '#000000',
+        shadow: '2px 2px 0 rgba(0,0,0,0.2)',
+        borderRadius: '0px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: '#ffffff',
+          icon: 'bell',
+          badgeBackground: '#ffcc00',
+          badgeTextColor: '#000000'
+        },
+        dropdown: {
+          background: '#ffffff',
+          borderColor: '#315b8a',
+          shadow: '2px 2px 4px rgba(0,0,0,0.4)',
+          width: '280px',
+          maxHeight: '350px',
+          borderRadius: '0px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: '#316ac5',
+          textColor: '#000000',
+          descriptionColor: '#666666',
+          dividerColor: '#e0e0e0',
+          unreadIndicator: '#3a6ea5'
+        },
+        config: {
+          showAll: false,
+          limit: 5,
+          allowClear: true,
+          accordionMode: true,
+          showViewAll: true,
+          viewAllPosition: 'footer-right'
+        }
       }
     },
     icons: {
@@ -180,6 +244,15 @@ export const windowsXpTheme: ThemeDefinition = {
         shadow: '0 6px 20px rgba(0,0,0,0.6)',
 
       },
+      modal: {
+        background: '#0e1f3d',
+        borderColor: 'rgba(255,255,255,0.18)',
+        shadow: '0 32px 80px rgba(0,0,0,0.75)',
+        overlayColor: 'rgba(0,0,0,0.6)',
+        borderWidth: '1px',
+        borderRadius: '6px',
+        dividerColor: 'rgba(255,255,255,0.18)'
+      },
       input: {
         background: '#132a4f',
         borderColor: 'rgba(255,255,255,0.18)',
@@ -192,8 +265,55 @@ export const windowsXpTheme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: '6px'
       },
+      table: {
+        background: '#0e1f3d',
+        borderColor: 'rgba(255,255,255,0.12)',
+        headerBackground: 'rgba(255,255,255,0.05)',
+        rowHoverBackground: 'rgba(76, 138, 211, 0.15)',
+        stripedBackground: 'rgba(255,255,255,0.02)'
+      },
+      accordion: {
+        background: '#0e1f3d',
+        borderColor: 'rgba(255,255,255,0.18)',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.18)',
+        borderRadius: '6px',
+        headerBackground: 'transparent'
+      },
       button: {
         textColor: '#000000ff'
+      },
+      toast: {
+        background: '#0e1f3d',
+        borderColor: '#4c8ad3',
+        textColor: '#ffffff',
+        shadow: '2px 2px 0 rgba(0,0,0,0.5)',
+        borderRadius: '0px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: 'var(--fy-colors-text)',
+          icon: 'bell',
+          badgeBackground: '#ffcc00',
+          badgeTextColor: '#000000'
+        },
+        dropdown: {
+          background: '#0e1f3d',
+          borderColor: '#4c8ad3',
+          shadow: '2px 2px 8px rgba(0,0,0,0.8)',
+          width: '280px',
+          maxHeight: '350px',
+          borderRadius: '0px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: '#4c8ad3',
+          textColor: '#ffffff',
+          descriptionColor: '#cbd5e1',
+          dividerColor: 'rgba(255,255,255,0.1)',
+          unreadIndicator: '#4c8ad3'
+        }
       }
     }
   },
@@ -214,6 +334,14 @@ export const windowsXpTheme: ThemeDefinition = {
     'fy-slot:sidebar': {
       open: 'sidebar-slide-in',
       close: 'sidebar-slide-out'
+    },
+    'fy-notification-menu': {
+        open: 'dropdown-in',
+        close: 'dropdown-out'
+    },
+    'fy-accordion': {
+        expand: 'accordion-expand',
+        collapse: 'accordion-collapse'
     }
   }
 };

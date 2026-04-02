@@ -7,12 +7,14 @@
     "baseUrl": ".",
     "paths": {
       "@fylib/core": ["../core/src/index"],
+      "@fylib/config": ["../config/src/index"],
       "@fylib/theme": ["../theme/src/index"],
       "@fylib/animation": ["../animation/src/index"]
     }
   },
   "references": [
     { "path": "../core" },
+    { "path": "../config" },
     { "path": "../theme" },
     { "path": "../animation" }
   ],

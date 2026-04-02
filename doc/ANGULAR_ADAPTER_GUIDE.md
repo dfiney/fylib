@@ -29,6 +29,22 @@ protected triggerByEvent(eventKey: UIEventKey, effectName?: EffectName, instance
 protected triggerDirect(effectName?: EffectName, instanceFlag?: boolean | null): void;
 ```
 
+## 📡 Serviço de Real-time (SSE)
+
+O `FySSEService` é inicializado automaticamente se `tokens.sse.enabled` estiver ativado no `AppConfig`. Ele gerencia a conexão com o servidor e despacha eventos para os callbacks definidos nos tokens.
+
+Para usá-lo em seu componente (ex.: para garantir que a conexão está pronta):
+
+```typescript
+import { inject } from '@angular/core';
+import { FySSEService } from '@fylib/adapter-angular';
+
+export class MyComponent {
+  private sse = inject(FySSEService);
+  // O serviço já conecta automaticamente baseado na config.
+}
+```
+
 ## 🚀 Integrando um Novo Componente
 
 Siga estes passos para adicionar um componente que já existe no catálogo:

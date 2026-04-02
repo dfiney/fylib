@@ -9,6 +9,7 @@ import {
 } from '@fylib/animation';
 import { EffectName } from '@fylib/config';
 import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
+import { FyLibService } from '../services/fylib.service';
 
 @Component({
   selector: 'fy-button',
@@ -18,7 +19,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
     <button 
       [class]="'fy-button fy-button--' + variant + ' fy-button--' + size + animationClassSuffix"
       [disabled]="disabled || loading"
-      (click)="handleClick()"
+      (click)="handleClick($event)"
       (mouseenter)="handleHover()"
       [style]="hostStyles"
     
@@ -31,7 +32,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
       } @else if(icon && !loading) {
         <span [class]="'fy-button__icon ' + icon"></span>
       }
-      <span class="fy-button__label">{{ label }}</span>
+      <span class="fy-button__label" *ngIf="label">{{ label }}</span>
     </button>
   `,
   styles: [`
@@ -119,10 +120,10 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
 })
 export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements ButtonProps, FyComponentBaseInputs {
   constructor() {
-    super(inject(require('../services/fylib.service').FyLibService), 'fy-button');
+    super(inject(FyLibService), 'fy-button');
   }
 
-  @Input() label: string = ButtonDefinition.defaultProps!.label || '';
+  @Input() label: string | undefined = undefined;
   @Input() variant: ButtonProps['variant'] = ButtonDefinition.defaultProps!.variant!;
   @Input() size: ButtonProps['size'] = ButtonDefinition.defaultProps!.size!;
   @Input() disabled: boolean = ButtonDefinition.defaultProps!.disabled!;
@@ -143,7 +144,7 @@ export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements B
   @Input() successEffect?: EffectName;
   @Input() errorEffect?: EffectName;
 
-  @Output() fyClick = new EventEmitter<void>();
+  @Output() fyClick = new EventEmitter<MouseEvent>();
 
   @HostBinding('class.fy-animations-disabled')
   get animationsDisabled(): boolean {
@@ -169,7 +170,7 @@ export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements B
     return this.composeAnimClasses(hover, click);
   }
 
-  handleClick() {
+  handleClick(event: MouseEvent) {
     if (!this.disabled && !this.loading) {
       if (this.isAnimationsActive(this.activeAnimations)) {
         const animationName = this.resolveAnim(
@@ -181,7 +182,7 @@ export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements B
           this.fylib.playAnimation(animationName);
         }
       }
-      this.fyClick.emit();
+      this.fyClick.emit(event);
       this.triggerByEvent('fy-button.click', this.clickEffect, this.activeEffects);
     }
   }

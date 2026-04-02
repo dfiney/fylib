@@ -9,5 +9,9 @@
   },
   "dependencies": {
     "@fylib/config": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
   }
 }

@@ -52,3 +52,12 @@ export type HeaderMenuAnimationName =
 export type CardAnimationName =
   | 'card-fade-in'
   | 'card-macos-fade-in';
+
+export type TableAnimationName =
+  | 'table-fade-in'
+  | 'table-row-enter'
+  | 'table-macos-fade-in';
+
+export type ChartAnimationName =
+  | 'chart-fade-in'
+  | 'chart-data-update';

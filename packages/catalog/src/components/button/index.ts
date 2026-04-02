@@ -1,12 +1,15 @@
 import { UIComponentDefinition } from '@fylib/core';
+import { IconSet } from '@fylib/config';
 
 export interface ButtonProps {
-  label: string;
+  label?: string;
   variant: 'primary' | 'secondary' | 'ghost' | 'danger';
   size: 'sm' | 'md' | 'lg';
   disabled?: boolean;
   loading?: boolean;
   icon?: string;
+  iconName?: string;
+  iconSet?: IconSet;
   onClick?: () => void;
 }
 

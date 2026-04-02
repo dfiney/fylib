@@ -127,6 +127,26 @@ const inputAnimationsCss = `
 }
 `;
 
+const tableAnimationsCss = `
+.fy-anim-table-fade-in {
+  animation: fy-table-fade-in 0.4s ease-out;
+}
+
+.fy-anim-table-row-enter {
+  animation: fy-table-row-enter 0.3s ease-out;
+}
+
+@keyframes fy-table-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fy-table-row-enter {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+`;
+
 const cardAnimationsCss = `
 .fy-anim-card-fade-in {
   animation: fy-card-fade-in 0.4s ease-out;
@@ -290,7 +310,80 @@ injectCssOnce('fy-sidebar-animations', sidebarAnimationsCss);
 injectCssOnce('fy-header-menu-animations', headerMenuAnimationsCss);
 injectCssOnce('fy-input-animations', inputAnimationsCss);
 injectCssOnce('fy-card-animations', cardAnimationsCss);
+injectCssOnce('fy-table-animations', tableAnimationsCss);
 injectCssOnce('fy-macos-animations', macosAnimationsCss);
+const modalAnimationsCss = `
+.fy-anim-modal-fade-in {
+  animation: fy-modal-fade-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fy-anim-modal-fade-out {
+  animation: fy-modal-fade-out 0.22s cubic-bezier(0.4, 0, 1, 1);
+}
+@keyframes fy-modal-fade-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes fy-modal-fade-out {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+}
+`;
+
+const dropdownAnimationsCss = `
+.fy-anim-dropdown-in {
+  animation: fy-dropdown-in 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: top right;
+}
+.fy-anim-dropdown-out {
+  animation: fy-dropdown-out 0.2s cubic-bezier(0.4, 0, 1, 1);
+  transform-origin: top right;
+}
+@keyframes fy-dropdown-in {
+  from { opacity: 0; transform: scale(0.95) translateY(-8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes fy-dropdown-out {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.95) translateY(-8px); }
+}
+`;
+
+const accordionAnimationsCss = `
+.fy-accordion__panel {
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, padding 0.3s ease;
+}
+.fy-anim-accordion-expand {
+  animation: fy-accordion-expand 0.3s ease-out;
+}
+.fy-anim-accordion-collapse {
+  animation: fy-accordion-collapse 0.25s ease-in;
+}
+@keyframes fy-accordion-expand {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fy-accordion-collapse {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-4px); }
+}
+`;
+
+injectCssOnce('fy-modal-animations', modalAnimationsCss);
+injectCssOnce('fy-dropdown-animations', dropdownAnimationsCss);
+injectCssOnce('fy-accordion-animations', accordionAnimationsCss);
 
 animationEngine.registerAnimation({
   name: 'button-hover-soft',
@@ -442,6 +535,48 @@ animationEngine.registerAnimation({
 });
 
 animationEngine.registerAnimation({
+  name: 'table-fade-in',
+  duration: 400,
+  easing: 'ease-out'
+});
+
+animationEngine.registerAnimation({
+  name: 'dropdown-in',
+  duration: 250,
+  easing: 'ease-out'
+});
+
+animationEngine.registerAnimation({
+  name: 'dropdown-out',
+  duration: 200,
+  easing: 'ease-in'
+});
+
+animationEngine.registerAnimation({
+  name: 'accordion-expand',
+  duration: 300,
+  easing: 'ease-out'
+});
+
+animationEngine.registerAnimation({
+  name: 'accordion-collapse',
+  duration: 250,
+  easing: 'ease-in'
+});
+
+animationEngine.registerAnimation({
+  name: 'table-row-enter',
+  duration: 300,
+  easing: 'ease-out'
+});
+
+animationEngine.registerAnimation({
+  name: 'table-macos-fade-in',
+  duration: 350,
+  easing: 'cubic-bezier(0.23, 1, 0.32, 1)'
+});
+
+animationEngine.registerAnimation({
   name: 'card-macos-fade-in',
   duration: 450,
   easing: 'ease-out'
@@ -457,4 +592,14 @@ animationEngine.registerAnimation({
   name: 'button-click-macos-press',
   duration: 130,
   easing: 'ease-out'
+});
+animationEngine.registerAnimation({
+  name: 'modal-fade-in',
+  duration: 280,
+  easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+});
+animationEngine.registerAnimation({
+  name: 'modal-fade-out',
+  duration: 220,
+  easing: 'cubic-bezier(0.4, 0, 1, 1)'
 });

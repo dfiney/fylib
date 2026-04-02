@@ -84,20 +84,29 @@ export const christmasTheme: ThemeDefinition = {
         background: 'var(--fy-colors-background)',
         shadow: '0 4px 16px rgba(0,0,0,0.15)'
       },
+      modal: {
+        background: '#ffffff',
+        borderColor: 'rgba(47, 82, 51, 0.25)',
+        shadow: '0 24px 60px rgba(0,0,0,0.25)',
+        overlayColor: 'rgba(0,0,0,0.45)',
+        borderWidth: '1px',
+        borderRadius: '16px',
+        dividerColor: 'rgba(47, 82, 51, 0.15)'
+      },
       input: {
         background: '#ffffff',
         borderColor: 'rgba(47, 82, 51, 0.25)',
         shadow: 'none',
         placeholderColor: '#6b7280',
         borderWidth: '1px',
-        borderRadius: '16px',
-        icons: {
-          mode: 'inside',
-          name: 'search',
-          position: 'left',
-          outsideGap: '8px',
-          color: 'currentColor'
-        }
+        borderRadius: '16px'
+      },
+      table: {
+        background: '#ffffff',
+        borderColor: 'rgba(175, 17, 28, 0.15)',
+        headerBackground: 'rgba(175, 17, 28, 0.05)',
+        rowHoverBackground: 'rgba(47, 82, 51, 0.05)',
+        stripedBackground: 'rgba(175, 17, 28, 0.02)'
       },
       select: {
         background: '#ffffff',
@@ -105,6 +114,14 @@ export const christmasTheme: ThemeDefinition = {
         shadow: 'none',
         borderWidth: '1px',
         borderRadius: '16px'
+      },
+      accordion: {
+        background: '#ffffff',
+        borderColor: 'rgba(47, 82, 51, 0.25)',
+        shadow: 'none',
+        dividerColor: 'rgba(47, 82, 51, 0.15)',
+        borderRadius: '16px',
+        headerBackground: 'transparent'
       },
       card: {
         background: '#ffffff',
@@ -118,6 +135,46 @@ export const christmasTheme: ThemeDefinition = {
         textColor: '#ffffff',
         borderRadius: '14px',
         animation: 'shine'
+      },
+      toast: {
+        background: '#ffffff',
+        borderColor: '#af111c',
+        textColor: '#1a472a',
+        shadow: '0 10px 30px rgba(175, 17, 28, 0.15)',
+        borderRadius: '16px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: 'var(--fy-colors-white)',
+          icon: 'bell',
+          badgeBackground: '#af111c',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: '#ffffff',
+          borderColor: 'rgba(47, 82, 51, 0.15)',
+          shadow: '0 20px 40px rgba(47, 82, 51, 0.2)',
+          width: '320px',
+          maxHeight: '400px',
+          borderRadius: '20px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'rgba(47, 82, 51, 0.05)',
+          textColor: '#1a472a',
+          descriptionColor: '#2f5233',
+          dividerColor: 'rgba(175, 17, 28, 0.08)',
+          unreadIndicator: '#af111c'
+        },
+        config: {
+          showAll: false,
+          limit: 5,
+          allowClear: true,
+          accordionMode: true,
+          showViewAll: true,
+          viewAllPosition: 'footer-right'
+        }
       }
     },
     icons: {
@@ -143,6 +200,15 @@ export const christmasTheme: ThemeDefinition = {
         dividerColor: 'rgba(255,255,255,0.12)',
         shadow: '0 10px 30px rgba(0,0,0,0.5)'
       },
+      modal: {
+        background: '#0f1a12',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: '0 32px 80px rgba(0,0,0,0.7)',
+        overlayColor: 'rgba(0,0,0,0.6)',
+        borderWidth: '1px',
+        borderRadius: '16px',
+        dividerColor: 'rgba(255,255,255,0.12)'
+      },
       input: {
         background: '#0f1a12',
         borderColor: 'rgba(255,255,255,0.12)',
@@ -154,7 +220,86 @@ export const christmasTheme: ThemeDefinition = {
         shadow: 'none',
         borderWidth: '1px',
         borderRadius: '16px'
+      },
+      table: {
+        background: '#102016',
+        borderColor: 'rgba(255,255,255,0.08)',
+        headerBackground: 'rgba(175, 17, 28, 0.15)',
+        rowHoverBackground: 'rgba(76, 175, 80, 0.08)',
+        stripedBackground: 'rgba(255,255,255,0.02)'
+      },
+      accordion: {
+        background: '#0f1a12',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.12)',
+        borderRadius: '16px',
+        headerBackground: 'transparent'
+      },
+      toast: {
+        background: '#102016',
+        borderColor: '#d42426',
+        textColor: '#e8f5e9',
+        shadow: '0 10px 30px rgba(0,0,0,0.5)',
+        borderRadius: '16px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: 'var(--fy-colors-text)',
+          icon: 'bell',
+          badgeBackground: '#d42426',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: '#102016',
+          borderColor: 'rgba(255,255,255,0.12)',
+          shadow: '0 20px 40px rgba(0,0,0,0.7)',
+          width: '320px',
+          maxHeight: '400px',
+          borderRadius: '20px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'rgba(255,255,255,0.05)',
+          textColor: '#e8f5e9',
+          descriptionColor: '#b7ccb9',
+          dividerColor: 'rgba(255,255,255,0.08)',
+          unreadIndicator: '#d42426'
+        }
       }
+    }
+  },
+  componentAnimations: {
+    'fy-button': {
+      hover: 'button-hover-soft',
+      click: 'button-click-press',
+      success: 'button-success-pulse',
+      error: 'button-error-shake'
+    },
+    'fy-input': {
+      focus: 'input-focus-glow',
+      success: 'input-success-pulse',
+      error: 'input-error-shake'
+    },
+    'fy-layout': {
+      enter: 'layout-fade-in'
+    },
+    'fy-slot:header': {
+      open: 'header-menu-slide-in',
+      close: 'header-menu-slide-out'
+    },
+    'fy-slot:sidebar': {
+      open: 'sidebar-slide-in',
+      close: 'sidebar-slide-out'
+    },
+    'fy-notification-menu': {
+        open: 'dropdown-in',
+        close: 'dropdown-out'
+    },
+    'fy-accordion': {
+        expand: 'accordion-expand',
+        collapse: 'accordion-collapse'
     }
   }
 };

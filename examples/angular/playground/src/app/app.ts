@@ -1,6 +1,6 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { FyLibService, FyThemeVarsDirective } from '@fylib/adapter-angular';
+import { FyLibService, FyThemeVarsDirective, FySSEService } from '@fylib/adapter-angular';
 import { themeControllerConfig } from 'src/fylib/theme-controller.config';
 
 @Component({
@@ -12,12 +12,17 @@ import { themeControllerConfig } from 'src/fylib/theme-controller.config';
 export class App implements OnInit {
   protected readonly title = signal('fyLib Angular Playground');
   private fylib = inject(FyLibService);
+  private sse = inject(FySSEService);
   protected readonly mode = signal<'light' | 'dark'>('light');
 
   ngOnInit() {
     // Inicializa com um tema e modo
     this.fylib.setTheme(themeControllerConfig.theme);
     this.fylib.setMode(this.mode());
+    
+    // SSE é inicializado automaticamente pelo serviço ao ser injetado, 
+    // mas garantimos que ele está pronto
+    console.log('[Playground] SSE Service Initialized');
   }
 
   toggleMode() {

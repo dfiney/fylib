@@ -12,7 +12,8 @@
       "@fylib/theme": ["../../theme/src/index"],
       "@fylib/animation": ["../../animation/src/index"],
       "@fylib/catalog": ["../../catalog/src/index"],
-      "@fylib/config": ["../../config/src/index"]
+      "@fylib/config": ["../../config/src/index"],
+      "@fylib/crypto": ["../../crypto/src/index"]
     }
   },
   "references": [
@@ -20,7 +21,8 @@
     { "path": "../../theme" },
     { "path": "../../animation" },
     { "path": "../../catalog" },
-    { "path": "../../config" }
+    { "path": "../../config" },
+    { "path": "../../crypto" }
   ],
   "include": ["src"]
 }

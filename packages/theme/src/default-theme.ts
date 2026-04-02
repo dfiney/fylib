@@ -94,6 +94,15 @@ export const defaultTheme: ThemeDefinition = {
         background: 'var(--fy-colors-background)',
         shadow: '0 1px 3px rgba(15, 23, 42, 0.08)'
       },
+      modal: {
+        background: '#ffffff',
+        borderColor: 'rgba(15, 23, 42, 0.12)',
+        shadow: '0 20px 60px rgba(15, 23, 42, 0.25)',
+        overlayColor: 'rgba(0,0,0,0.45)',
+        borderWidth: '1px',
+        borderRadius: 'var(--fy-borderRadius-md)',
+        dividerColor: 'rgba(15, 23, 42, 0.08)'
+      },
       input: {
         background: '#ffffff',
         borderColor: 'rgba(15, 23, 42, 0.12)',
@@ -116,6 +125,22 @@ export const defaultTheme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: 'var(--fy-borderRadius-md)'
       },
+      table: {
+        background: 'var(--fy-colors-white)',
+        borderColor: 'rgba(15, 23, 42, 0.08)',
+        headerBackground: 'rgba(15, 23, 42, 0.02)',
+        rowHoverBackground: 'rgba(15, 23, 42, 0.01)',
+        stripedBackground: 'rgba(15, 23, 42, 0.005)'
+      },
+      chart: {
+        background: 'transparent',
+        borderColor: 'rgba(15, 23, 42, 0.08)',
+        shadow: 'none',
+        gridColor: 'rgba(15, 23, 42, 0.05)',
+        labelColor: '#64748b',
+        colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
+        fontFamily: 'inherit'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(15, 23, 42, 0.08)',
@@ -126,11 +151,59 @@ export const defaultTheme: ThemeDefinition = {
           footer: ''
         }
       },
+      accordion: {
+        background: '#ffffff',
+        borderColor: 'rgba(15, 23, 42, 0.12)',
+        shadow: 'none',
+        dividerColor: 'rgba(15, 23, 42, 0.08)',
+        borderRadius: 'var(--fy-borderRadius-md)',
+        headerBackground: 'transparent'
+      },
       badge: {
         background: '#ef4444',
         textColor: '#ffffff',
         borderRadius: '9999px',
         animation: 'shine'
+      },
+      toast: {
+        background: '#ffffff',
+        borderColor: 'rgba(15, 23, 42, 0.12)',
+        textColor: '#1f2937',
+        shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+        borderRadius: 'var(--fy-borderRadius-md)'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: 'var(--fy-colors-text)',
+          icon: 'bell',
+          badgeBackground: '#ef4444',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: '#ffffff',
+          borderColor: 'rgba(15, 23, 42, 0.12)',
+          shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+          width: '320px',
+          maxHeight: '400px',
+          borderRadius: 'var(--fy-borderRadius-md)'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: '#f8fafc',
+          textColor: '#1f2937',
+          descriptionColor: '#64748b',
+          dividerColor: 'rgba(15, 23, 42, 0.08)',
+          unreadIndicator: '#3b82f6'
+        },
+        config: {
+          showAll: false,
+          limit: 5,
+          allowClear: true,
+          accordionMode: true,
+          showViewAll: true,
+          viewAllPosition: 'footer-right'
+        }
       }
     },
     icons: {
@@ -160,6 +233,23 @@ export const defaultTheme: ThemeDefinition = {
         dividerColor: 'rgba(255,255,255,0.12)',
         shadow: '0 10px 30px rgba(0,0,0,0.5)'
       },
+      modal: {
+        background: '#0f172a',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: '0 24px 70px rgba(0,0,0,0.7)',
+        overlayColor: 'rgba(0,0,0,0.6)',
+        borderWidth: '1px',
+        borderRadius: 'var(--fy-borderRadius-md)',
+        dividerColor: 'rgba(255,255,255,0.12)'
+      },
+      accordion: {
+        background: '#0f172a',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.12)',
+        borderRadius: 'var(--fy-borderRadius-md)',
+        headerBackground: 'transparent'
+      },
       input: {
         background: '#111827',
         borderColor: 'rgba(255,255,255,0.12)',
@@ -173,8 +263,53 @@ export const defaultTheme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: 'var(--fy-borderRadius-md)'
       },
+      table: {
+        background: '#1f2937',
+        borderColor: 'rgba(255,255,255,0.08)',
+        headerBackground: 'rgba(255,255,255,0.05)',
+        rowHoverBackground: 'rgba(255,255,255,0.02)',
+        stripedBackground: 'rgba(255,255,255,0.01)'
+      },
+      chart: {
+        background: 'transparent',
+        gridColor: 'rgba(255,255,255,0.05)',
+        labelColor: '#9ca3af',
+        colors: ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#a78bfa']
+      },
       button: {
         textColor: '#ffffff'
+      },
+      toast: {
+        background: '#1f2937',
+        borderColor: 'rgba(255,255,255,0.1)',
+        textColor: '#f9fafb',
+        shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
+        borderRadius: 'var(--fy-borderRadius-md)'
+      },
+      notificationMenu: {
+        button: {
+          textColor: 'var(--fy-colors-text)',
+          badgeBackground: '#f87171',
+          background: 'transparent',
+          icon: 'bell',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: '#1f2937',
+          borderColor: 'rgba(255,255,255,0.1)',
+          shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
+          width: '320px',
+          maxHeight: '400px',
+          borderRadius: 'var(--fy-borderRadius-md)'
+        },
+        item: {
+          hoverBackground: 'rgba(255,255,255,0.05)',
+          textColor: '#f9fafb',
+          descriptionColor: '#9ca3af',
+          dividerColor: 'rgba(255,255,255,0.08)',
+          unreadIndicator: '#60a5fa',
+          background: ''
+        }
       }
     }
   },
@@ -203,11 +338,23 @@ export const defaultTheme: ThemeDefinition = {
       close: 'header-menu-slide-out'
     },
     'fy-slot:sidebar': {
-      open: 'sidebar-slide-in',
-      close: 'sidebar-slide-out'
+        open: 'sidebar-slide-in',
+        close: 'sidebar-slide-out'
+    },
+    'fy-notification-menu': {
+        open: 'dropdown-in',
+        close: 'dropdown-out'
+    },
+    'fy-accordion': {
+        expand: 'accordion-expand',
+        collapse: 'accordion-collapse'
     },
     'fy-card': {
       enter: 'card-fade-in'
+    },
+    'fy-table': {
+      enter: 'table-fade-in',
+      rowEnter: 'table-row-enter'
     }
   }
 };

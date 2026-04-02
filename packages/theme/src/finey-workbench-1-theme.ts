@@ -130,6 +130,30 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: '8px'
       },
+      table: {
+        background: '#ffffff',
+        borderColor: 'rgba(0,0,0,0.08)',
+        headerBackground: '#f5f5f7',
+        rowHoverBackground: 'rgba(0,122,255,0.04)',
+        stripedBackground: '#fafafb'
+      },
+      modal: {
+        background: '#ffffff',
+        borderColor: 'rgba(0,0,0,0.18)',
+        shadow: '0 32px 80px rgba(0,0,0,0.75)',
+        overlayColor: 'rgba(0,0,0,0.6)',
+        borderWidth: '1px',
+        borderRadius: '8px',
+        dividerColor: 'rgba(0,0,0,0.12)'
+      },
+      accordion: {
+        background: '#ffffff',
+        borderColor: 'rgba(0,0,0,0.18)',
+        shadow: 'none',
+        dividerColor: 'rgba(0,0,0,0.12)',
+        borderRadius: '8px',
+        headerBackground: 'transparent'
+      },
       card: {
         background: '#ffffff',
         borderColor: 'rgba(0,0,0,0.08)',
@@ -145,6 +169,46 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
         textColor: '#ffffff',
         borderRadius: '10px',
         animation: 'shine'
+      },
+      toast: {
+        background: 'rgba(255, 255, 255, 0.95)',
+        borderColor: 'rgba(0,0,0,0.1)',
+        textColor: '#1c1c1e',
+        shadow: '0 10px 25px rgba(0,0,0,0.15)',
+        borderRadius: '10px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: '#1c1c1e',
+          icon: 'bell',
+          badgeBackground: '#ff3b30',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: 'rgba(255, 255, 255, 0.98)',
+          borderColor: 'rgba(0,0,0,0.1)',
+          shadow: '0 20px 40px rgba(0,0,0,0.2)',
+          width: '320px',
+          maxHeight: '400px',
+          borderRadius: '12px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'rgba(0, 122, 255, 0.08)',
+          textColor: '#1c1c1e',
+          descriptionColor: '#8e8e93',
+          dividerColor: 'rgba(0,0,0,0.05)',
+          unreadIndicator: '#007aff'
+        },
+        config: {
+          showAll: false,
+          limit: 5,
+          allowClear: true,
+          accordionMode: true,
+          showViewAll: true,
+          viewAllPosition: 'footer-right'
+        }
       }
     },
     icons: {
@@ -170,6 +234,23 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
         dividerColor: 'rgba(255,255,255,0.12)',
         shadow: '0 12px 30px rgba(0,0,0,0.6)'
       },
+      modal: {
+        background: '#2c2c2e',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: '0 32px 80px rgba(0,0,0,0.75)',
+        overlayColor: 'rgba(0,0,0,0.6)',
+        borderWidth: '1px',
+        borderRadius: '8px',
+        dividerColor: 'rgba(255,255,255,0.12)'
+      },
+      accordion: {
+        background: '#2c2c2e',
+        borderColor: 'rgba(255,255,255,0.12)',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.12)',
+        borderRadius: '8px',
+        headerBackground: 'transparent'
+      },
       input: {
         background: '#2c2c2e',
         borderColor: 'rgba(255,255,255,0.12)',
@@ -181,6 +262,45 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
         shadow: 'none',
         borderWidth: '1px',
         borderRadius: '8px'
+      },
+      table: {
+        background: '#1c1c1e',
+        borderColor: 'rgba(255,255,255,0.08)',
+        headerBackground: '#2c2c2e',
+        rowHoverBackground: 'rgba(0,122,255,0.15)',
+        stripedBackground: 'rgba(255,255,255,0.01)'
+      },
+      toast: {
+        background: '#2c2c2e',
+        borderColor: 'rgba(255,255,255,0.1)',
+        textColor: '#f5f5f7',
+        shadow: '0 10px 25px rgba(0,0,0,0.5)',
+        borderRadius: '10px'
+      },
+      notificationMenu: {
+        button: {
+          background: 'transparent',
+          textColor: '#f5f5f7',
+          icon: 'bell',
+          badgeBackground: '#ff3b30',
+          badgeTextColor: '#ffffff'
+        },
+        dropdown: {
+          background: '#2c2c2e',
+          borderColor: 'rgba(255,255,255,0.1)',
+          shadow: '0 20px 40px rgba(0,0,0,0.6)',
+          width: '320px',
+          maxHeight: '400px',
+          borderRadius: '12px'
+        },
+        item: {
+          background: 'transparent',
+          hoverBackground: 'rgba(255, 255, 255, 0.05)',
+          textColor: '#f5f5f7',
+          descriptionColor: '#a1a1a1',
+          dividerColor: 'rgba(255,255,255,0.05)',
+          unreadIndicator: '#0a84ff'
+        }
       }
     }
   },
@@ -195,12 +315,20 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
       enter: 'layout-macos-window-enter'
     },
     'fy-slot:header': {
-      open: 'header-macos-slide-in',
-      close: 'header-macos-slide-out'
+      open: 'header-menu-macos-slide-in',
+      close: 'header-menu-macos-slide-out'
     },
     'fy-slot:sidebar': {
       open: 'sidebar-macos-slide-in',
       close: 'sidebar-macos-slide-out'
+    },
+    'fy-notification-menu': {
+      open: 'dropdown-in',
+      close: 'dropdown-out'
+    },
+    'fy-accordion': {
+      expand: 'accordion-expand',
+      collapse: 'accordion-collapse'
     },
     'fy-card': {
       enter: 'card-macos-fade-in'
