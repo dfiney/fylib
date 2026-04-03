@@ -1,6 +1,8 @@
 import { CryptoConfig } from './types';
+import { logger } from '@fylib/logger';
 
 function getSubtle(): SubtleCrypto | null {
+
   const g: any = globalThis as any;
   if (g.crypto && g.crypto.subtle) return g.crypto.subtle as SubtleCrypto;
   return null;
@@ -36,8 +38,12 @@ async function importKey(secret: string): Promise<CryptoKey> {
 
 export async function encrypt(text: string, cfg: CryptoConfig): Promise<string> {
   if (!cfg.enabled) return text;
+  logger.debug('Crypto', 'Encrypting data');
   const subtle = getSubtle();
-  if (!subtle) throw new Error('WebCrypto not available');
+  if (!subtle) {
+    logger.error('Crypto', 'WebCrypto not available');
+    throw new Error('WebCrypto not available');
+  }
   const key = await importKey(cfg.secret);
   const iv = crypto.getRandomValues(new Uint8Array(cfg.ivSize));
   const enc = new TextEncoder();
@@ -49,13 +55,23 @@ export async function encrypt(text: string, cfg: CryptoConfig): Promise<string> 
 
 export async function decrypt(payload: string, cfg: CryptoConfig): Promise<string> {
   if (!cfg.enabled) return payload;
+  logger.debug('Crypto', 'Decrypting data');
   const subtle = getSubtle();
-  if (!subtle) throw new Error('WebCrypto not available');
-  const key = await importKey(cfg.secret);
-  const buf = fromBase64(payload);
-  const iv = buf.slice(0, cfg.ivSize);
-  const ct = buf.slice(cfg.ivSize);
-  const pt = await subtle.decrypt({ name: 'AES-GCM', iv, tagLength: cfg.tagSize }, key, ct);
-  const dec = new TextDecoder();
-  return dec.decode(pt);
+  if (!subtle) {
+    logger.error('Crypto', 'WebCrypto not available');
+    throw new Error('WebCrypto not available');
+  }
+  try {
+    const key = await importKey(cfg.secret);
+    const buf = fromBase64(payload);
+    const iv = buf.slice(0, cfg.ivSize);
+    const ct = buf.slice(cfg.ivSize);
+    const pt = await subtle.decrypt({ name: 'AES-GCM', iv, tagLength: cfg.tagSize }, key, ct);
+    const dec = new TextDecoder();
+    return dec.decode(pt);
+  } catch (e) {
+    logger.error('Crypto', 'Decryption failed', e);
+    throw e;
+  }
 }
+

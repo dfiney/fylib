@@ -1,8 +1,18 @@
 import { ThemeDefinition } from '@fylib/core';
-import { themeEngine } from './engine';
 
 export const christmasTheme: ThemeDefinition = {
   name: 'christmas',
+  backgroundEffect: {
+    name: 'snow',
+    intensity: 150,
+    speed: 1,
+    loop: true
+  },
+  wallpaper: {
+    name: 'pine-trees',
+    type: 'pattern',
+    opacity: 0.1
+  },
   tokens: {
     colors: {
       primary: '#af111c', // Vermelho Natal
@@ -106,7 +116,17 @@ export const christmasTheme: ThemeDefinition = {
         borderColor: 'rgba(175, 17, 28, 0.15)',
         headerBackground: 'rgba(175, 17, 28, 0.05)',
         rowHoverBackground: 'rgba(47, 82, 51, 0.05)',
-        stripedBackground: 'rgba(175, 17, 28, 0.02)'
+        stripedBackground: 'rgba(175, 17, 28, 0.02)',
+        textColor: '#1a472a',
+        headerTextColor: '#af111c'
+      },
+      chart: {
+        background: 'transparent',
+        borderColor: 'rgba(175, 17, 28, 0.15)',
+        gridColor: 'rgba(0,0,0,0.05)',
+        labelColor: '#2f5233',
+        colors: ['#af111c', '#2f5233', '#f59e0b', '#3b82f6', '#d42426'],
+        fontFamily: 'inherit'
       },
       select: {
         background: '#ffffff',
@@ -141,7 +161,35 @@ export const christmasTheme: ThemeDefinition = {
         borderColor: '#af111c',
         textColor: '#1a472a',
         shadow: '0 10px 30px rgba(175, 17, 28, 0.15)',
-        borderRadius: '16px'
+        borderRadius: '16px',
+        padding: '16px 20px',
+        gap: '14px',
+        minWidth: '320px',
+        maxWidth: '420px',
+        titleFontSize: '16px',
+        titleFontWeight: '700',
+        messageFontSize: '14px',
+        messageLineHeight: '1.4',
+        iconSize: '24px',
+        closeIcon: 'x',
+        closeButtonSize: '20px',
+        closeButtonOpacity: '0.6',
+        closeButtonHoverOpacity: '1',
+        closeButtonBackground: '#af111c',
+        closeButtonBorder: 'none',
+        closeButtonBorderRadius: '50%',
+        iconColor: {
+          info: '#3b82f6',
+          success: '#22c55e',
+          warning: '#f59e0b',
+          error: '#af111c'
+        },
+        icons: {
+          info: 'snowflake-fill',
+          success: 'gift-fill',
+          warning: 'star-fill',
+          error: 'x-circle-fill'
+        }
       },
       notificationMenu: {
         button: {
@@ -179,7 +227,6 @@ export const christmasTheme: ThemeDefinition = {
     },
     icons: {
       defaultSet: 'ph',
-      color: 'currentColor',
       size: { sm: '12px', md: '16px', lg: '20px' },
       strokeWidth: '1.5',
       variant: 'duotone'
@@ -226,7 +273,15 @@ export const christmasTheme: ThemeDefinition = {
         borderColor: 'rgba(255,255,255,0.08)',
         headerBackground: 'rgba(175, 17, 28, 0.15)',
         rowHoverBackground: 'rgba(76, 175, 80, 0.08)',
-        stripedBackground: 'rgba(255,255,255,0.02)'
+        stripedBackground: 'rgba(255,255,255,0.02)',
+        textColor: '#e8f5e9',
+        headerTextColor: '#d42426'
+      },
+      chart: {
+        background: 'transparent',
+        gridColor: 'rgba(255,255,255,0.05)',
+        labelColor: '#b7ccb9',
+        colors: ['#d42426', '#4caf50', '#fbbf24', '#60a5fa', '#af111c']
       },
       accordion: {
         background: '#0f1a12',
@@ -240,8 +295,22 @@ export const christmasTheme: ThemeDefinition = {
         background: '#102016',
         borderColor: '#d42426',
         textColor: '#e8f5e9',
-        shadow: '0 10px 30px rgba(0,0,0,0.5)',
-        borderRadius: '16px'
+        shadow: '0 10px 30px rgba(0,0,0,0.5), 0 0 10px rgba(212, 36, 38, 0.2)',
+        borderRadius: '16px',
+        closeButtonOpacity: '0.8',
+        closeButtonHoverOpacity: '1',
+        iconColor: {
+          info: '#60a5fa',
+          success: '#4caf50',
+          warning: '#fbbf24',
+          error: '#d42426'
+        },
+        icons: {
+          info: 'snowflake-fill',
+          success: 'gift-fill',
+          warning: 'star-fill',
+          error: 'x-circle-fill'
+        }
       },
       notificationMenu: {
         button: {
@@ -303,6 +372,3 @@ export const christmasTheme: ThemeDefinition = {
     }
   }
 };
-
-// Auto-register
-themeEngine.registerTheme(christmasTheme);

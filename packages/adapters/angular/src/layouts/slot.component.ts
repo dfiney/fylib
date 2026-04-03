@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, HostBinding, inject } from '@angular/core';
+import { Component, Input, ViewEncapsulation, HostBinding, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FyLibService } from '../services/fylib.service';
 import { FyIconComponent } from '../components/icon.component';
@@ -26,6 +26,7 @@ import { EffectName } from '@fylib/config';
         >
           <fy-icon [name]="sidebarToggleIconName"></fy-icon>
         </button>
+        <div class="fy-slot__overlay" [class.fy-slot__overlay--open]="sidebarOpen" (click)="toggleSidebar()"></div>
         <div class="fy-slot__panel" [class.fy-slot__panel--open]="sidebarOpen">
           <div class="fy-slot__sidebar-inner">
             @if (sidebarLogoImgSrc || sidebarLogoSvgSrc) {
@@ -74,7 +75,7 @@ import { EffectName } from '@fylib/config';
             <div class="fy-slot__sidebar-footer">
               <ng-content select="[fy-sidebar-footer]"></ng-content>
               @if (copyrightText) {
-                <div class="fy-slot__copyright">
+                <div class="fy-slot__copyright" [style.--fy-copyright-shine-duration]="copyrightShineDuration">
                   <span class="fy-slot__copyright-text">&copy; {{ copyrightText }} · {{ currentYear }}</span>
                 </div>
               }
@@ -83,6 +84,7 @@ import { EffectName } from '@fylib/config';
         </div>
       }
       @case ('header') {
+        <div class="fy-slot__overlay" [class.fy-slot__overlay--open]="headerMenuOpen" (click)="toggleHeaderMenu()"></div>
         <header class="fy-slot__header-shell">
           <div class="fy-slot__header-left">
             @if (headerLogoImgSrc || headerLogoSvgSrc) {
@@ -131,11 +133,26 @@ import { EffectName } from '@fylib/config';
             <nav class="fy-slot__header-links fy-slot__header-links--right">
               <ng-content select="[fy-header-links-right]"></ng-content>
             </nav>
+            
+            <!-- Copyright dentro do menu no mobile -->
+            @if (copyrightText) {
+              <div class="fy-slot__copyright fy-slot__copyright--mobile" [style.--fy-copyright-shine-duration]="copyrightShineDuration">
+                <span class="fy-slot__copyright-text">&copy; {{ copyrightText }} · {{ currentYear }}</span>
+              </div>
+            }
           </div>
           <div class="fy-slot__header-meta">
+            <!-- Espaço para elementos meta projetados (como notification-menu) -->
             <ng-content select="[fy-header-meta]"></ng-content>
+            
+            <!-- Outros links de cabeçalho que não são meta -->
+            <div class="fy-slot__header-links-right-meta">
+               <ng-content select="[fy-header-links-right]"></ng-content>
+            </div>
+            
+            <!-- Copyright fora do menu no desktop -->
             @if (copyrightText) {
-              <div class="fy-slot__copyright">
+              <div class="fy-slot__copyright fy-slot__copyright--desktop" [style.--fy-copyright-shine-duration]="copyrightShineDuration">
                 <span class="fy-slot__copyright-text">&copy; {{ copyrightText }} · {{ currentYear }}</span>
               </div>
             }
@@ -159,13 +176,32 @@ import { EffectName } from '@fylib/config';
   styles: [`
     .fy-slot { display: block; position: relative; }
 
+    body.fy-no-scroll {
+      overflow: hidden !important;
+    }
+
+    .fy-slot__overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 100;
+    }
+
+    .fy-slot__overlay--open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     .fy-slot--header {
-      z-index: 10;
+      z-index: 110;
       min-height: var(--fy-layout-header-height, 64px);
-      padding: var(--fy-layout-header-padding, 0 24px);
-      background-color: var(--fy-colors-surface, #fff);
-      border-bottom: 1px solid var(--fy-colors-border, rgba(0,0,0,0.08));
-      box-shadow: var(--fy-layout-header-shadow, 0 1px 0 rgba(0,0,0,0.06));
+      padding: 0;
       display: flex;
       align-items: center;
     }
@@ -178,6 +214,12 @@ import { EffectName } from '@fylib/config';
       gap: var(--fy-spacing-md, 16px);
       width: 100%;
       position: relative;
+      z-index: 110;
+      min-height: inherit;
+      padding: var(--fy-layout-header-padding, 0 24px);
+      background-color: var(--fy-layout-header-background, var(--fy-colors-surface, #fff));
+      border-bottom: 1px solid var(--fy-colors-border, rgba(0,0,0,0.08));
+      box-shadow: var(--fy-layout-header-shadow, 0 1px 0 rgba(0,0,0,0.06));
     }
 
     .fy-slot__header-left { display: flex; align-items: center; gap: var(--fy-spacing-md, 16px); flex-shrink: 0; }
@@ -203,6 +245,14 @@ import { EffectName } from '@fylib/config';
       align-items: center;
       gap: var(--fy-spacing-md, 16px);
       flex-shrink: 0;
+    }
+
+    .fy-slot__header-links-right-meta {
+      display: none;
+    }
+
+    .fy-slot__header-meta ::ng-deep fy-notification-menu {
+      display: block;
     }
 
     .fy-slot__header-toggle {
@@ -231,13 +281,22 @@ import { EffectName } from '@fylib/config';
       min-width: var(--fy-layout-sidebar-width, 260px);
       padding: var(--fy-layout-sidebar-padding, 16px 0);
       border-right: 1px solid var(--fy-colors-border, rgba(0,0,0,0.1));
-      background-color: var(--fy-colors-surface, transparent);
+      background-color: var(--fy-layout-sidebar-background, var(--fy-colors-surface, transparent));
+    }
+
+    .fy-slot--sidebar-fixed {
+      height: 100%;
+      max-height: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .fy-slot--sidebar .fy-slot__panel {
       height: 100%;
       display: block;
-      background-color: var(--fy-colors-surface, #fff);
+      background-color: var(--fy-layout-sidebar-background, var(--fy-colors-surface, #fff));
+      box-shadow: var(--fy-layout-sidebar-shadow, none);
       color: var(--fy-colors-textOverlay, var(--fy-colors-text, inherit));
     }
 
@@ -294,6 +353,9 @@ import { EffectName } from '@fylib/config';
       gap: var(--fy-spacing-sm, 8px);
     }
 
+    .fy-slot__copyright--mobile { display: none; }
+    .fy-slot__copyright--desktop { display: block; }
+    
     .fy-slot__copyright {
       font-size: var(--fy-typography-fontSize-sm, 12px);
       color: var(--fy-colors-secondary, #6b7280);
@@ -302,16 +364,33 @@ import { EffectName } from '@fylib/config';
     .fy-slot__copyright-text {
       position: relative;
       display: inline-block;
-      font-weight: var(--fy-typography-fontWeight-normal, 400);
-      background: linear-gradient(135deg, var(--fy-colors-secondary, #6b7280), var(--fy-colors-secondary, #6b7280), rgba(255,255,255,0.9));
-      background-size: 200% 200%;
+      font-weight: var(--fy-typography-fontWeight-bold, 600);
+      background: linear-gradient(
+        120deg, 
+        var(--fy-colors-secondary, #6b7280) 0%, 
+        var(--fy-colors-secondary, #6b7280) 40%, 
+        var(--fy-colors-white, #ffffff) 50%, 
+        var(--fy-colors-secondary, #6b7280) 60%, 
+        var(--fy-colors-secondary, #6b7280) 100%
+      );
+      background-size: 200% auto;
       -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       color: transparent;
-      animation: fy-copyright-shimmer 3s ease-in-out infinite;
+      animation: fy-copyright-shine var(--fy-copyright-shine-duration, 12s) linear infinite;
+    }
+
+    @keyframes fy-copyright-shine {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
     }
 
     .fy-animations-disabled .fy-slot__copyright-text {
       animation: none;
+      background: none;
+      -webkit-background-clip: initial;
+      -webkit-text-fill-color: initial;
+      color: var(--fy-colors-secondary, #6b7280);
     }
 
     .fy-sidebar-toggle {
@@ -339,53 +418,93 @@ import { EffectName } from '@fylib/config';
     }
 
     @media (max-width: 768px) {
-      .fy-slot__header-shell { align-items: center; }
-      .fy-slot__header-left { flex: 0 0 auto; }
+      .fy-slot--header {
+        padding: 0;
+      }
+      .fy-slot__header-shell { 
+        align-items: center;
+        padding: 0 var(--fy-spacing-md, 16px);
+        background-color: var(--fy-layout-header-background, var(--fy-colors-surface, #ffffff));
+        z-index: 110;
+      }
+      .fy-slot__header-left { 
+        flex: 0 0 auto; 
+        position: relative;
+        z-index: 110;
+      }
       .fy-slot__header-menus {
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        width: 100%;
-        display: block;
-        background-color: var(--fy-colors-surface, #fff);
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: inherit;
         border-bottom: 1px solid var(--fy-colors-border, rgba(0,0,0,0.08));
-        padding: var(--fy-spacing-sm, 8px) var(--fy-spacing-md, 16px);
+        padding: var(--fy-spacing-md, 16px);
         max-height: 0;
         overflow: hidden;
         opacity: 0;
         transform: translateY(-8px);
         transition: max-height 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
-        z-index: 15;
+        z-index: 110;
+        gap: var(--fy-spacing-lg, 24px);
       }
       .fy-slot__header-menus--open {
-        max-height: 400px;
+        max-height: 80vh;
         opacity: 1;
         transform: translateY(0);
-      }
-      .fy-slot__header-menus.fy-anim-header-menu-slide-in {
-        transform: translateY(0);
-      }
-      .fy-slot__header-menus.fy-anim-header-menu-slide-out {
-        transform: translateY(-8px);
-      }
-      .fy-slot__header-menus.fy-anim-header-menu-macos-slide-in {
-        transform: translateY(0);
-      }
-      .fy-slot__header-menus.fy-anim-header-menu-macos-slide-out {
-        transform: translateY(-8px);
+        overflow: visible;
       }
       .fy-slot__header-links {
         display: flex;
         flex-direction: column;
-        gap: var(--fy-spacing-sm, 8px);
+        gap: var(--fy-spacing-md, 16px);
         width: 100%;
-        justify-content: flex-start;
+        align-items: stretch;
+      }
+      .fy-slot__header-links .fy-nav-link {
+        width: 100%;
+        justify-content: center;
       }
 
       .fy-slot__header-meta {
+        flex: 1;
+        justify-content: flex-end;
+        position: relative;
+        z-index: 110;
+      }
+
+      .fy-slot__header-links-right-meta {
+        display: block !important;
         width: 100%;
-        justify-content: space-between;
+      }
+      
+      .fy-slot__header-links-right-meta .fy-nav-link {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .fy-slot__header-meta ::ng-deep fy-notification-menu {
+        display: block !important;
+      }
+
+      .fy-slot__header-menus ::ng-deep fy-notification-menu {
+        display: none !important;
+      }
+
+      .fy-slot__copyright--mobile {
+        display: block;
+        margin-top: auto;
+        padding-top: var(--fy-spacing-md);
+        border-top: 1px solid var(--fy-colors-border, rgba(0,0,0,0.05));
+        width: 100%;
+        text-align: center;
+      }
+      .fy-slot__copyright--desktop {
+        display: none;
       }
 
       .fy-slot__header-toggle {
@@ -418,7 +537,7 @@ import { EffectName } from '@fylib/config';
       .fy-slot--sidebar .fy-slot__panel.fy-slot__panel--open {
         transform: translateX(0);
         opacity: 1;
-        box-shadow: 0 0 0 9999px rgba(0,0,0,0.35), 0 10px 40px rgba(0,0,0,0.35);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.35);
         pointer-events: auto;
       }
 
@@ -484,15 +603,16 @@ import { EffectName } from '@fylib/config';
   `],
   encapsulation: ViewEncapsulation.None
 })
-export class FySlotComponent {
+export class FySlotComponent implements OnDestroy {
   private fylib = inject(FyLibService);
 
-  @Input() name!: string;
+  @Input() name!: 'content' | 'sidebar' | 'header' | 'footer';
   @Input() activeAnimations: boolean | null = null;
   @Input() activeEffects: boolean | null = null;
   @Input() customStyles: Record<string, string> | null = null;
   @Input() fixedSidebar: boolean | null = null;
   @Input() copyrightText: string | null = null;
+  @Input() copyrightShineDuration: string = '12s';
   @Input() openEffect?: EffectName;
   @Input() closeEffect?: EffectName;
   sidebarOpen = false;
@@ -610,11 +730,12 @@ export class FySlotComponent {
         if (inst) {
           this.fylib.triggerEffect(inst);
         } else {
-          triggerEffectForEvent(this.fylib, `fy-slot:sidebar.${event}` as import('@fylib/config').UIEventKey, undefined, 'fy-slot:sidebar', this.activeEffects);
+          triggerEffectForEvent(this.fylib, `fy-slot:sidebar.${event}` as import('@fylib/config').UIEventKey, 'fy-slot:sidebar', this.activeEffects);
         }
       }
     }
     this.sidebarOpen = !this.sidebarOpen;
+    this.updateBodyScroll();
     const t = this.fylib.tokens() as any;
     const sidebarToggle = (((t as any).layout || {}) as any).sidebar?.toggle || {};
     const openIcon = sidebarToggle.openIcon || 'x';
@@ -652,9 +773,10 @@ export class FySlotComponent {
         setTimeout(() => { this.headerMenuAnimClass = ''; }, 350);
       }
       // Dispara efeito semântico para o header
-      triggerEffectForEvent(this.fylib, `fy-slot:header.${event}` as import('@fylib/config').UIEventKey, undefined, 'fy-slot:header', this.activeEffects);
+      triggerEffectForEvent(this.fylib, `fy-slot:header.${event}` as import('@fylib/config').UIEventKey, 'fy-slot:header', this.activeEffects);
     }
     this.headerMenuOpen = !this.headerMenuOpen;
+    this.updateBodyScroll();
     const t = this.fylib.tokens() as any;
     const headerToggle = (((t as any).layout || {}) as any).header?.toggle || {};
     const openIcon = headerToggle.openIcon || 'x';
@@ -672,7 +794,27 @@ export class FySlotComponent {
     this.sidebarTonguePos = (sidebarToggle.tonguePosition as any) || 'bottom';
   }
 
+  ngOnDestroy() {
+    if (typeof document !== 'undefined') {
+      document.body.classList.remove('fy-no-scroll');
+    }
+  }
+
   private resolveAnimationsActive(): boolean {
     return resolveAnimationsActive(this.fylib, 'fy-slot', this.activeAnimations);
+  }
+
+  private updateBodyScroll() {
+    if (typeof document === 'undefined') return;
+    
+    // Pequeno timeout para garantir que as classes de 'open' já estejam no DOM se necessário
+    setTimeout(() => {
+      const anyOpen = !!document.querySelector('.fy-slot__panel--open, .fy-slot__header-menus--open');
+      if (anyOpen && window.innerWidth <= 768) {
+        document.body.classList.add('fy-no-scroll');
+      } else {
+        document.body.classList.remove('fy-no-scroll');
+      }
+    }, 0);
   }
 }

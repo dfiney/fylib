@@ -31,6 +31,18 @@ export class FyNotificationService {
     this._notifications.set([]);
   }
 
+  markAsRead(id: string) {
+    this._notifications.update(current => 
+      current.map(n => n.id === id ? { ...n, read: true } : n)
+    );
+  }
+
+  markAllAsRead() {
+    this._notifications.update(current => 
+      current.map(n => ({ ...n, read: true }))
+    );
+  }
+
   show(options: ToastOptions | string) {
     const props: ToastOptions = typeof options === 'string' ? { message: options } : options;
     const position = props.position || 'top-right';

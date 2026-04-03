@@ -1,5 +1,4 @@
 import { ThemeDefinition } from '@fylib/core';
-import { themeEngine } from './engine';
 import {
   ButtonHoverAnimationName,
   ButtonClickAnimationName,
@@ -20,6 +19,17 @@ const win7ButtonAnimations: {
 
 export const windows7Theme: ThemeDefinition = {
   name: 'windows-7',
+  backgroundEffect: {
+    name: 'aurora',
+    intensity: 40,
+    speed: 0.5,
+    loop: true
+  },
+  wallpaper: {
+    name: 'aero-waves',
+    type: 'pattern',
+    opacity: 0.15
+  },
   tokens: {
     colors: {
       primary: '#2979ff',
@@ -145,7 +155,17 @@ export const windows7Theme: ThemeDefinition = {
         borderColor: '#99bce8',
         headerBackground: 'linear-gradient(to bottom, #f2f7ff 0%, #d7e7fb 100%)',
         rowHoverBackground: '#eaf2ff',
-        stripedBackground: '#f5f9ff'
+        stripedBackground: '#f5f9ff',
+        textColor: '#0f172a',
+        headerTextColor: '#1b4f9c'
+      },
+      chart: {
+        background: 'transparent',
+        borderColor: '#99bce8',
+        gridColor: 'rgba(0,0,0,0.05)',
+        labelColor: '#41536b',
+        colors: ['#2979ff', '#3cb371', '#ffb300', '#d32f2f', '#1b4f9c'],
+        fontFamily: 'inherit'
       },
       accordion: {
         background: '#ffffff',
@@ -172,11 +192,39 @@ export const windows7Theme: ThemeDefinition = {
         animation: 'shine'
       },
       toast: {
-        background: 'rgba(255, 255, 255, 0.9)',
+        background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.95) 0%, rgba(229, 240, 255, 0.9) 100%)',
         borderColor: '#3b5a9a',
         textColor: '#0f172a',
-        shadow: '0 4px 12px rgba(0,0,0,0.3)',
-        borderRadius: '4px'
+        shadow: '0 8px 24px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.8)',
+        borderRadius: '4px',
+        padding: '10px 14px',
+        gap: '12px',
+        minWidth: '310px',
+        maxWidth: '400px',
+        titleFontSize: '13px',
+        titleFontWeight: '700',
+        messageFontSize: '12px',
+        messageLineHeight: '1.4',
+        iconSize: '22px',
+        closeIcon: 'x',
+        closeButtonSize: '16px',
+        closeButtonOpacity: '0.6',
+        closeButtonHoverOpacity: '1',
+        closeButtonBackground: 'rgba(0,0,0,0.05)',
+        closeButtonBorder: '1px solid rgba(0,0,0,0.1)',
+        closeButtonBorderRadius: '2px',
+        iconColor: {
+          info: '#1b4f9c',
+          success: '#2e7d32',
+          warning: '#f57c00',
+          error: '#c62828'
+        },
+        icons: {
+          info: 'info-fill',
+          success: 'check-circle-fill',
+          warning: 'warning-fill',
+          error: 'x-circle-fill'
+        }
       },
       notificationMenu: {
         button: {
@@ -214,10 +262,18 @@ export const windows7Theme: ThemeDefinition = {
     },
     icons: {
       defaultSet: 'ph',
-      color: 'currentColor',
       size: { sm: '12px', md: '16px', lg: '20px' },
       strokeWidth: '1.5',
       variant: 'regular'
+    },
+    scrollbar: {
+      width: '12px',
+      trackBackground: 'rgba(255,255,255,0.1)',
+      thumbBackground: 'rgba(255,255,255,0.4)',
+      thumbHoverBackground: 'rgba(255,255,255,0.6)',
+      thumbBorderRadius: '6px',
+      thumbBorderWidth: '2px',
+      thumbBorderColor: 'transparent'
     }
   },
   darkTokens: {
@@ -243,7 +299,15 @@ export const windows7Theme: ThemeDefinition = {
         borderColor: 'rgba(255,255,255,0.12)',
         headerBackground: 'rgba(255,255,255,0.08)',
         rowHoverBackground: 'rgba(41, 121, 255, 0.15)',
-        stripedBackground: 'rgba(255,255,255,0.02)'
+        stripedBackground: 'rgba(255,255,255,0.02)',
+        textColor: '#f9fafb',
+        headerTextColor: '#4c8dff'
+      },
+      chart: {
+        background: 'transparent',
+        gridColor: 'rgba(255,255,255,0.05)',
+        labelColor: '#94a3b8',
+        colors: ['#4c8dff', '#3cb371', '#ffb300', '#f87171', '#334e7b']
       },
       accordion: {
         background: '#1e293b',
@@ -254,11 +318,19 @@ export const windows7Theme: ThemeDefinition = {
         headerBackground: 'transparent'
       },
       toast: {
-        background: '#1e293b',
+        background: 'linear-gradient(to bottom, #1e293b 0%, #111d2e 100%)',
         borderColor: '#4c8dff',
         textColor: '#f9fafb',
-        shadow: '0 4px 12px rgba(0,0,0,0.6)',
-        borderRadius: '4px'
+        shadow: '0 8px 32px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.1)',
+        borderRadius: '4px',
+        closeButtonOpacity: '0.7',
+        closeButtonHoverOpacity: '1',
+        iconColor: {
+          info: '#4c8dff',
+          success: '#34d399',
+          warning: '#fbbf24',
+          error: '#f87171'
+        }
       },
       notificationMenu: {
         button: {
@@ -316,4 +388,4 @@ export const windows7Theme: ThemeDefinition = {
   }
 };
 
-themeEngine.registerTheme(windows7Theme);
+

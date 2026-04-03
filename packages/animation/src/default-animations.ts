@@ -295,6 +295,51 @@ const macosAnimationsCss = `
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 `;
+
+const puffyAnimationsCss = `
+.fy-anim-button-puffy-bounce:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 133, 162, 0.4);
+}
+.fy-anim-button-puffy-press:active {
+  transform: scale(0.95);
+}
+.fy-anim-card-puffy-float {
+  animation: fy-puffy-float 3s ease-in-out infinite;
+}
+.fy-anim-input-puffy-glow:focus-within {
+  box-shadow: 0 0 0 4px rgba(255, 133, 162, 0.25);
+  border-color: #ff85a2;
+}
+.fy-anim-puffy-sparkle {
+  animation: fy-puffy-sparkle 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, #ff4d6d, #ff85a2, #ff4d6d);
+  background-size: 200% auto;
+}
+
+@keyframes fy-puffy-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes fy-puffy-sparkle {
+  0% { background-position: 0% center; opacity: 0.8; }
+  50% { background-position: 100% center; opacity: 1; transform: scale(1.05); }
+  100% { background-position: 0% center; opacity: 0.8; }
+}
+`;
+
+const allAnimationsCss = `
+${buttonAnimationsCss}
+${layoutAnimationsCss}
+${sidebarAnimationsCss}
+${headerMenuAnimationsCss}
+${inputAnimationsCss}
+${tableAnimationsCss}
+${cardAnimationsCss}
+${selectAnimationsCss}
+${macosAnimationsCss}
+${puffyAnimationsCss}
+`;
 function injectCssOnce(id: string, css: string) {
   if (typeof document === 'undefined') return;
   if (document.getElementById(id)) return;

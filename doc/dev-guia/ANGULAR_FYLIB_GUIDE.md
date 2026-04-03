@@ -24,6 +24,36 @@
   - Slot (sidebar): `openEffect`, `closeEffect`
 - Prioridade: mapeamento global (`AppConfig.effectTriggers`) > prop da instância
 
+## Migração para Sintaxe Moderna (Angular 17+)
+
+Todos os componentes do fyLib foram migrados para a nova sintaxe de controle de fluxo do Angular 17, abandonando o uso de diretivas estruturais legadas (`*ngIf`, `*ngFor`).
+
+### Exemplo de Migração
+
+**Legado (v0.x):**
+```html
+<div *ngIf="isOpen" class="fy-notification-menu">
+  <div *ngFor="let item of items" class="fy-notification-item">
+    {{ item.text }}
+  </div>
+</div>
+```
+
+**Moderno (v1.x+):**
+```html
+@if (isOpen()) {
+  <div class="fy-notification-menu">
+    @for (item of items(); track item.id) {
+      <div class="fy-notification-item">
+        {{ item.text }}
+      </div>
+    }
+  </div>
+}
+```
+
+Esta mudança garante melhor performance (devido ao novo motor de detecção de mudanças do Angular) e templates mais limpos e legíveis.
+
 ## Configuração Global de Tema (AppConfig)
 
 No Angular, a configuração global do fyLib é baseada no contrato tipado `AppConfig` exposto por `@fylib/config`. Você pode fornecer essa configuração de duas formas:
@@ -46,6 +76,8 @@ export const themeControllerConfig: AppConfig = {
   theme: 'christmas',
   animationsEnabled: true,
   effectsEnabled: true,
+  themeEffectsEnabled: false,
+  wallpaperEnabled: false,
   disableAnimationsForComponents: [],
   disableEffectsForComponents: [],
   sse: {
@@ -93,6 +125,8 @@ Formato compatível com `AppConfig`:
   "theme": "default",
   "animationsEnabled": true,
   "effectsEnabled": true,
+  "themeEffectsEnabled": false,
+  "wallpaperEnabled": false,
   "disableAnimationsForComponents": ["fy-button"],
   "disableEffectsForComponents": [],
   "tokenOverrides": {
@@ -128,8 +162,10 @@ Formato compatível com `AppConfig`:
 ```
 
 Campos (tipados em `AppConfig`):
-- `theme: ThemeName` – nome do tema registrado na engine (`default`, `christmas`, `windows-xp`, `windows-7`, `finey-workbench-1`, `finey-workbench-2`, etc).
+- `theme: ThemeName` – nome do tema registrado na engine (`default`, `christmas`, `windows-xp`, `windows-7`, `finey-workbench-1`, `finey-workbench-2`, `finey-workbench-3`, `finey-nexus-1`, `finey-hub-1`, `finey-puffy-1`).
 - `animationsEnabled: boolean` – liga/desliga TODAS as animações/transitions da biblioteca.
+- `themeEffectsEnabled?: boolean` – ativa/desativa efeitos de fundo pré-definidos nos temas (ex: corações no tema Puffy). **Regra**: Só ativa se esta flag for `true` E a propriedade `bgEffect` estiver presente no componente `<fy-layout>`.
+- `wallpaperEnabled?: boolean` – ativa/desativa papéis de parede (wallpapers) globais dos temas. **Regra**: Só ativa se esta flag for `true` E a diretiva `fyWallpaper` estiver presente no elemento HTML.
 - `sse: SSEConfig` – configuração de comunicação em tempo real (Server-Sent Events).
 - `effectsEnabled?: boolean` – liga/desliga todos os efeitos globais.
 - `disableAnimationsForComponents?: ComponentSelector[]` – lista de seletores (`'fy-button'`, `'fy-layout'`, `'fy-slot'`, `'fy-slot:sidebar'`, `'fy-card'`) que terão animações desativadas globalmente.
@@ -138,6 +174,12 @@ Campos (tipados em `AppConfig`):
 - `componentAnimationsOverrides?: ComponentAnimationsOverrides` – mapa de animações por componente/evento que sobrescreve as animações sugeridas pelo tema.
 - `effectTriggers?: Partial<Record<UIEventKey, EffectName>>` – mapa de eventos de UI para efeitos globais cadastrados na engine.
 - `http?: HttpConfig` – configuração global do WebClient (baseUrl, timeout, retries, etc).
+- `logging?: Partial<LoggingConfig>` – configuração centralizada de logs:
+  - `enabled: boolean` – ativa/desativa logs globalmente.
+  - `level: 'debug' | 'info' | 'warn' | 'error'` – nível mínimo de log.
+  - `console: { enabled: boolean }` – logs no console do navegador.
+  - `localFiles: { enabled: boolean, path: string, filenamePattern?: string }` – logs em arquivo. No Node.js (SSR), o fyLib grava diretamente em disco resolvendo o `path` a partir da raiz do projeto. No browser, o `path` é tratado como um endpoint HTTP.
+  - `remote: { enabled: boolean, endpoint: string }` – envio para telemetria externa.
 
 ### Configuração do WebClient (HttpConfig)
 
@@ -188,6 +230,7 @@ Grupo `layout`:
   - `mode`: `'floating' | 'tongue'`.
   - `tonguePosition`: `'top' | 'middle' | 'bottom'` quando `mode="tongue"`.
 - `content.padding`: padding da região de conteúdo.
+- `copyrightShineDuration`: duração da animação de brilho no copyright (padrão: `12s`).
 
 Todos os tokens são expostos como variáveis CSS seguindo o padrão:
 
@@ -225,6 +268,10 @@ Inputs:
   - `false`: desativa animações apenas deste layout.
 - `activeEffects?: boolean | null` – aplica a mesma regra de efeitos (globais, por componente, por instância).
 - `customStyles?: Record<string, string>` – estilos inline aplicados no container raiz do layout (`[ngStyle]`).
+- `bgEffect?: EffectName` – força um efeito de fundo específico (`'hearts'`, `'confetti'`).
+- `bgEffectIntensity?: number` – controla a quantidade de partículas.
+- `bgEffectSpeed?: number` – controla a velocidade da animação.
+- `bgEffectLoop?: boolean` – define se o efeito deve rodar continuamente (loop). Padrão: `false`.
 
 Classes/estrutura:
 - `fy-layout fy-layout--app-layout`.
@@ -265,6 +312,27 @@ Selector:
 
 Inputs:
 - `name: 'header' | 'sidebar' | 'content' | 'footer' | string` – mapeia para `grid-area`.
+
+---
+
+### fyWallpaper (Diretiva de Papel de Parede)
+
+A diretiva `fyWallpaper` permite aplicar padrões de fundo animados ou estáticos a qualquer elemento ou componente.
+
+Selector:
+- `[fyWallpaper]`
+
+Inputs:
+- `fyWallpaper?: string` – nome do padrão (`'hearts'`, `'auto'`).
+- `wallpaperOpacity?: number` – opacidade do fundo (0 a 1).
+- `wallpaperEnabled?: boolean` – habilita/desativa o wallpaper para o elemento.
+
+Exemplo:
+```html
+<div fyWallpaper="hearts" [wallpaperOpacity]="0.3">
+  Conteúdo com fundo de corações animados
+</div>
+```
 
 ---
 
@@ -466,6 +534,32 @@ Adicionar ícone sem classes (sem digitar nomes de classes):
   variant="secondary"
   iconName="search"
 ></fy-button>
+```
+
+---
+
+### fy-notification-menu (centro de notificações)
+
+Selector:
+- `fy-notification-menu`
+
+Inputs principais:
+- `notifications: NotificationItem[]` – lista de notificações.
+- `unreadCount: number` – contador exibido no badge.
+- `accordionMode: boolean` – se true, usa accordions para exibir detalhes.
+- `markAllAsReadOnOpen: boolean` – marca todas como lidas ao abrir o dropdown.
+- `markAsReadOnClick: boolean` – marca como lida ao expandir/clicar em um item.
+- `readApiEndpoint: string` – URL para sincronizar leitura com backend (suporta crypto).
+
+Exemplo:
+
+```html
+<fy-notification-menu
+  [notifications]="myNotifications"
+  [markAllAsReadOnOpen]="true"
+  [readApiEndpoint]="'/api/notifications/read'"
+  (onRead)="handleRead($event)"
+></fy-notification-menu>
 ```
 
 ---

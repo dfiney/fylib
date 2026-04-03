@@ -3,16 +3,13 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "composite": true,
+    "composite": false,
     "baseUrl": ".",
     "paths": {
-      "@fylib/core": ["../core/src/index"],
-      "@fylib/animation": ["../animation/src/index"]
+      "@fylib/core": ["../core/dist/index"],
+      "@fylib/logger": ["../logger/dist/index"],
+      "@fylib/animation": ["../animation/dist/index"]
     }
   },
-  "references": [
-    { "path": "../core" },
-    { "path": "../animation" }
-  ],
   "include": ["src"]
 }

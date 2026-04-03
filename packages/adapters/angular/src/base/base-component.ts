@@ -39,7 +39,12 @@ export abstract class BaseFyComponent<TSelector extends ComponentSelector> {
   }
 
   protected triggerByEvent(eventKey: UIEventKey, effectName?: EffectName, instanceFlag?: boolean | null) {
-    triggerEffectForEvent(this.fylib, eventKey, effectName, this.selector, instanceFlag ?? null);
+    if (instanceFlag === false) return;
+    if (effectName) {
+      this.fylib.triggerEffect(effectName);
+    } else {
+      triggerEffectForEvent(this.fylib, eventKey, this.selector, instanceFlag ?? null);
+    }
   }
 
   protected triggerDirect(effectName?: EffectName, instanceFlag?: boolean | null) {

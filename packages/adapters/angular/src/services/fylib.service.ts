@@ -1,9 +1,12 @@
-import { Injectable, signal, computed, inject, PLATFORM_ID, Signal } from '@angular/core';
+import { Injectable, signal, computed, inject, PLATFORM_ID, Signal, Optional, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { themeEngine, defaultTheme } from '@fylib/theme';
 import { animationEngine } from '@fylib/animation';
 import { AppConfig, configManager, ComponentSelector, UIEventKey, EffectName } from '@fylib/config';
+import { logger } from '@fylib/logger';
 import { registerAllEffects } from '../effects/register-all';
+import { FYLIB_CONFIG } from '../providers';
+
 import { DesignTokens } from '@fylib/core';
 import { registerPhosphorProvider } from '../icons/providers/phosphor.provider';
 import { registerFontAwesomeProvider } from '../icons/providers/fontawesome.provider';
@@ -28,7 +31,15 @@ export class FyLibService {
     }
   });
 
-  constructor() {
+  constructor(@Optional() @Inject(FYLIB_CONFIG) configFromProvider: Partial<AppConfig>) {
+    // Se existir configuração via provider (provideFyLib), aplica imediatamente
+    // ANTES de qualquer outro log para garantir que o estado do logger (enabled/disabled) seja respeitado
+    if (configFromProvider) {
+      configManager.updateConfig(configFromProvider);
+    }
+
+    logger.info('AngularAdapter', 'FyLibService initialized');
+
     // Garante que o tema padrão esteja registrado
     try {
       themeEngine.registerTheme(defaultTheme);
@@ -38,7 +49,7 @@ export class FyLibService {
       name: 'config-token-overrides',
       apply: (tokens: DesignTokens) => {
         const config = this.configSignal();
-        const overrides = config.tokenOverrides;
+        const overrides = config.theme?.tokenOverrides;
         if (!overrides) {
           return tokens;
         }
@@ -57,27 +68,40 @@ export class FyLibService {
       registerMdiProvider();
     } catch (e) { }
 
-    // Subscreve ao gerenciador de configuração
+    // Sincroniza tema se mudou
     configManager.subscribe(config => {
       if (!config) return;
       
+      const oldConfig = this.configSignal();
       this.configSignal.set(config);
-      if (config.theme) {
+      
+      const themeName = config.theme?.theme;
+      if (themeName && themeName !== oldConfig.theme?.theme) {
         try {
-          this.setTheme(config.theme);
+          this.setTheme(themeName);
         } catch (e) {
-          console.error(`[fyLib] Erro ao carregar tema do arquivo de config: ${e instanceof Error ? e.message : 'Tema não encontrado'}`);
+          logger.error('Theme', `Erro ao carregar tema: ${themeName}`);
         }
       }
     });
 
+
     if (isPlatformBrowser(this.platformId)) {
       registerAllEffects();
+      
+      // Regra de precedência: 
+      // 1. Se __FYLIB_DISABLE_CONFIG_POLL__ estiver ativo no window, desabilita.
+      // 2. Se houver configuração vinda do provider (e não for um objeto vazio), 
+      //    o provider "vence" e desabilita o polling automático por padrão.
+      const hasProviderConfig = configFromProvider && Object.keys(configFromProvider).length > 0;
       const disablePoll =
-        typeof window !== 'undefined' &&
-        (window as any).__FYLIB_DISABLE_CONFIG_POLL__ === true;
+        (typeof window !== 'undefined' && (window as any).__FYLIB_DISABLE_CONFIG_POLL__ === true) ||
+        hasProviderConfig;
+
       if (!disablePoll) {
         this.watchConfigFile();
+      } else if (hasProviderConfig) {
+        logger.info('AngularAdapter', 'Polling desabilitado: utilizando configuração estática do provider');
       }
     }
   }
@@ -117,25 +141,25 @@ export class FyLibService {
     return themeEngine.getTokens();
   }
 
-  triggerEffect(name: string) {
-    animationEngine.triggerEffect(name);
+  getThemeBackgroundEffect() {
+    return themeEngine.getBackgroundEffect();
   }
 
-  triggerEffectForEvent(eventKey: UIEventKey, effectName?: EffectName, componentSelector?: ComponentSelector, instanceFlag?: boolean | null) {
-    if (componentSelector) {
-      const enabled = this.isEffectsEnabledFor(componentSelector, instanceFlag);
-      if (!enabled) {
-        return;
-      }
-    }
+  getThemeWallpaper() {
+    return themeEngine.getWallpaper();
+  }
+
+  triggerEffect(name: string, params?: Record<string, any>) {
+    animationEngine.triggerEffect(name, params);
+  }
+
+  triggerEffectForEvent(eventKey: UIEventKey, componentSelector?: ComponentSelector, instanceFlag?: boolean | null): void {
     const config = this.configSignal();
-    const fromConfig = config.effectTriggers?.[eventKey];
-    const finalEffect = fromConfig ?? effectName;
-    if (!finalEffect) {
-      return;
+    const effectNameFromConfig = config.theme?.effectTriggers?.[eventKey];
+
+    if (effectNameFromConfig) {
+      this.triggerEffect(effectNameFromConfig);
     }
-    registerAllEffects();
-    animationEngine.triggerEffect(finalEffect);
   }
 
   playAnimation(name: string) {
@@ -144,32 +168,22 @@ export class FyLibService {
 
   isAnimationsEnabledFor(componentSelector: ComponentSelector): boolean {
     const config = this.configSignal();
-    if (!config.animationsEnabled) {
-      return false;
-    }
-    const disabledList = config.disableAnimationsForComponents || [];
-    return !disabledList.includes(componentSelector);
+    if (!config.theme?.animationsEnabled) return false;
+    if (config.theme?.disableAnimationsForComponents?.includes(componentSelector)) return false;
+    return true;
   }
 
   isEffectsEnabledFor(componentSelector: ComponentSelector, instanceFlag: boolean | null | undefined): boolean {
     const config = this.configSignal();
-    if (instanceFlag === false) {
-      return false;
-    }
-    const globalEnabled = config.effectsEnabled !== false;
-    if (!globalEnabled) {
-      return false;
-    }
-    const disabledList = config.disableEffectsForComponents || [];
-    if (disabledList.includes(componentSelector)) {
-      return false;
-    }
+    if (config.theme?.effectsEnabled === false) return false;
+    if (config.theme?.disableEffectsForComponents?.includes(componentSelector)) return false;
+    if (instanceFlag === false) return false;
     return true;
   }
 
   getComponentAnimation(componentSelector: ComponentSelector, event: string): string | undefined {
     const config = this.configSignal();
-    const byComponent = (config.componentAnimationsOverrides as any)?.[componentSelector] as
+    const byComponent = (config.theme?.componentAnimationsOverrides as any)?.[componentSelector] as
       | Record<string, string>
       | undefined;
     const override = byComponent ? byComponent[event] : undefined;

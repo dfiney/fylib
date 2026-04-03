@@ -24,6 +24,17 @@ export interface NotificationMenuProps {
   showViewAll?: boolean;
   viewAllPosition?: 'header-left' | 'header-right' | 'footer-left' | 'footer-right';
   
+  // Read behavior
+  markAllAsReadOnOpen?: boolean;
+  markAsReadOnClick?: boolean;
+  
+  // Backend & Hooks (Optional)
+  readApiEndpoint?: string;
+  readApiMethod?: 'POST' | 'PUT' | 'PATCH';
+  readApiHeaders?: Record<string, string>;
+  onRead?: (notification: NotificationItem) => void;
+  onReadAll?: (notifications: NotificationItem[]) => void;
+  
   // UI Level control
   activeAnimations?: boolean | null;
   activeEffects?: boolean | null;
@@ -42,6 +53,9 @@ export const NotificationMenuDefinition: UIComponentDefinition<NotificationMenuP
     enableAccordion: true,
     showViewAll: true,
     viewAllPosition: 'footer-right',
+    markAllAsReadOnOpen: false,
+    markAsReadOnClick: true,
+    readApiMethod: 'POST',
     activeAnimations: null,
     activeEffects: null
   },

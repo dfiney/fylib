@@ -31,6 +31,7 @@
     "@fylib/catalog": "workspace:*",
     "@fylib/config": "workspace:*",
     "@fylib/crypto": "workspace:*",
+    "@fylib/logger": "workspace:*",
     "@angular/common": "catalog:",
     "@angular/compiler": "catalog:",
     "@angular/core": "catalog:",

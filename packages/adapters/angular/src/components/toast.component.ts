@@ -26,28 +26,32 @@ import { FyIconComponent } from './icon.component';
       [class]="composeAnimClasses(animationClassSuffix)"
       [style]="getHostStyles(customStyles)"
     >
-      <div class="fy-toast__icon" *ngIf="showIcon">
-        <fy-icon [name]="resolvedIcon"></fy-icon>
-      </div>
+      @if (showIcon) {
+        <div class="fy-toast__icon">
+          <fy-icon [name]="resolvedIcon" [color]="resolvedIconColor"></fy-icon>
+        </div>
+      }
       
       <div class="fy-toast__content">
-        <div class="fy-toast__title" *ngIf="title">{{ title }}</div>
+        @if (title) { <div class="fy-toast__title">{{ title }}</div> }
         <div class="fy-toast__message">{{ message }}</div>
       </div>
 
-      <button class="fy-toast__close" *ngIf="closable" (click)="close()">
-        <fy-icon name="x"></fy-icon>
-      </button>
+      @if (closable) {
+        <button class="fy-toast__close" (click)="close()">
+          <fy-icon [name]="resolvedCloseIcon"></fy-icon>
+        </button>
+      }
     </div>
   `,
   styles: [`
     .fy-toast {
       display: flex;
       align-items: flex-start;
-      gap: var(--fy-spacing-sm, 8px);
-      padding: var(--fy-spacing-md, 12px);
-      min-width: 280px;
-      max-width: 420px;
+      gap: var(--fy-effects-toast-gap, var(--fy-spacing-sm, 8px));
+      padding: var(--fy-effects-toast-padding, var(--fy-spacing-md, 12px));
+      min-width: var(--fy-effects-toast-minWidth, 280px);
+      max-width: var(--fy-effects-toast-maxWidth, 420px);
       background: var(--fy-effects-toast-background, #ffffff);
       border: 1px solid var(--fy-effects-toast-borderColor, rgba(0,0,0,0.1));
       border-radius: var(--fy-effects-toast-borderRadius, 8px);
@@ -56,6 +60,7 @@ import { FyIconComponent } from './icon.component';
       pointer-events: auto;
       margin-bottom: 8px;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
     }
 
     /* Animações base */
@@ -79,16 +84,16 @@ import { FyIconComponent } from './icon.component';
 
     .fy-toast__icon {
       flex-shrink: 0;
-      font-size: 20px;
+      font-size: var(--fy-effects-toast-iconSize, 20px);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .fy-toast--info .fy-toast__icon { color: var(--fy-colors-info, #007aff); }
-    .fy-toast--success .fy-toast__icon { color: var(--fy-colors-success, #28cd41); }
-    .fy-toast--warning .fy-toast__icon { color: var(--fy-colors-warning, #ffcc00); }
-    .fy-toast--error .fy-toast__icon { color: var(--fy-colors-danger, #ff3b30); }
+    .fy-toast--info .fy-toast__icon { color: var(--fy-effects-toast-iconColor-info, var(--fy-colors-info, #007aff)); }
+    .fy-toast--success .fy-toast__icon { color: var(--fy-effects-toast-iconColor-success, var(--fy-colors-success, #28cd41)); }
+    .fy-toast--warning .fy-toast__icon { color: var(--fy-effects-toast-iconColor-warning, var(--fy-colors-warning, #ffcc00)); }
+    .fy-toast--error .fy-toast__icon { color: var(--fy-effects-toast-iconColor-error, var(--fy-colors-danger, #ff3b30)); }
 
     .fy-toast__content {
       flex: 1;
@@ -96,33 +101,39 @@ import { FyIconComponent } from './icon.component';
     }
 
     .fy-toast__title {
-      font-weight: var(--fy-typography-fontWeight-bold, 600);
-      font-size: var(--fy-typography-fontSize-md, 14px);
+      font-weight: var(--fy-effects-toast-titleFontWeight, var(--fy-typography-fontWeight-bold, 600));
+      font-size: var(--fy-effects-toast-titleFontSize, var(--fy-typography-fontSize-md, 14px));
       margin-bottom: 2px;
     }
 
     .fy-toast__message {
-      font-size: var(--fy-typography-fontSize-sm, 13px);
-      line-height: 1.4;
+      font-size: var(--fy-effects-toast-messageFontSize, var(--fy-typography-fontSize-sm, 13px));
+      line-height: var(--fy-effects-toast-messageLineHeight, 1.4);
       opacity: 0.9;
     }
 
     .fy-toast__close {
+      position: absolute;
+      top: 4px;
+      right: 4px;
       flex-shrink: 0;
-      background: transparent;
-      border: none;
-      padding: 4px;
+      background: var(--fy-effects-toast-closeButtonBackground, transparent);
+      border: var(--fy-effects-toast-closeButtonBorder, none);
+      border-radius: var(--fy-effects-toast-closeButtonBorderRadius, 0);
+      padding: 2px;
       cursor: pointer;
-      opacity: 0.5;
+      opacity: var(--fy-effects-toast-closeButtonOpacity, 0.5);
       transition: opacity 0.2s;
       color: currentColor;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: var(--fy-effects-toast-closeButtonSize, 18px);
+      height: var(--fy-effects-toast-closeButtonSize, 18px);
     }
 
     .fy-toast__close:hover {
-      opacity: 1;
+      opacity: var(--fy-effects-toast-closeButtonHoverOpacity, 1);
     }
   `],
   encapsulation: ViewEncapsulation.None
@@ -187,6 +198,28 @@ export class FyToastComponent extends BaseFyComponent<'fy-toast'> implements Toa
       case 'error': return 'x-circle';
       default: return 'info';
     }
+  }
+
+  get resolvedIconColor(): string {
+    const themeIconColors = this.fylib.getTokens().effects?.toast?.iconColor;
+    const colorFromTheme = themeIconColors ? themeIconColors[this.type] : undefined;
+    
+    if (colorFromTheme) {
+      return String(colorFromTheme);
+    }
+    
+    const colors = this.fylib.getTokens().colors;
+    switch (this.type) {
+      case 'success': return String(colors?.success || '#28cd41');
+      case 'warning': return String(colors?.warning || '#ffcc00');
+      case 'error': return String(colors?.danger || '#ff3b30');
+      default: return String(colors?.info || '#007aff');
+    }
+  }
+
+  get resolvedCloseIcon(): string {
+    const themeCloseIcon = this.fylib.getTokens().effects?.toast?.closeIcon;
+    return themeCloseIcon || 'x';
   }
 
   get animationClassSuffix(): string {

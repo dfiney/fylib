@@ -37,12 +37,12 @@ import {
     >
      
       @if(title || subtitle) {
-        <div class="fy-chart__header" *ngIf="">
+        <div class="fy-chart__header">
           @if(title) {
-            <h3 class="fy-chart__title" *ngIf="title">{{ title }}</h3>
+            <h3 class="fy-chart__title">{{ title }}</h3>
           }
           @if(subtitle) {
-            <p class="fy-chart__subtitle" *ngIf="subtitle">{{ subtitle }}</p>
+            <p class="fy-chart__subtitle">{{ subtitle }}</p>
           }
         </div>
       }

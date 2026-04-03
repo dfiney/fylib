@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button | fyLib</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .preview-box {
+            padding: 3rem;
+            background-color: var(--fy-surface);
+            border: 1px solid var(--fy-border);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Simulação visual dos botões fyLib */
+        .fy-btn-sim {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .fy-btn-primary { background: #3b82f6; color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .fy-btn-secondary { background: #64748b; color: white; }
+        .fy-btn-ghost { background: transparent; color: #3b82f6; border-color: #3b82f6; }
+        .fy-btn-danger { background: #ef4444; color: white; }
+        
+        pre {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+        .token-table {
+            font-size: 0.9rem;
+        }
+        .token-name { font-family: monospace; color: var(--fy-primary); }
+    </style>
+</head>
+<body>
+
+<div id="app-wrapper">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <div class="sidebar-logo">
+            <i class="ph-cube text-primary fs-3"></i>
+            <span class="h5 mb-0 fw-bold">fyLib</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">Início</div>
+            <a href="../../index.html" class="nav-link">
+                <i class="ph-house"></i> Apresentação
+            </a>
+            <a href="../guides/getting-started.html" class="nav-link">
+                <i class="ph-rocket-launch"></i> Primeiros Passos
+            </a>
+            
+            <div class="nav-section">Arquitetura</div>
+            <a href="../guides/architecture.html" class="nav-link">
+                <i class="ph-tree-structure"></i> Visão Técnica
+            </a>
+            <a href="../guides/themes.html" class="nav-link">
+                <i class="ph-palette"></i> Sistema de Temas
+            </a>
+            <a href="../guides/animations.html" class="nav-link">
+                <i class="ph-video-camera"></i> Animações e Efeitos
+            </a>
+            
+            <div class="nav-section">Componentes (Angular)</div>
+            <a href="accordion.html" class="nav-link"><i class="ph-list-bullets"></i> Accordion</a>
+            <a href="badge.html" class="nav-link"><i class="ph-tag"></i> Badge</a>
+            <a href="button.html" class="nav-link active"><i class="ph-square"></i> Button</a>
+            <a href="card.html" class="nav-link"><i class="ph-cards"></i> Card</a>
+            <a href="chart.html" class="nav-link"><i class="ph-chart-bar"></i> Chart</a>
+            <a href="icon.html" class="nav-link"><i class="ph-smiley"></i> Icon</a>
+            <a href="input.html" class="nav-link"><i class="ph-text-t"></i> Input</a>
+            <a href="modal.html" class="nav-link"><i class="ph-window"></i> Modal</a>
+            <a href="nav-link.html" class="nav-link"><i class="ph-link"></i> Nav Link</a>
+            <a href="notification-menu.html" class="nav-link"><i class="ph-bell-ringing"></i> Notifications</a>
+            <a href="select.html" class="nav-link"><i class="ph-caret-double-down"></i> Select</a>
+            <a href="table.html" class="nav-link"><i class="ph-table"></i> Table</a>
+            <a href="text.html" class="nav-link"><i class="ph-text-aa"></i> Text (Crypto)</a>
+            <a href="toast.html" class="nav-link"><i class="ph-notification"></i> Toast</a>
+            
+            <div class="nav-section mt-4">
+                <span class="badge-react">React <small>(Em breve)</small></span>
+            </div>
+        </nav>
+    </aside>
+
+    <main id="main-content">
+        <header>
+            <button class="btn d-lg-none me-3" id="sidebar-toggle">
+                <i class="ph-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <div id="theme-toggle">
+                    <i class="ph-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid p-4 p-lg-5">
+            <h1 class="fw-800 mb-2">Button</h1>
+            <p class="text-muted mb-5">Componente versátil de ação com suporte nativo a temas, animações e efeitos globais.</p>
+
+            <!-- Preview -->
+            <section class="mb-5">
+                <h4 class="fw-bold mb-3">Prévia Interativa</h4>
+                <div class="preview-box">
+                    <div class="fy-btn-sim fy-btn-primary">Primary</div>
+                    <div class="fy-btn-sim fy-btn-secondary">Secondary</div>
+                    <div class="fy-btn-sim fy-btn-ghost">Ghost</div>
+                    <div class="fy-btn-sim fy-btn-danger"><i class="ph-trash"></i> Delete</div>
+                </div>
+            </section>
+
+            <!-- Usage -->
+            <section class="mb-5">
+                <h4 class="fw-bold mb-3">Exemplo de Uso</h4>
+                <pre><code>&lt;!-- Botão Simples --&gt;
+&lt;fy-button variant="primary"&gt;Salvar&lt;/fy-button&gt;
+
+&lt;!-- Com Ícone e Efeito de Confete --&gt;
+&lt;fy-button 
+  variant="success" 
+  iconName="check" 
+  [clickEffect]="'confetti'"&gt;
+  Finalizar Compra
+&lt;/fy-button&gt;</code></pre>
+            </section>
+
+            <!-- API -->
+            <section class="mb-5">
+                <h4 class="fw-bold mb-3">Propriedades (Inputs)</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover token-table border">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th>Default</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="token-name">variant</td>
+                                <td><code>'primary' | 'secondary' | 'ghost' | 'danger'</code></td>
+                                <td><code>'primary'</code></td>
+                                <td>Estilo visual do botão definido pelo tema.</td>
+                            </tr>
+                            <tr>
+                                <td class="token-name">iconName</td>
+                                <td><code>string</code></td>
+                                <td><code>undefined</code></td>
+                                <td>Nome do ícone Phosphor para exibir.</td>
+                            </tr>
+                            <tr>
+                                <td class="token-name">clickEffect</td>
+                                <td><code>EffectName</code></td>
+                                <td><code>undefined</code></td>
+                                <td>Efeito global disparado ao clicar (ex: 'confetti').</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Theme Tokens -->
+            <section class="mb-5">
+                <h4 class="fw-bold mb-3">Design Tokens (Efeitos)</h4>
+                <p class="text-muted small">O comportamento visual do botão é controlado pelo grupo <code>effects.button</code> no tema.</p>
+                <div class="table-responsive">
+                    <table class="table table-sm border">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Token</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="token-name">background</td><td>Cor de fundo ou gradiente.</td></tr>
+                            <tr><td class="token-name">borderColor</td><td>Cor da borda.</td></tr>
+                            <tr><td class="token-name">shadow</td><td>Sombra da caixa (elevation).</td></tr>
+                            <tr><td class="token-name">textColor</td><td>Cor do texto interna.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="mt-5 pt-5 pb-4 text-center border-top">
+                <p class="text-muted small">© 2026 Finey – Todos os direitos reservados.</p>
+            </footer>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+:root {
+    --fy-primary: #3b82f6;
+    --fy-secondary: #64748b;
+    --fy-success: #22c55e;
+    --fy-danger: #ef4444;
+    --fy-warning: #f59e0b;
+    --fy-info: #3b82f6;
+    --fy-background: #ffffff;
+    --fy-surface: #f8fafc;
+    --fy-text: #1e293b;
+    --fy-text-muted: #64748b;
+    --fy-border: #e2e8f0;
+    --sidebar-width: 280px;
+    --header-height: 70px;
+}
+
+[data-theme="dark"] {
+    --fy-background: #0f172a;
+    --fy-surface: #1e293b;
+    --fy-text: #f1f5f9;
+    --fy-text-muted: #94a3b8;
+    --fy-border: #334155;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--fy-background);
+    color: var(--fy-text);
+    overflow-x: hidden;
+}
+
+/* Layout */
+#app-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+#sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--fy-surface);
+    border-right: 1px solid var(--fy-border);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+#main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding-top: var(--header-height);
+}
+
+header {
+    height: var(--header-height);
+    background-color: var(--fy-background);
+    border-bottom: 1px solid var(--fy-border);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: var(--sidebar-width);
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    backdrop-filter: blur(8px);
+    background-color: rgba(var(--fy-background-rgb), 0.8);
+}
+
+/* Sidebar Nav */
+.sidebar-logo {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--fy-border);
+}
+
+.sidebar-logo img {
+    height: 32px;
+}
+
+.nav-section {
+    padding: 1.5rem 1rem 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--fy-text-muted);
+    letter-spacing: 0.05em;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: var(--fy-text);
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 0.25rem 0.75rem;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.nav-link:hover {
+    background-color: var(--fy-border);
+    color: var(--fy-primary);
+}
+
+.nav-link.active {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--fy-primary);
+    font-weight: 600;
+}
+
+.nav-link i {
+    width: 20px;
+    margin-right: 12px;
+}
+
+/* Hero Section */
+.hero-section {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(34, 197, 94, 0.05) 100%);
+    border-radius: 24px;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg, var(--fy-primary), var(--fy-success));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--fy-text-muted);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+/* Cards & Content */
+.doc-card {
+    background-color: var(--fy-surface);
+    border: 1px solid var(--fy-border);
+    border-radius: 16px;
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.doc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.history-section {
+    line-height: 1.8;
+}
+
+.badge-react {
+    background-color: #20232a;
+    color: #61dafb;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Theme Toggle */
+#theme-toggle {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    background: var(--fy-surface);
+    border: 1px solid var(--fy-border);
+    color: var(--fy-text);
+    transition: all 0.2s;
+}
+
+#theme-toggle:hover {
+    background: var(--fy-border);
+}
+
+@media (max-width: 992px) {
+    #sidebar {
+        transform: translateX(-100%);
+    }
+    #sidebar.show {
+        transform: translateX(0);
+    }
+    #main-content {
+        margin-left: 0;
+    }
+    header {
+        left: 0;
+    }
+}

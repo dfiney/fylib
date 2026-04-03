@@ -3,26 +3,19 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "composite": true,
+    "composite": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
-      "@fylib/core": ["../../core/src/index"],
-      "@fylib/theme": ["../../theme/src/index"],
-      "@fylib/animation": ["../../animation/src/index"],
-      "@fylib/catalog": ["../../catalog/src/index"],
-      "@fylib/config": ["../../config/src/index"],
-      "@fylib/crypto": ["../../crypto/src/index"]
+      "@fylib/core": ["../../core/dist/index"],
+      "@fylib/logger": ["../../logger/dist/index"],
+      "@fylib/theme": ["../../theme/dist/index"],
+      "@fylib/animation": ["../../animation/dist/index"],
+      "@fylib/catalog": ["../../catalog/dist/index"],
+      "@fylib/config": ["../../config/dist/index"],
+      "@fylib/crypto": ["../../crypto/dist/index"]
     }
   },
-  "references": [
-    { "path": "../../core" },
-    { "path": "../../theme" },
-    { "path": "../../animation" },
-    { "path": "../../catalog" },
-    { "path": "../../config" },
-    { "path": "../../crypto" }
-  ],
   "include": ["src"]
 }

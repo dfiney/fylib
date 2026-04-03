@@ -1,8 +1,18 @@
 import { ThemeDefinition } from '@fylib/core';
-import { themeEngine } from './engine';
 
 export const defaultTheme: ThemeDefinition = {
   name: 'default',
+  backgroundEffect: {
+    name: 'particles',
+    intensity: 40,
+    speed: 0.5,
+    loop: true
+  },
+  wallpaper: {
+    name: 'geometric',
+    type: 'pattern',
+    opacity: 0.05
+  },
   tokens: {
     colors: {
       primary: '#3b82f6',
@@ -54,6 +64,7 @@ export const defaultTheme: ThemeDefinition = {
       header: {
         height: '64px',
         padding: '0 24px',
+        background: 'transparent',
         shadow: '0 1px 0 rgba(0,0,0,0.06)',
         toggle: {
           background: 'var(--fy-colors-primary)',
@@ -68,6 +79,7 @@ export const defaultTheme: ThemeDefinition = {
       sidebar: {
         width: '260px',
         padding: '16px 0',
+        background: 'transparent',
         toggle: {
           background: 'var(--fy-colors-primary)',
           textColor: 'var(--fy-colors-white)',
@@ -130,7 +142,9 @@ export const defaultTheme: ThemeDefinition = {
         borderColor: 'rgba(15, 23, 42, 0.08)',
         headerBackground: 'rgba(15, 23, 42, 0.02)',
         rowHoverBackground: 'rgba(15, 23, 42, 0.01)',
-        stripedBackground: 'rgba(15, 23, 42, 0.005)'
+        stripedBackground: 'rgba(15, 23, 42, 0.005)',
+        textColor: 'var(--fy-colors-text)',
+        headerTextColor: 'var(--fy-colors-secondary)'
       },
       chart: {
         background: 'transparent',
@@ -169,8 +183,27 @@ export const defaultTheme: ThemeDefinition = {
         background: '#ffffff',
         borderColor: 'rgba(15, 23, 42, 0.12)',
         textColor: '#1f2937',
-        shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-        borderRadius: 'var(--fy-borderRadius-md)'
+        shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        borderRadius: 'var(--fy-borderRadius-md)',
+        padding: '12px 16px',
+        gap: '12px',
+        minWidth: '320px',
+        maxWidth: '420px',
+        titleFontSize: '14px',
+        titleFontWeight: '600',
+        messageFontSize: '13px',
+        messageLineHeight: '1.5',
+        iconSize: '20px',
+        closeIcon: 'x',
+        closeButtonSize: '18px',
+        closeButtonOpacity: '0.5',
+        closeButtonHoverOpacity: '1',
+        iconColor: {
+          info: '#3b82f6',
+          success: '#10b981',
+          warning: '#f59e0b',
+          error: '#ef4444'
+        }
       },
       notificationMenu: {
         button: {
@@ -208,7 +241,6 @@ export const defaultTheme: ThemeDefinition = {
     },
     icons: {
       defaultSet: 'ph',
-      color: 'currentColor',
       size: {
         sm: '12px',
         md: '16px',
@@ -216,6 +248,15 @@ export const defaultTheme: ThemeDefinition = {
       },
       strokeWidth: '1.5',
       variant: 'regular'
+    },
+    scrollbar: {
+      width: '10px',
+      trackBackground: '#f3f4f6',
+      thumbBackground: '#d1d5db',
+      thumbHoverBackground: '#9ca3af',
+      thumbBorderRadius: '5px',
+      thumbBorderWidth: '2px',
+      thumbBorderColor: '#f3f4f6'
     }
   },
   darkTokens: {
@@ -268,7 +309,9 @@ export const defaultTheme: ThemeDefinition = {
         borderColor: 'rgba(255,255,255,0.08)',
         headerBackground: 'rgba(255,255,255,0.05)',
         rowHoverBackground: 'rgba(255,255,255,0.02)',
-        stripedBackground: 'rgba(255,255,255,0.01)'
+        stripedBackground: 'rgba(255,255,255,0.01)',
+        textColor: '#f9fafb',
+        headerTextColor: '#9ca3af'
       },
       chart: {
         background: 'transparent',
@@ -283,8 +326,16 @@ export const defaultTheme: ThemeDefinition = {
         background: '#1f2937',
         borderColor: 'rgba(255,255,255,0.1)',
         textColor: '#f9fafb',
-        shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5)',
-        borderRadius: 'var(--fy-borderRadius-md)'
+        shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4)',
+        borderRadius: 'var(--fy-borderRadius-md)',
+        closeButtonOpacity: '0.6',
+        closeButtonHoverOpacity: '1',
+        iconColor: {
+          info: '#60a5fa',
+          success: '#34d399',
+          warning: '#fbbf24',
+          error: '#f87171'
+        }
       },
       notificationMenu: {
         button: {
@@ -358,6 +409,3 @@ export const defaultTheme: ThemeDefinition = {
     }
   }
 };
-
-// Auto-register default theme
-themeEngine.registerTheme(defaultTheme);

@@ -1,5 +1,6 @@
 export class FyLib {
   static init() {
-    console.log("fyLib initialized");
+    // FyLib init (logs are handled by adapter initialization)
   }
 }
+

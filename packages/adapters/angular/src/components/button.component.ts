@@ -10,6 +10,8 @@ import {
 import { EffectName } from '@fylib/config';
 import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
 import { FyLibService } from '../services/fylib.service';
+import { logger } from '@fylib/logger';
+
 
 @Component({
   selector: 'fy-button',
@@ -22,7 +24,9 @@ import { FyLibService } from '../services/fylib.service';
       (click)="handleClick($event)"
       (mouseenter)="handleHover()"
       [style]="hostStyles"
-    
+      [attr.aria-busy]="loading"
+      [attr.aria-live]="loading ? 'polite' : null"
+      [attr.aria-label]="label || iconName || icon"
     >
       @if(loading) {
         <span class="fy-button__loader"></span>
@@ -32,7 +36,9 @@ import { FyLibService } from '../services/fylib.service';
       } @else if(icon && !loading) {
         <span [class]="'fy-button__icon ' + icon"></span>
       }
-      <span class="fy-button__label" *ngIf="label">{{ label }}</span>
+      @if (label) {
+        <span class="fy-button__label">{{ label }}</span>
+      }
     </button>
   `,
   styles: [`
@@ -172,6 +178,7 @@ export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements B
 
   handleClick(event: MouseEvent) {
     if (!this.disabled && !this.loading) {
+      logger.debug('Component', 'Button clicked', { label: this.label, variant: this.variant });
       if (this.isAnimationsActive(this.activeAnimations)) {
         const animationName = this.resolveAnim(
           'click',
@@ -191,6 +198,7 @@ export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements B
     if (!this.isAnimationsActive(this.activeAnimations)) {
       return;
     }
+    logger.debug('Component', 'Button hovered', { label: this.label });
     const animationName = this.resolveAnim(
       'hover',
       this.hoverAnimation,
@@ -201,4 +209,5 @@ export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements B
     }
     if (this.hoverEffect) this.triggerDirect(this.hoverEffect, this.activeEffects);
   }
+
 }

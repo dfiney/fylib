@@ -15,7 +15,7 @@ export class FyThemeVarsDirective {
     effect(() => {
       const tokens: DesignTokens = this.fylib.tokens();
       const config = this.fylib.config();
-      this.applyTokensToElement(this.el.nativeElement, tokens, config.animationsEnabled);
+      this.applyTokensToElement(this.el.nativeElement, tokens, !!config.theme?.animationsEnabled);
     });
   }
 

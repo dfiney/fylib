@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/logger" },
+    { "path": "packages/crypto" },
+    { "path": "packages/animation" },
+    { "path": "packages/config" },
+    { "path": "packages/theme" },
+    { "path": "packages/catalog" },
+    { "path": "packages/adapters/angular" }
+  ]
+}

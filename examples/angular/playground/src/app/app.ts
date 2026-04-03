@@ -1,9 +1,10 @@
 import { Component, signal, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FyLibService, FyThemeVarsDirective, FySSEService } from '@fylib/adapter-angular';
-import { themeControllerConfig } from 'src/fylib/theme-controller.config';
+import { themeConfig } from '../fylib/theme.config';
 
 @Component({
+
   selector: 'app-root',
   imports: [RouterOutlet, FyThemeVarsDirective],
   templateUrl: './app.html',
@@ -17,10 +18,10 @@ export class App implements OnInit {
 
   ngOnInit() {
     // Inicializa com um tema e modo
-    this.fylib.setTheme(themeControllerConfig.theme);
+    this.fylib.setTheme(themeConfig.theme);
     this.fylib.setMode(this.mode());
-    
-    // SSE é inicializado automaticamente pelo serviço ao ser injetado, 
+
+    // SSE é inicializado automaticamente pelo serviço ao ser injetado,
     // mas garantimos que ele está pronto
     console.log('[Playground] SSE Service Initialized');
   }

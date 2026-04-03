@@ -29,7 +29,7 @@ if %ERRORLEVEL% equ 0 (
 ) else (
     echo [fyLib] Turbo nao encontrado. Usando pnpm recursive build...
     echo [fyLib] Build deterministico via TypeScript Project References...
-    call pnpm exec tsc -b packages/core packages/crypto packages/animation packages/config packages/theme packages/catalog packages/adapters/angular
+    call pnpm exec tsc -b packages/core packages/logger packages/crypto packages/animation packages/config packages/theme packages/catalog packages/adapters/angular
 )
 
 :: Instala dependências dos servidores de teste

@@ -21,7 +21,9 @@ export type ThemeName =
   | 'windows-xp'
   | 'windows-7'
   | 'christmas'
-  | 'finey-nexus-1';
+  | 'finey-nexus-1'
+  | 'finey-hub-1'
+  | 'finey-puffy-1';
 
 
 export type IconSet = 'ph' | 'fa' | 'mdi';
@@ -61,11 +63,29 @@ export type UIEventKey =
 
 export type EffectName =
   | 'confetti'
+  | 'hearts'
+  | 'snow'
+  | 'bubbles'
+  | 'aurora'
+  | 'matrix'
+  | 'particles'
+  | 'stars'
   | 'window-open'
   | 'sidebar-slide-in'
   | 'sidebar-slide-out'
   | 'window-macos-sheet-open'
   | 'window-macos-sheet-close';
+
+export type WallpaperName =
+  | 'auto'
+  | 'hearts'
+  | 'geometric'
+  | 'pine-trees'
+  | 'cyber-grid'
+  | 'dots'
+  | 'grass'
+  | 'aero-waves'
+  | 'mesh-gradient';
 
 export type DeepPartial<T> = {
   [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
@@ -138,22 +158,70 @@ export interface HttpConfig {
   autoNotify?: boolean;
 }
 
-export interface AppConfig {
+export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
+
+export interface LoggingConfig {
+  enabled: boolean; // Interruptor global mestre
+  level: LogLevel;   // Nível mínimo (debug, info, warn, error)
+  console?: {
+    enabled: boolean;
+  };
+  localFiles?: {
+    enabled: boolean; // Salvamento local em arquivo via path
+    path: string;
+    filenamePattern?: string;
+  };
+  remote?: {
+    enabled: boolean; // Envio para telemetria externa
+    endpoint: string;
+  };
+}
+
+export interface ThemeConfig {
   theme: ThemeName;
   animationsEnabled: boolean;
+  themeEffectsEnabled?: boolean;
+  wallpaperEnabled?: boolean;
   disableAnimationsForComponents?: ComponentSelector[];
   tokenOverrides?: DeepPartial<DesignTokens>;
   componentAnimationsOverrides?: ComponentAnimationsOverrides;
-  sse?: SSEConfig;
-  crypto?: CryptoConfig;
-  http?: HttpConfig;
   effectsEnabled?: boolean;
   disableEffectsForComponents?: ComponentSelector[];
   effectTriggers?: Partial<Record<UIEventKey, EffectName>>;
 }
 
-export const defaultConfig: AppConfig = {
+export interface AppConfig {
+  theme?: ThemeConfig;
+  sse?: SSEConfig;
+  crypto?: CryptoConfig;
+  http?: HttpConfig;
+  logging?: Partial<LoggingConfig>;
+}
+
+export const defaultThemeConfig: ThemeConfig = {
   theme: 'default',
   animationsEnabled: true,
-  effectsEnabled: true
+  effectsEnabled: true,
+  themeEffectsEnabled: false,
+  wallpaperEnabled: false
 };
+
+export const defaultConfig: AppConfig = {
+  theme: defaultThemeConfig,
+  logging: {
+    enabled: false,
+    level: 'info',
+    console: {
+      enabled: false
+    },
+    localFiles: {
+      enabled: false,
+      path: 'fylogs'
+    },
+    remote: {
+      enabled: false,
+      endpoint: 'https://logs.example.com'
+    }
+  }
+};
+

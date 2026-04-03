@@ -9,30 +9,48 @@ import { FyLibService } from '../services/fylib.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="fy-accordion" [class.fy-accordion--bordered]="bordered" [class.fy-accordion--flush]="flush">
+    <div class="fy-accordion" 
+         [class.fy-accordion--bordered]="bordered" 
+         [class.fy-accordion--flush]="flush"
+         role="presentation">
       @for (it of items; track it.id; let i = $index) {
-        <section class="fy-accordion__item" [class.fy-accordion__item--active]="isActive(i)" [class.fy-accordion__item--disabled]="it.disabled">
-          <header class="fy-accordion__header" (click)="toggle(i)">
+        <section class="fy-accordion__item" 
+                 [class.fy-accordion__item--active]="isActive(i)" 
+                 [class.fy-accordion__item--disabled]="it.disabled">
+          <header class="fy-accordion__header" 
+                  (click)="toggle(i)"
+                  (keydown)="handleKeyDown($event, i)"
+                  [attr.aria-expanded]="isActive(i)"
+                  [attr.aria-controls]="'fy-accordion-panel-' + it.id"
+                  [attr.aria-disabled]="it.disabled || disabled"
+                  [attr.id]="'fy-accordion-header-' + it.id"
+                  [tabindex]="it.disabled || disabled ? -1 : 0"
+                  role="button">
             <div class="fy-accordion__header-main">
               <h4 class="fy-accordion__title">{{ it.title }}</h4>
               @if (it.subtitle) { <p class="fy-accordion__subtitle">{{ it.subtitle }}</p> }
             </div>
-            <span class="fy-accordion__indicator" [class.fy-accordion__indicator--open]="isActive(i)">▾</span>
+            <span class="fy-accordion__indicator" 
+                  [class.fy-accordion__indicator--open]="isActive(i)"
+                  aria-hidden="true">▾</span>
           </header>
           
           <div 
             class="fy-accordion__panel-wrapper" 
             [ngClass]="getPanelClasses(i)"
+            [attr.id]="'fy-accordion-panel-' + it.id"
+            [attr.aria-labelledby]="'fy-accordion-header-' + it.id"
+            [attr.aria-hidden]="!isActive(i)"
+            role="region"
           >
             <div class="fy-accordion__panel">
-              <ng-container *ngIf="!lazy || isActive(i)">
-                <ng-container *ngIf="it.content; else slot">
+              @if (!lazy || isActive(i)) {
+                @if (it.content) {
                   <div class="fy-accordion__content">{{ it.content }}</div>
-                </ng-container>
-                <ng-template #slot>
+                } @else {
                   <ng-content select="[fy-accordion-item-content={{it.id}}]"></ng-content>
-                </ng-template>
-              </ng-container>
+                }
+              }
             </div>
           </div>
         </section>
@@ -183,6 +201,13 @@ export class FyAccordionComponent extends BaseFyComponent<'fy-accordion'> implem
       return val === i;
     }
     return val === i;
+  }
+
+  handleKeyDown(event: KeyboardEvent, index: number) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.toggle(index);
+    }
   }
 
   toggle(i: number) {

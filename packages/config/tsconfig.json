@@ -3,18 +3,15 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "composite": true,
+    "composite": false,
     "baseUrl": ".",
     "paths": {
-      "@fylib/core": ["../core/src/index"],
-      "@fylib/animation": ["../animation/src/index"],
-      "@fylib/crypto": ["../crypto/src/index"]
+      "@fylib/core": ["../core/dist/index"],
+      "@fylib/logger": ["../logger/dist/index"],
+      "@fylib/animation": ["../animation/dist/index"],
+      "@fylib/crypto": ["../crypto/dist/index"]
     }
   },
-  "references": [
-    { "path": "../core" },
-    { "path": "../animation" },
-    { "path": "../crypto" }
-  ],
-  "include": ["src"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

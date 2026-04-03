@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fyLib | Documentação Oficial</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="app-wrapper">
+    <!-- Sidebar -->
+    <aside id="sidebar">
+        <div class="sidebar-logo">
+            <i class="ph-cube text-primary fs-3"></i>
+            <span class="h5 mb-0 fw-bold">fyLib</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">Início</div>
+            <a href="index.html" class="nav-link active">
+                <i class="ph-house"></i> Apresentação
+            </a>
+            <a href="pages/guides/getting-started.html" class="nav-link">
+                <i class="ph-rocket-launch"></i> Primeiros Passos
+            </a>
+            
+            <div class="nav-section">Arquitetura</div>
+            <a href="pages/guides/architecture.html" class="nav-link">
+                <i class="ph-tree-structure"></i> Visão Técnica
+            </a>
+            <a href="pages/guides/themes.html" class="nav-link">
+                <i class="ph-palette"></i> Sistema de Temas
+            </a>
+            <a href="pages/guides/animations.html" class="nav-link">
+                <i class="ph-video-camera"></i> Animações e Efeitos
+            </a>
+            
+            <div class="nav-section">Componentes (Angular)</div>
+            <a href="pages/components/accordion.html" class="nav-link"><i class="ph-list-bullets"></i> Accordion</a>
+            <a href="pages/components/badge.html" class="nav-link"><i class="ph-tag"></i> Badge</a>
+            <a href="pages/components/button.html" class="nav-link"><i class="ph-square"></i> Button</a>
+            <a href="pages/components/card.html" class="nav-link"><i class="ph-cards"></i> Card</a>
+            <a href="pages/components/chart.html" class="nav-link"><i class="ph-chart-bar"></i> Chart</a>
+            <a href="pages/components/icon.html" class="nav-link"><i class="ph-smiley"></i> Icon</a>
+            <a href="pages/components/input.html" class="nav-link"><i class="ph-text-t"></i> Input</a>
+            <a href="pages/components/modal.html" class="nav-link"><i class="ph-window"></i> Modal</a>
+            <a href="pages/components/nav-link.html" class="nav-link"><i class="ph-link"></i> Nav Link</a>
+            <a href="pages/components/notification-menu.html" class="nav-link"><i class="ph-bell-ringing"></i> Notifications</a>
+            <a href="pages/components/select.html" class="nav-link"><i class="ph-caret-double-down"></i> Select</a>
+            <a href="pages/components/table.html" class="nav-link"><i class="ph-table"></i> Table</a>
+            <a href="pages/components/text.html" class="nav-link"><i class="ph-text-aa"></i> Text (Crypto)</a>
+            <a href="pages/components/toast.html" class="nav-link"><i class="ph-notification"></i> Toast</a>
+            
+            <div class="nav-section mt-4">
+                <span class="badge-react">React <small>(Em breve)</small></span>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <header>
+            <button class="btn d-lg-none me-3" id="sidebar-toggle">
+                <i class="ph-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <span class="text-muted small d-none d-md-block">v1.0.0-beta</span>
+                <div id="theme-toggle">
+                    <i class="ph-moon"></i>
+                </div>
+                <a href="https://github.com/dfiney/fylib" target="_blank" class="btn btn-dark btn-sm rounded-pill px-3">
+                    <i class="ph-github-logo me-1"></i> GitHub
+                </a>
+            </div>
+        </header>
+
+        <div class="container-fluid p-4 p-lg-5">
+            <!-- What's New -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-12">
+                    <div class="doc-card border-primary border-start border-4">
+                        <h4 class="fw-bold mb-3"><i class="ph-star me-2 text-primary"></i> O que há de novo na v1.0</h4>
+                        <ul class="row list-unstyled g-3 mb-0">
+                            <li class="col-md-6"><i class="ph-check-circle me-2 text-success"></i> <strong>Angular 17+:</strong> Migração total para <code>@if</code> e <code>@for</code>.</li>
+                            <li class="col-md-6"><i class="ph-check-circle me-2 text-success"></i> <strong>Efeitos Paramétricos:</strong> Controle de intensidade e loop.</li>
+                            <li class="col-md-6"><i class="ph-check-circle me-2 text-success"></i> <strong>Módulo Wallpaper:</strong> Padrões SVG animados por diretiva.</li>
+                            <li class="col-md-6"><i class="ph-check-circle me-2 text-success"></i> <strong>Temas Imersivos:</strong> Efeitos padrão por tema (ex: Corações).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <h1 class="hero-title">A Próxima Geração de UI Corporativa</h1>
+                <p class="hero-subtitle">
+                    O fyLib é uma plataforma modular projetada para ser independente de framework, 
+                    altamente configurável e pronta para o mercado.
+                </p>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <a href="pages/guides/getting-started.html" class="btn btn-primary btn-lg rounded-pill px-5">
+                        Começar Agora
+                    </a>
+                    <a href="pages/guides/architecture.html" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
+                        Documentação
+                    </a>
+                </div>
+            </section>
+
+            <!-- Introduction -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-12">
+                    <div class="doc-card">
+                        <h2 class="fw-bold mb-4">Sobre o Projeto</h2>
+                        <p class="lead">
+                            Diferente de bibliotecas tradicionais, o fyLib separa a <strong>definição</strong> da <strong>renderização</strong>, 
+                            permitindo que o mesmo contrato de UI funcione em múltiplos frameworks com temas e comportamentos dinâmicos.
+                        </p>
+                        <hr class="my-4 opacity-10">
+                        <div class="row g-4 mt-2">
+                            <div class="col-md-4">
+                                <h5 class="fw-bold"><i class="ph-layout me-2 text-primary"></i> Modularidade</h5>
+                                <p class="text-muted small">Arquitetura baseada em contratos (Catalog) e implementações específicas (Adapters).</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 class="fw-bold"><i class="ph-palette me-2 text-success"></i> Tematização Atômica</h5>
+                                <p class="text-muted small">Design Tokens de alto nível para controle total de cores, bordas, sombras e layout.</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 class="fw-bold"><i class="ph-magic-wand me-2 text-warning"></i> Engine de Animações</h5>
+                                <p class="text-muted small">Microinterações e efeitos globais desacoplados do estilo visual básico.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="doc-card h-100">
+                        <h3 class="fw-bold mb-4">Motivação e História</h3>
+                        <div class="history-section text-muted">
+                            <p>
+                                O fyLib nasceu da necessidade de criar interfaces escaláveis dentro do ecossistema <strong>Finey</strong>. 
+                                O objetivo era ter um sistema onde a identidade visual de um produto pudesse ser alterada instantaneamente, 
+                                sem tocar no código de negócio.
+                            </p>
+                            <p>
+                                O projeto foi iniciado pelos dois sócios fundadores da Finey: 
+                                <strong>Victor Barberino (CEO Fundador)</strong> e <strong>Alexandre P. Sobral (Sócio Fundador)</strong>. 
+                                No início, ambos colaboraram na definição da arquitetura e nos primeiros módulos da biblioteca.
+                            </p>
+                            <p>
+                                Devido a conflitos estratégicos e de visão sobre o rumo do projeto, Alexandre acabou deixando a Finey e o 
+                                desenvolvimento do fyLib. Contudo, seu papel inicial foi fundamental para estabelecer as bases técnicas 
+                                que hoje sustentam a biblioteca, e seus créditos permanecem preservados como parte da história da plataforma.
+                            </p>
+                            <p>
+                                Desde então, o projeto foi assumido integralmente por <strong>Victor Barberino</strong>, que liderou a 
+                                expansão do fyLib, a criação do sistema de temas multi-OS (Windows, macOS) e a engine de efeitos 
+                                avançados que tornam a biblioteca única no mercado.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="doc-card bg-primary text-white h-100 border-0 shadow-lg">
+                        <h4 class="fw-bold mb-3">Missão</h4>
+                        <p class="opacity-75">
+                            Habilitar empresas a construírem softwares complexos com agilidade de design, 
+                            permitindo que o "look and feel" seja apenas um detalhe de configuração.
+                        </p>
+                        <div class="mt-5">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="p-3 bg-white bg-opacity-10 rounded-circle">
+                                    <i class="ph-users-three fs-2"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0 fw-bold">Pessoas</h5>
+                                    <small class="opacity-75">Desenvolvido por quem vive o produto.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-5 pt-5 pb-4 text-center border-top">
+                <p class="text-muted small">© 2026 Finey – Todos os direitos reservados.</p>
+            </footer>
+        </div>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
