@@ -26,6 +26,33 @@ export interface DesignTokens extends TokenTree {
   layout?: LayoutTokens;
   effects?: EffectsTokens;
   icons?: IconsTokens;
+  scrollbar?: ScrollbarTokens;
+}
+
+export interface ScrollbarTokens extends TokenTree {
+  width?: TokenPrimitive;
+  trackBackground?: TokenPrimitive;
+  trackImage?: TokenPrimitive;
+  thumbBackground?: TokenPrimitive;
+  thumbHoverBackground?: TokenPrimitive;
+  thumbBorderRadius?: TokenPrimitive;
+  thumbBorderWidth?: TokenPrimitive;
+  thumbBorderColor?: TokenPrimitive;
+  thumbBoxShadow?: TokenPrimitive;
+  thumbGripImage?: TokenPrimitive;
+  thumbGripImageHorizontal?: TokenPrimitive;
+  buttonsVisible?: boolean;
+  buttonBackground?: TokenPrimitive;
+  buttonHoverBackground?: TokenPrimitive;
+  buttonActiveBackground?: TokenPrimitive;
+  buttonColor?: TokenPrimitive;
+  buttonBorderRadius?: TokenPrimitive;
+  buttonUpImage?: TokenPrimitive;
+  buttonUpHoverImage?: TokenPrimitive;
+  buttonUpActiveImage?: TokenPrimitive;
+  buttonDownImage?: TokenPrimitive;
+  buttonDownHoverImage?: TokenPrimitive;
+  buttonDownActiveImage?: TokenPrimitive;
 }
 
 export interface SSEServices {
@@ -64,6 +91,21 @@ export interface ThemeDefinition {
   tokens: DesignTokens;
   darkTokens?: DesignTokens;
   componentAnimations?: ThemeComponentAnimations;
+  backgroundEffect?: {
+    name: string;
+    intensity?: number;
+    speed?: number;
+    loop?: boolean;
+  };
+  wallpaper?: WallpaperDefinition;
+}
+
+export interface WallpaperDefinition {
+  name: string;
+  type: 'image' | 'pattern' | 'gradient';
+  params?: Record<string, any>;
+  opacity?: number;
+  overlay?: boolean;
 }
 
 export interface ColorsTokens extends TokenTree {
@@ -129,6 +171,7 @@ export interface LayoutTokens extends TokenTree {
   header?: {
     height?: TokenPrimitive;
     padding?: TokenPrimitive;
+    background?: TokenPrimitive;
     shadow?: TokenPrimitive;
     toggle?: LayoutToggleTokens;
     logoFilterDarkOpacity?: string;
@@ -136,6 +179,8 @@ export interface LayoutTokens extends TokenTree {
   sidebar?: {
     width?: TokenPrimitive;
     padding?: TokenPrimitive;
+    background?: TokenPrimitive;
+    shadow?: TokenPrimitive;
     toggle?: LayoutToggleTokens;
     logoFilterDarkOpacity?: string;
   };
@@ -218,6 +263,28 @@ export interface ToastTokens {
   textColor: string;
   shadow: string;
   borderRadius: string;
+  padding?: string;
+  minWidth?: string;
+  maxWidth?: string;
+  gap?: string;
+  titleFontSize?: string;
+  titleFontWeight?: string;
+  messageFontSize?: string;
+  messageLineHeight?: string;
+  closeIcon?: string;
+  closeButtonSize?: string;
+  closeButtonOpacity?: string;
+  closeButtonHoverOpacity?: string;
+  closeButtonBackground?: string;
+  closeButtonBorder?: string;
+  closeButtonBorderRadius?: string;
+  iconSize?: string;
+  iconColor?: {
+    info?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
+  };
   icons?: {
     info?: string;
     success?: string;
@@ -257,6 +324,11 @@ export interface NotificationMenuTokens {
     accordionMode: boolean;
     showViewAll: boolean;
     viewAllPosition: 'header-left' | 'header-right' | 'footer-left' | 'footer-right';
+    markAllAsReadOnOpen?: boolean;
+    markAsReadOnClick?: boolean;
+    readApiEndpoint?: string;
+    readApiMethod?: 'POST' | 'PUT' | 'PATCH';
+    readApiHeaders?: Record<string, string>;
   };
 }
 

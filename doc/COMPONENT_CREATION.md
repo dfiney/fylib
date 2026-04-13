@@ -57,6 +57,7 @@ Exporte a definição no arquivo `index.ts` do pacote `@fylib/catalog`.
 ### 2. Implementação no Adapter (Angular)
 Com a reserva criada, implemente o componente visual no adapter seguindo o padrão da classe base:
 - Use `BaseFyComponent` para herdar utilitários comuns.
+- Utilize a sintaxe moderna de controle de fluxo (`@if`, `@for`).
 - Utilize `resolveAnim` e `composeAnimClasses` para montar classes de animação.
 - Use `isAnimationsActive`/`getHostStyles` para comportamento e estilos.
 - Dispare efeitos via `triggerByEvent(eventKey, effectName?, activeEffects)` respeitando a prioridade AppConfig→instância.
@@ -82,6 +83,19 @@ export class FyCardComponent extends BaseFyComponent<'fy-card'> implements CardP
   }
 }
 ```
+## ♿ Acessibilidade (A11y)
+Todos os componentes do adapter devem ser acessíveis (padrão WCAG 2.1 AA):
+- **ARIA Attributes**: Use `aria-expanded`, `aria-controls`, `aria-label`, `aria-busy`, etc.
+- **Keyboard Support**: Adicione listeners para `Enter` e `Space` em elementos interativos que não são nativos (`role="button"`).
+- **Focus Management**: Garanta que o `tabindex` seja gerenciado corretamente (0 para focável, -1 para desativado).
+
+## 🧪 Testes Automatizados
+Todo novo componente ou funcionalidade deve ser acompanhado de testes:
+- **Pacotes Core**: Use Vitest (`*.test.ts`) para lógica agnóstica.
+- **Adapters**: Use ferramentas de teste do framework (ex.: `ng test` no Angular) com arquivos `*.spec.ts`.
+- **Foco dos Testes**: Renderização inicial, interações do usuário, mudanças de estado e acessibilidade.
+
+---
 
 ## 🎨 Variações (Variants)
 
@@ -169,11 +183,20 @@ Quando você cria um novo componente no catálogo (por exemplo, `fy-toast`), con
   - Criar tipos específicos (`ToastAnimationName`, por exemplo) em [`packages/animation/src/types.ts`](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/animation/src/types.ts) se houver um conjunto estável de animações.
   - Registrar as animações via `animationEngine.registerAnimation`.
 - **Temas em `@fylib/theme`:**
-  - Atualizar os temas em [`packages/theme`](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/theme) para incluir tokens/efeitos específicos se necessário.
+  - Atualizar os temas em [`packages/theme`](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/theme) para incluir tokens/efeitos específicos se necessário (ex: `effects.toast`, `effects.table`, `effects.chart`).
 - **Adapter (Angular/React):**
   - Implementar o componente visual no adapter correspondente, herdando da base.
   - Integrar com `FyLibService` usando seletores/eventos tipados ao disparar efeitos e buscar animações.
   - Respeitar a prioridade de efeitos: AppConfig global > prop da instância.
+  - **Ícones e Cores:** Se o componente usa ícones, resolva a cor via tokens de efeito (ex: `effects.<componente>.iconColor`) e passe explicitamente para o `fy-icon` para evitar conflitos de herança.
+- **Acessibilidade (A11y) - Obrigatório:**
+  - Implementar atributos ARIA (`aria-expanded`, `aria-controls`, `role="button"`, etc).
+  - Garantir navegação completa por teclado (suporte a `Enter` e `Space` em elementos interativos).
+  - Gerenciar `tabindex` corretamente para focagem sequencial.
+- **Testes Automatizados - Obrigatório:**
+  - **Unitários (Core/Utils):** Criar arquivos `*.test.ts` usando Vitest para qualquer lógica de utilitário ou serviço.
+  - **Componente (Adapter):** Criar arquivos `*.spec.ts` (ex: `accordion-a11y.spec.ts`) para validar renderização, estados e conformidade A11y.
+  - **Verificação Local:** Executar `tools/test-all.bat` e garantir que 100% dos testes passem antes do commit.
 
 ---
 

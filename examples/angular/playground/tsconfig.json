@@ -18,6 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "@fylib/core": ["../../../packages/core/src/index"],
+      "@fylib/logger": ["../../../packages/logger/src/index"],
       "@fylib/theme": ["../../../packages/theme/src/index"],
       "@fylib/animation": ["../../../packages/animation/src/index"],
       "@fylib/catalog": ["../../../packages/catalog/src/index"],

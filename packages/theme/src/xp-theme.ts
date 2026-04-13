@@ -1,5 +1,4 @@
 import { ThemeDefinition } from '@fylib/core';
-import { themeEngine } from './engine';
 import {
   ButtonHoverAnimationName,
   ButtonClickAnimationName,
@@ -20,6 +19,17 @@ const xpButtonAnimations: {
 
 export const windowsXpTheme: ThemeDefinition = {
   name: 'windows-xp',
+  backgroundEffect: {
+    name: 'bubbles',
+    intensity: 30,
+    speed: 1,
+    loop: true
+  },
+  wallpaper: {
+    name: 'grass',
+    type: 'pattern',
+    opacity: 0.2
+  },
   tokens: {
     colors: {
       primary: '#3a6ea5',
@@ -145,7 +155,17 @@ export const windowsXpTheme: ThemeDefinition = {
         borderColor: '#91a7b4',
         headerBackground: '#e5ecf9',
         rowHoverBackground: '#f1f5fb',
-        stripedBackground: '#f7f9fc'
+        stripedBackground: '#f7f9fc',
+        textColor: '#000000',
+        headerTextColor: '#000000'
+      },
+      chart: {
+        background: 'transparent',
+        borderColor: '#91a7b4',
+        gridColor: 'rgba(0,0,0,0.05)',
+        labelColor: '#334155',
+        colors: ['#3a6ea5', '#3cb371', '#ffcc00', '#cc3300', '#1f4f8b'],
+        fontFamily: 'inherit'
       },
       accordion: {
         background: '#ffffff',
@@ -172,11 +192,39 @@ export const windowsXpTheme: ThemeDefinition = {
         animation: 'shine'
       },
       toast: {
-        background: '#ffffff',
-        borderColor: '#315b8a',
+        background: '#FFFFE1',
+        borderColor: '#000000',
         textColor: '#000000',
         shadow: '2px 2px 0 rgba(0,0,0,0.2)',
-        borderRadius: '0px'
+        borderRadius: '0px',
+        padding: '8px 28px 8px 12px',
+        gap: '10px',
+        minWidth: '300px',
+        maxWidth: '350px',
+        titleFontSize: '11px',
+        titleFontWeight: '700',
+        messageFontSize: '11px',
+        messageLineHeight: '1.2',
+        iconSize: '20px',
+        closeIcon: 'x',
+        closeButtonSize: '14px',
+        closeButtonOpacity: '0.8',
+        closeButtonHoverOpacity: '1',
+        closeButtonBackground: 'transparent',
+        closeButtonBorder: '1px solid transparent',
+        closeButtonBorderRadius: '0px',
+        iconColor: {
+          info: '#4ba04b',
+          success: '#4ba04b',
+          warning: '#4ba04b',
+          error: '#ff0000'
+        },
+        icons: {
+          info: 'wifi-high',
+          success: 'check-circle-fill',
+          warning: 'warning-fill',
+          error: 'x-circle-fill'
+        }
       },
       notificationMenu: {
         button: {
@@ -214,10 +262,35 @@ export const windowsXpTheme: ThemeDefinition = {
     },
     icons: {
       defaultSet: 'ph',
-      color: 'currentColor',
       size: { sm: '12px', md: '16px', lg: '20px' },
       strokeWidth: '1.5',
       variant: 'regular'
+    },
+    scrollbar: {
+      width: '17px',
+      trackBackground: '#f1f1f1',
+      // Subtle stippled pattern for track
+      trackImage: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAD0lEQVQImWNgYGBoYGAAABYAA69PrG8AAAAASUVORK5CYII=", 
+      thumbBackground: 'linear-gradient(to right, #1d345f 0%, #3a62a7 50%, #1d345f 100%)',
+      thumbHoverBackground: 'linear-gradient(to right, #4a7ac9 0%, #bdd4f6 50%, #4a7ac9 100%)',
+      thumbBorderRadius: '2px',
+      thumbBorderWidth: '1px',
+      thumbBorderColor: '#002266',
+      thumbBoxShadow: 'inset 1px 1px 0px rgba(255,255,255,0.3)',
+      thumbGripImage: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='10'%3E%3Cpath d='M2 1h8M2 3h8M2 5h8M2 7h8M2 9h8' stroke='rgba(255,255,255,0.2)' stroke-width='1'/%3E%3Cpath d='M2 2h8M2 4h8M2 6h8M2 8h8M2 10h8' stroke='rgba(0,0,0,0.1)' stroke-width='1'/%3E%3C/svg%3E",
+      thumbGripImageHorizontal: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='12'%3E%3Cpath d='M1 2v8M3 2v8M5 2v8M7 2v8M9 2v8' stroke='rgba(255,255,255,0.2)' stroke-width='1'/%3E%3Cpath d='M2 2v8M4 2v8M6 2v8M8 2v8M10 2v8' stroke='rgba(0,0,0,0.1)' stroke-width='1'/%3E%3C/svg%3E",
+      buttonsVisible: true,
+      buttonBackground: 'linear-gradient(to right, #1d345f 0%, #3a62a7 50%, #1d345f 100%)',
+      buttonHoverBackground: 'linear-gradient(to right, #4a7ac9 0%, #bdd4f6 50%, #4a7ac9 100%)',
+      buttonActiveBackground: 'linear-gradient(to right, #0a1b3a 0%, #1d345f 50%, #0a1b3a 100%)',
+      // UP BUTTON
+      buttonUpImage: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 17 17'%3E%3Cpath d='M8.5 6L5 10.5h7L8.5 6z' fill='%231d345f'/%3E%3Cpath d='M1 1h15v1H1zM1 1h1v15H1z' fill='white'/%3E%3Cpath d='M1 15h15v1H1zM15 1h1v15h-1z' fill='rgba(0,0,0,0.3)'/%3E%3C/svg%3E",
+      buttonUpHoverImage: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 17 17'%3E%3Cpath d='M8.5 6L5 10.5h7L8.5 6z' fill='%231d345f'/%3E%3Cpath d='M1 1h15v1H1zM1 1h1v15H1z' fill='white'/%3E%3Cpath d='M1 15h15v1H1zM15 1h1v15h-1z' fill='rgba(0,0,0,0.3)'/%3E%3C/svg%3E",
+      buttonUpActiveImage: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 17 17'%3E%3Cpath d='M9.5 7L6 11.5h7L9.5 7z' fill='%231d345f'/%3E%3Cpath d='M1 1h15v1H1zM1 1h1v15H1z' fill='rgba(0,0,0,0.4)'/%3E%3Cpath d='M1 15h15v1H1zM15 1h1v15h-1z' fill='white'/%3E%3C/svg%3E",
+      // DOWN BUTTON
+      buttonDownImage: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 17 17'%3E%3Cpath d='M8.5 11L5 6.5h7L8.5 11z' fill='%231d345f'/%3E%3Cpath d='M1 1h15v1H1zM1 1h1v15H1z' fill='white'/%3E%3Cpath d='M1 15h15v1H1zM15 1h1v15h-1z' fill='rgba(0,0,0,0.3)'/%3E%3C/svg%3E",
+      buttonDownHoverImage: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 17 17'%3E%3Cpath d='M8.5 11L5 6.5h7L8.5 11z' fill='%231d345f'/%3E%3Cpath d='M1 1h15v1H1zM1 1h1v15H1z' fill='white'/%3E%3Cpath d='M1 15h15v1H1zM15 1h1v15h-1z' fill='rgba(0,0,0,0.3)'/%3E%3C/svg%3E",
+      buttonDownActiveImage: "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 17 17'%3E%3Cpath d='M9.5 12L6 7.5h7L9.5 12z' fill='%231d345f'/%3E%3Cpath d='M1 1h15v1H1zM1 1h1v15H1z' fill='rgba(0,0,0,0.4)'/%3E%3Cpath d='M1 15h15v1H1zM15 1h1v15h-1z' fill='white'/%3E%3C/svg%3E"
     }
   },
   darkTokens: {
@@ -270,7 +343,15 @@ export const windowsXpTheme: ThemeDefinition = {
         borderColor: 'rgba(255,255,255,0.12)',
         headerBackground: 'rgba(255,255,255,0.05)',
         rowHoverBackground: 'rgba(76, 138, 211, 0.15)',
-        stripedBackground: 'rgba(255,255,255,0.02)'
+        stripedBackground: 'rgba(255,255,255,0.02)',
+        textColor: '#ffffff',
+        headerTextColor: '#4c8ad3'
+      },
+      chart: {
+        background: 'transparent',
+        gridColor: 'rgba(255,255,255,0.05)',
+        labelColor: '#cbd5e1',
+        colors: ['#4c8ad3', '#3cb371', '#ffcc00', '#ff4444', '#68718b']
       },
       accordion: {
         background: '#0e1f3d',
@@ -346,4 +427,4 @@ export const windowsXpTheme: ThemeDefinition = {
   }
 };
 
-themeEngine.registerTheme(windowsXpTheme);
+

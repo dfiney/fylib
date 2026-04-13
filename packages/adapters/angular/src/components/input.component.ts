@@ -9,6 +9,8 @@ import { FyIconComponent } from './icon.component';
 import { resolveAnimationsActive } from '../base/interaction.utils';
 import { EffectName } from '@fylib/config';
 import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
+import { logger } from '@fylib/logger';
+
 
 @Component({
   selector: 'fy-input',
@@ -37,13 +39,20 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
         [disabled]="disabled"
         [readOnly]="readonly"
         [value]="value ?? ''"
+        [attr.aria-invalid]="status === 'error'"
+        [attr.aria-label]="placeholder"
         (input)="onInputHandler($event)"
         (change)="onChangeHandler($event)"
         (focus)="onFocusHandler()"
         (blur)="onBlurHandler()"
       />
       @if (type === 'password' && showPasswordToggle) {
-        <button type="button" class="fy-input__toggle" (click)="togglePassword()"></button>
+        <button 
+          type="button" 
+          class="fy-input__toggle" 
+          (click)="togglePassword()"
+          [attr.aria-label]="visibleType === 'password' ? 'Mostrar senha' : 'Ocultar senha'"
+        ></button>
       }
       @if (iconRightName) {
         <fy-icon class="fy-input__icon fy-input__icon--right" [name]="iconRightName"></fy-icon>
@@ -234,6 +243,7 @@ export class FyInputComponent extends BaseFyComponent<'fy-input'> implements Inp
   }
 
   onFocusHandler() {
+    logger.debug('Component', 'Input focused', { placeholder: this.placeholder });
     if (this.isAnimationsActive(this.activeAnimations)) {
       const name = this.resolveAnim(
         'focus',
@@ -249,9 +259,11 @@ export class FyInputComponent extends BaseFyComponent<'fy-input'> implements Inp
   }
 
   onBlurHandler() {
+    logger.debug('Component', 'Input blurred', { value: this.value });
     if (this.onBlur) this.onBlur();
     this.fyBlur.emit();
   }
+
 
   private resolveAnimationsActive(): boolean {
     return resolveAnimationsActive(this.fylib, 'fy-input', this.activeAnimations);

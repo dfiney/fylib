@@ -17,6 +17,8 @@
   - Adapter (reserva):
     - Criar `packages/adapters/angular/src/components/<nome>.component.ts` como componente standalone vazio estendendo `BaseFyComponent`.
     - Exportar em `packages/adapters/angular/src/index.ts`.
+  - Testes (reserva):
+    - Criar arquivo de teste unitário `*.test.ts` para utilitários ou `*.spec.ts` para o componente.
 
 ## Etapa 2 — Implementação do Componente
 - Objetivo: implementar props específicas, renderização e integração com tema/animações/efeitos.
@@ -27,13 +29,21 @@
     - Inputs comuns: `activeAnimations`, `activeEffects`, `customStyles`.
     - Inputs específicos: conforme `defaultProps` do catálogo.
     - Props de efeitos por evento (quando aplicável).
+  - Acessibilidade (A11y):
+    - Implementar atributos ARIA (`aria-*`) e papéis (`role`).
+    - Adicionar suporte a teclado (`Enter`/`Space`) e gerenciamento de foco.
   - Template:
     - Aplicar classes por variante/tamanho/estado.
+    - Utilizar obrigatoriamente a sintaxe de controle de fluxo moderna (`@if`, `@for`).
     - Compor classes de animação com `this.composeAnimClasses(...)`.
     - Disparar animações via `this.resolveAnim(event, instanceOverride, definitionFallback)` + `fylib.playAnimation`.
     - Disparar efeitos:
       - Instância: `this.triggerDirect(effectName, activeEffects)`
       - Global: `this.triggerByEvent('fy-<nome>.<evento>', activeEffects)`
+    - Suporte a Wallpapers/Background Effects: aplicar diretiva `fyWallpaper` ou prop `bgEffect` se o componente for um container. **Nota**: Só serão renderizados se as flags globais no `AppConfig` estiverem ativas e o uso for explícito no template.
+  - Testes Automatizados:
+    - Implementar testes de renderização e comportamento.
+    - Validar obrigatoriamente a conformidade A11y nos testes.
   - Estilos:
     - Usar variáveis CSS de tokens (`--fy-colors-*`, `--fy-layout-*`, `--fy-effects-*`).
     - Expor `@HostBinding('style') get hostStyles()` com `this.getHostStyles(customStyles)`.
@@ -41,6 +51,8 @@
     - Reutilizar `defaultProps` e `features.animations` como fallback quando tema/config não definirem.
   - Exportação:
     - Garantir export em `packages/adapters/angular/src/index.ts`.
+  - Verificação Final:
+    - Executar `tools/test-all.bat` para garantir que o novo componente não introduziu regressões.
 
 ## Padrões de Estilização
 - Usar Design Tokens do tema via CSS variables.

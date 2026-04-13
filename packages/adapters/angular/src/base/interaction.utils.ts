@@ -36,11 +36,10 @@ export function animationClasses(...names: Array<string | undefined>): string {
 export function triggerEffectForEvent(
   fylib: FyLibService,
   eventKey: UIEventKey,
-  effectName?: EffectName,
   selector?: ComponentSelector,
   instanceFlag?: boolean | null
 ): void {
-  fylib.triggerEffectForEvent(eventKey, effectName, selector, instanceFlag ?? null);
+  fylib.triggerEffectForEvent(eventKey, selector, instanceFlag ?? null);
 }
 
 export function styleString(style: Record<string, string> | null | undefined): string {

@@ -29,7 +29,7 @@ Exemplo prático: `fy-card`
 
 ## 🧭 O que é um Layout no fyLib?
 
-Um Layout é um **Structural Component**. Sua responsabilidade principal é a **composição** e a **orquestração** do espaço.
+Um Layout é um **Structural Component**. Sua responsabilidade principal é a **composição** e a **orquestração** do espaço. Além de organizar regiões, o Layout pode aplicar **Efeitos de Fundo** e **Wallpapers** que definem a atmosfera da aplicação.
 
 ### Diferença Crítica:
 | Componente Comum (Nível 1/2) | Layout (Nível 3) |
@@ -37,6 +37,7 @@ Um Layout é um **Structural Component**. Sua responsabilidade principal é a **
 | Renderiza a si mesmo | Organiza os filhos |
 | Focado em props e estados | Focado em slots e regiões |
 | Tem estilo visual próprio | Define o comportamento responsivo |
+| - | Orquestra Wallpapers e Efeitos Globais |
 
 ---
 
@@ -59,10 +60,17 @@ export const AppLayoutDefinition: UILayoutDefinition = {
 ```
 
 ### Uso no Framework (Exemplo Angular)
-O fyLib fornece componentes orquestradores que traduzem a definição para o DOM.
+O fyLib fornece componentes orquestradores que traduzem a definição para o DOM. O `fy-layout` integra o sistema de wallpapers e efeitos de fundo através de props e diretivas.
+
+**Importante**: Para que os efeitos e wallpapers funcionem, as flags globais correspondentes (`themeEffectsEnabled` e `wallpaperEnabled`) devem estar habilitadas no seu arquivo de configuração (`AppConfig`).
 
 ```html
-<fy-layout name="app-layout">
+<fy-layout 
+  name="app-layout" 
+  bgEffect 
+  [bgEffectLoop]="true"
+  fyWallpaper>
+  
   <fy-slot name="header">
     <my-navbar></my-navbar>
   </fy-slot>
@@ -72,6 +80,8 @@ O fyLib fornece componentes orquestradores que traduzem a definição para o DOM
   </fy-slot>
 </fy-layout>
 ```
+
+*(No exemplo acima, como `bgEffect` e `fyWallpaper` estão presentes sem valor, o fyLib utilizará automaticamente as definições do tema corrente).*
 
 ---
 

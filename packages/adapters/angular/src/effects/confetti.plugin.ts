@@ -35,20 +35,22 @@ interface ConfettiParticle {
   vr: number;
 }
 
+const activeLoops = new Map<string, { stop: () => void }>();
+
 function randomColor(): string {
   const colors = ['#f97316', '#22c55e', '#3b82f6', '#e11d48', '#eab308', '#6366f1'];
   const index = Math.floor(Math.random() * colors.length);
   return colors[index];
 }
 
-function createParticles(count: number, width: number, height: number): ConfettiParticle[] {
+function createParticles(count: number, width: number, height: number, speed: number = 1): ConfettiParticle[] {
   const particles: ConfettiParticle[] = [];
   for (let i = 0; i < count; i++) {
     particles.push({
       x: Math.random() * width,
       y: -Math.random() * height,
-      vx: (Math.random() - 0.5) * 4,
-      vy: Math.random() * 4 + 2,
+      vx: (Math.random() - 0.5) * 4 * speed,
+      vy: (Math.random() * 4 + 2) * speed,
       size: Math.random() * 8 + 4,
       color: randomColor(),
       rotation: Math.random() * Math.PI * 2,
@@ -58,7 +60,7 @@ function createParticles(count: number, width: number, height: number): Confetti
   return particles;
 }
 
-function renderConfettiOnce(count: number, duration: number) {
+function renderConfettiOnce(count: number, duration: number, speed: number = 1, loop: boolean = false, effectId?: string) {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
     return;
   }
@@ -67,54 +69,99 @@ function renderConfettiOnce(count: number, duration: number) {
   if (!ctx) {
     return;
   }
-  const particles = createParticles(count, canvas.width, canvas.height);
+
+  // Se já existe um loop com esse ID, para ele antes de começar um novo
+  if (effectId && activeLoops.has(effectId)) {
+    activeLoops.get(effectId)?.stop();
+  }
+
+  const particles = createParticles(count, canvas.width, canvas.height, speed);
   const start = performance.now();
+  let animationId: number;
+  let isRunning = true;
+
+  const stop = () => {
+    isRunning = false;
+    cancelAnimationFrame(animationId);
+    if (effectId) activeLoops.delete(effectId);
+  };
+
+  if (effectId && loop) {
+    activeLoops.set(effectId, { stop });
+  }
 
   function frame(now: number) {
+    if (!isRunning) return;
     const elapsed = now - start;
     if (!ctx) {
       return;
     }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Stop recycling after duration, but let existing particles finish falling
+    const isRecycling = loop || elapsed < duration;
+    let anyVisible = false;
+
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.05;
+      p.vy += 0.05 * speed;
       p.rotation += p.vr;
+      
       if (p.y - p.size > canvas.height) {
-        p.y = -p.size;
-        p.vy = Math.random() * 4 + 2;
+        if (isRecycling) {
+          p.y = -p.size;
+          p.x = Math.random() * canvas.width;
+          p.vy = (Math.random() * 4 + 2) * speed;
+        }
+      } else {
+        anyVisible = true;
       }
     });
-    particles.forEach(p => {
-      if (!ctx) {
-        return;
-      }
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rotation);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-      ctx.restore();
-    });
-    if (elapsed < duration) {
-      requestAnimationFrame(frame);
+
+    if (anyVisible || isRecycling) {
+      particles.forEach(p => {
+        if (!ctx) {
+          return;
+        }
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+      });
+      animationId = requestAnimationFrame(frame);
     } else {
       if (!ctx) {
         return;
       }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (effectId) activeLoops.delete(effectId);
     }
   }
 
-  requestAnimationFrame(frame);
+  animationId = requestAnimationFrame(frame);
 }
 
 const confettiPlugin: GlobalEffectPlugin = {
   name: 'confetti-renderer',
   renderEffect(effect) {
     if (effect.name === 'confetti' && effect.type === 'global') {
-      renderConfettiOnce(80, 1200);
+      const params = effect.params || {};
+
+      if (params['stop'] && params['id']) {
+        activeLoops.get(params['id'])?.stop();
+        return;
+      }
+
+      const count = params['intensity'] || 80;
+      const duration = params['duration'] || 1200;
+      const speed = params['speed'] || 1;
+      const loop = !!params['loop'];
+      const id = params['id'];
+
+      renderConfettiOnce(count, duration, speed, loop, id);
     }
   }
 };

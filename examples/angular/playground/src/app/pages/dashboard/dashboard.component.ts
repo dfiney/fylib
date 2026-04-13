@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FyLibService, FySelectComponent, FyModalComponent, FyAccordionComponent, FyNotificationMenuComponent, FyNotificationService } from '@fylib/adapter-angular';
+import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FyLibService, FySelectComponent, FyModalComponent, FyAccordionComponent, FyNotificationMenuComponent, FyNotificationService, FyWallpaperDirective } from '@fylib/adapter-angular';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FySelectComponent, FyModalComponent, FyAccordionComponent, FyNotificationMenuComponent],
+  imports: [CommonModule, FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkComponent, FyInputComponent, FyCardComponent, FySelectComponent, FyModalComponent, FyAccordionComponent, FyNotificationMenuComponent, FyWallpaperDirective],
   template: `
-    <fy-layout>
+    <fy-layout bgEffect>
       <fy-slot
         name="header"
         [headerLogoSvgSrc]="'/assets/finey_bw_nobg.svg'"
@@ -28,6 +28,7 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
           <fy-notification-menu
             [notifications]="notifications"
             [unreadCount]="unreadCount"
+            [markAllAsReadOnOpen]="true"
             (fyClearAll)="onClearNotifications()"
             (fyViewAll)="onViewAllNotifications()"
 
@@ -48,6 +49,8 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
         [fixedSidebar]="true"
         [activeAnimations]="true"
         [activeEffects]="true"
+        [openEffect]="'sidebar-slide-in'"
+        [closeEffect]="'sidebar-slide-out'"
         [copyrightText]="'Finey'">
         <div fy-sidebar-logo class="profile">
           <img class="avatar" src="assets/me.png" alt="Avatar">
@@ -69,13 +72,15 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
           <fy-button
             [hoverAnimation]="'button-hover-glow'"
             [clickAnimation]="'button-click-press'"
+            [clickEffect]="'hearts'"
+
             label="Sair da conta"
             iconName="sign-out"
             variant="ghost"></fy-button>
         </div>
       </fy-slot>
 
-      <fy-slot name="content">
+      <fy-slot name="content" fyWallpaper>
         <div class="page-content">
           <h1>Dashboard (Full Layout)</h1>
           <p>Esta página utiliza o <code>app-layout</code> completo com Header, Sidebar e Content.</p>
@@ -186,7 +191,7 @@ import { FyButtonComponent, FyLayoutComponent, FySlotComponent, FyNavLinkCompone
                 size="md"
                 [hoverAnimation]="'button-hover-glow'"
                 [clickAnimation]="'button-click-press'"
-                [clickEffect]="'confetti'"
+                [clickEffect]="'hearts'"
               ></fy-button>
             </div>
           </fy-card>

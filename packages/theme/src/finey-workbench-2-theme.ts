@@ -4,7 +4,6 @@ import {
   ButtonClickAnimationName,
   ButtonStateAnimationName
 } from '@fylib/animation';
-import { themeEngine } from './engine';
 
 const mojaveButtonAnimations: {
   hover: ButtonHoverAnimationName;
@@ -20,6 +19,17 @@ const mojaveButtonAnimations: {
 
 export const fineyWorkbench2Theme: ThemeDefinition = {
   name: 'finey-workbench-2',
+  backgroundEffect: {
+    name: 'particles',
+    intensity: 20,
+    speed: 0.3,
+    loop: true
+  },
+  wallpaper: {
+    name: 'dots',
+    type: 'pattern',
+    opacity: 0.08
+  },
   tokens: {
     colors: {
       primary: '#007aff',
@@ -133,7 +143,17 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
         borderColor: '#e5e5e5',
         headerBackground: '#f6f6f6',
         rowHoverBackground: 'rgba(0,122,255,0.05)',
-        stripedBackground: '#f9f9f9'
+        stripedBackground: '#f9f9f9',
+        textColor: '#2d2d2d',
+        headerTextColor: '#8e8e93'
+      },
+      chart: {
+        background: 'transparent',
+        borderColor: '#e5e5e5',
+        gridColor: 'rgba(0,0,0,0.05)',
+        labelColor: '#8e8e93',
+        colors: ['#007aff', '#28cd41', '#ffcc00', '#ff3b30', '#5ac8fa'],
+        fontFamily: 'inherit'
       },
       modal: {
         background: '#ffffff',
@@ -168,18 +188,40 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
         borderRadius: '4px',
         animation: 'none'
       },
-      chart: {
-        background: 'transparent',
-        gridColor: 'rgba(0,0,0,0.05)',
-        labelColor: '#8e8e93',
-        colors: ['#007aff', '#28cd41', '#ffcc00', '#ff3b30', '#5ac8fa']
-      },
       toast: {
         background: '#ffffff',
         borderColor: '#c3c3c3',
         textColor: '#2d2d2d',
-        shadow: '0 10px 25px rgba(0,0,0,0.1)',
-        borderRadius: '5px'
+        shadow: '0 8px 20px rgba(0,0,0,0.12)',
+        borderRadius: '6px',
+        padding: '12px 16px',
+        gap: '12px',
+        minWidth: '320px',
+        maxWidth: '420px',
+        titleFontSize: '14px',
+        titleFontWeight: '600',
+        messageFontSize: '13px',
+        messageLineHeight: '1.4',
+        iconSize: '22px',
+        closeIcon: 'x',
+        closeButtonSize: '18px',
+        closeButtonOpacity: '0.5',
+        closeButtonHoverOpacity: '1',
+        closeButtonBackground: 'transparent',
+        closeButtonBorder: 'none',
+        closeButtonBorderRadius: '4px',
+        iconColor: {
+          info: '#007aff',
+          success: '#28cd41',
+          warning: '#ffcc00',
+          error: '#ff3b30'
+        },
+        icons: {
+          info: 'info-fill',
+          success: 'check-circle-fill',
+          warning: 'warning-fill',
+          error: 'x-circle-fill'
+        }
       },
       notificationMenu: {
         button: {
@@ -217,10 +259,18 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
     },
     icons: {
       defaultSet: 'ph',
-      color: 'currentColor',
       size: { sm: '12px', md: '16px', lg: '20px' },
       strokeWidth: '1.5',
       variant: 'regular'
+    },
+    scrollbar: {
+      width: '12px',
+      trackBackground: '#f1f1f1',
+      thumbBackground: '#c1c1c1',
+      thumbHoverBackground: '#a8a8a8',
+      thumbBorderRadius: '6px',
+      thumbBorderWidth: '2px',
+      thumbBorderColor: '#f1f1f1'
     }
   },
   darkTokens: {
@@ -278,7 +328,9 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
         borderColor: '#3a3a3a',
         headerBackground: '#2d2d2d',
         rowHoverBackground: 'rgba(10,132,255,0.1)',
-        stripedBackground: 'rgba(255,255,255,0.02)'
+        stripedBackground: 'rgba(255,255,255,0.02)',
+        textColor: '#d1d1d1',
+        headerTextColor: '#6b6b6b'
       },
       chart: {
         background: 'transparent',
@@ -290,8 +342,16 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
         background: '#2d2d2d',
         borderColor: '#3a3a3a',
         textColor: '#d1d1d1',
-        shadow: '0 10px 25px rgba(0,0,0,0.5)',
-        borderRadius: '5px'
+        shadow: '0 10px 25px rgba(0,0,0,0.6)',
+        borderRadius: '6px',
+        closeButtonOpacity: '0.6',
+        closeButtonHoverOpacity: '1',
+        iconColor: {
+          info: '#0a84ff',
+          success: '#32d74b',
+          warning: '#ffd60a',
+          error: '#ff453a'
+        }
       },
       notificationMenu: {
         button: {
@@ -355,6 +415,3 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
     }
   }
 };
-
-// Auto-register theme
-themeEngine.registerTheme(fineyWorkbench2Theme);

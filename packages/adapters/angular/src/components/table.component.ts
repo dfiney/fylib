@@ -37,140 +37,166 @@ import { FyButtonComponent } from './button.component';
       
     >
       <!-- Header / Search / Title -->
-      <header class="fy-table__header" *ngIf="showHeader || title || showSearch">
-        <div class="fy-table__header-main" *ngIf="title || subtitle">
-          <h3 class="fy-table__title" *ngIf="title">{{ title }}</h3>
-          <p class="fy-table__subtitle" *ngIf="subtitle">{{ subtitle }}</p>
-        </div>
+      @if (showHeader || title || showSearch) {
+        <header class="fy-table__header">
+          @if (title || subtitle) {
+            <div class="fy-table__header-main">
+              @if (title) { <h3 class="fy-table__title">{{ title }}</h3> }
+              @if (subtitle) { <p class="fy-table__subtitle">{{ subtitle }}</p> }
+            </div>
+          }
 
-        <div class="fy-table__header-tools">
-          <div class="fy-table__search" *ngIf="showSearch">
-            <fy-input
-              placeholder="Pesquisar..."
-              iconLeftName="search"
-              size="sm"
-              (fyInput)="onSearch($event)"
-            ></fy-input>
+          <div class="fy-table__header-tools">
+            @if (showSearch) {
+              <div class="fy-table__search">
+                <fy-input
+                  placeholder="Pesquisar..."
+                  iconLeftName="search"
+                  size="sm"
+                  (fyInput)="onSearch($event)"
+                ></fy-input>
+              </div>
+            }
+            <ng-content select="[fy-table-tools]"></ng-content>
           </div>
-          <ng-content select="[fy-table-tools]"></ng-content>
-        </div>
-      </header>
+        </header>
+      }
 
       <!-- Table Content -->
       <div class="fy-table__content" [style.maxHeight]="maxHeight">
         <table class="fy-table" [class]="'fy-table--' + variant">
           <thead>
             <tr>
-              <th
-                *ngFor="let col of visibleColumns"
-                [style.width]="col.width"
-                [class.fy-table__th--sortable]="col.sortable"
-                [style.textAlign]="col.align || 'left'"
-                (click)="onSort(col)"
-              >
-                <div class="fy-table__th-content">
-                  <fy-icon
-                    *ngIf="col.iconName"
-                    [name]="col.iconName"
-                    [set]="col.iconSet"
-                    class="fy-table__th-icon"
-                  ></fy-icon>
-                  <span>{{ col.label }}</span>
-                  <fy-icon
-                    *ngIf="col.sortable"
-                    [name]="getSortIcon(col)"
-                    class="fy-table__sort-icon"
-                  ></fy-icon>
-                </div>
-              </th>
-              <th *ngIf="actions && actions.length > 0" class="fy-table__th--actions">
-                Ações
-              </th>
+              @for (col of visibleColumns; track col.key) {
+                <th
+                  [style.width]="col.width"
+                  [class.fy-table__th--sortable]="col.sortable"
+                  [style.textAlign]="col.align || 'left'"
+                  (click)="onSort(col)"
+                >
+                  <div class="fy-table__th-content">
+                    @if (col.iconName) {
+                      <fy-icon
+                        [name]="col.iconName"
+                        [set]="col.iconSet"
+                        class="fy-table__th-icon"
+                      ></fy-icon>
+                    }
+                    <span>{{ col.label }}</span>
+                    @if (col.sortable) {
+                      <fy-icon
+                        [name]="getSortIcon(col)"
+                        class="fy-table__sort-icon"
+                      ></fy-icon>
+                    }
+                  </div>
+                </th>
+              }
+              @if (actions && actions.length > 0) {
+                <th class="fy-table__th--actions">
+                  Ações
+                </th>
+              }
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="loading" class="fy-table__row--loading">
-              <td [attr.colspan]="totalColumns" class="fy-table__td--loading">
-                <div class="fy-table__loader"></div>
-              </td>
-            </tr>
-            
-            <tr *ngIf="!loading && (!data || data.length === 0)" class="fy-table__row--empty">
-              <td [attr.colspan]="totalColumns" class="fy-table__td--empty">
-                Nenhum registro encontrado.
-              </td>
-            </tr>
-
-            <ng-container *ngIf="!loading">
-              <tr
-                *ngFor="let row of paginatedData; let i = index"
-                class="fy-table__row"
-                [class.fy-table__row--clickable]="rowClickable"
-                (click)="onRowClick(row)"
-              >
-                <td
-                  *ngFor="let col of visibleColumns"
-                  [style.textAlign]="col.align || 'left'"
-                >
-                  <!-- Custom Cell Template -->
-                  <ng-container *ngIf="cellTemplate; else defaultCell">
-                    <ng-container *ngTemplateOutlet="cellTemplate; context: { $implicit: row, column: col }"></ng-container>
-                  </ng-container>
-                  
-                  <ng-template #defaultCell>
-                    {{ row[col.key] }}
-                  </ng-template>
-                </td>
-                
-                <td *ngIf="actions && actions.length > 0" class="fy-table__td--actions">
-                  <div class="fy-table__actions-group">
-                    <fy-button
-                      *ngFor="let action of actions"
-                      [iconName]="action.iconName"
-                      [label]="action.label"
-                      [variant]="action.variant || 'ghost'"
-                      size="sm"
-                      (fyClick)="onActionClick($event, action, row)"
-                    ></fy-button>
-                  </div>
+            @if (loading) {
+              <tr class="fy-table__row--loading">
+                <td [attr.colspan]="totalColumns" class="fy-table__td--loading">
+                  <div class="fy-table__loader"></div>
                 </td>
               </tr>
-            </ng-container>
+            }
+            
+            @if (!loading && (!data || data.length === 0)) {
+              <tr class="fy-table__row--empty">
+                <td [attr.colspan]="totalColumns" class="fy-table__td--empty">
+                  Nenhum registro encontrado.
+                </td>
+              </tr>
+            }
+
+            @if (!loading) {
+              @for (row of paginatedData; track $index) {
+                <tr
+                  class="fy-table__row"
+                  [class.fy-table__row--clickable]="rowClickable"
+                  (click)="onRowClick(row)"
+                >
+                  @for (col of visibleColumns; track col.key) {
+                    <td
+                      [style.textAlign]="col.align || 'left'"
+                    >
+                      <!-- Custom Cell Template -->
+                      @if (cellTemplate) {
+                        <ng-container *ngTemplateOutlet="cellTemplate; context: { $implicit: row, column: col }"></ng-container>
+                      } @else {
+                        {{ row[col.key] }}
+                      }
+                    </td>
+                  }
+                  
+                  @if (actions && actions.length > 0) {
+                    <td class="fy-table__td--actions">
+                      <div class="fy-table__actions-group">
+                        @for (action of actions; track action.label) {
+                          <fy-button
+                            [iconName]="action.iconName"
+                            [label]="action.label"
+                            [variant]="action.variant || 'ghost'"
+                            size="sm"
+                            (fyClick)="onActionClick($event, action, row)"
+                          ></fy-button>
+                        }
+                      </div>
+                    </td>
+                  }
+                </tr>
+              }
+            }
           </tbody>
         </table>
       </div>
 
       <!-- Footer / Pagination -->
-      <footer class="fy-table__footer" *ngIf="showFooter || showPagination || footer">
-        <div class="fy-table__footer-info" *ngIf="footer || showPagination">
-          <span *ngIf="footer">{{ footer }}</span>
-          <span *ngIf="showPagination" class="fy-table__pagination-summary">
-            Mostrando {{ startItem }} - {{ endItem }} de {{ displayTotal }}
-          </span>
-        </div>
+      @if (showFooter || showPagination || footer) {
+        <footer class="fy-table__footer">
+          @if (footer || showPagination) {
+            <div class="fy-table__footer-info">
+              @if (footer) { <span>{{ footer }}</span> }
+              @if (showPagination) {
+                <span class="fy-table__pagination-summary">
+                  Mostrando {{ startItem }} - {{ endItem }} de {{ displayTotal }}
+                </span>
+              }
+            </div>
+          }
 
-        <div class="fy-table__pagination" *ngIf="showPagination">
-          <fy-button
-            variant="ghost"
-            size="sm"
-            iconName="caret-left"
-            [disabled]="currentPage === 1"
-            (fyClick)="onPageChange(currentPage - 1)"
-          ></fy-button>
-          
-          <div class="fy-table__pages">
-             <span class="fy-table__page-info">{{ currentPage }} / {{ totalPages }}</span>
-          </div>
+          @if (showPagination) {
+            <div class="fy-table__pagination">
+              <fy-button
+                variant="ghost"
+                size="sm"
+                iconName="caret-left"
+                [disabled]="currentPage === 1"
+                (fyClick)="onPageChange(currentPage - 1)"
+              ></fy-button>
+              
+              <div class="fy-table__pages">
+                 <span class="fy-table__page-info">{{ currentPage }} / {{ totalPages }}</span>
+              </div>
 
-          <fy-button
-            variant="ghost"
-            size="sm"
-            iconName="caret-right"
-            [disabled]="currentPage === totalPages"
-            (fyClick)="onPageChange(currentPage + 1)"
-          ></fy-button>
-        </div>
-      </footer>
+              <fy-button
+                variant="ghost"
+                size="sm"
+                iconName="caret-right"
+                [disabled]="currentPage === totalPages"
+                (fyClick)="onPageChange(currentPage + 1)"
+              ></fy-button>
+            </div>
+          }
+        </footer>
+      }
     </div>
   `,
   styles: [`

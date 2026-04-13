@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@fylib/core": "workspace:*",
-    "@fylib/animation": "workspace:*"
+    "@fylib/animation": "workspace:*",
+    "@fylib/logger": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

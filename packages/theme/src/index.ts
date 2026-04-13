@@ -1,3 +1,4 @@
+export * from './finey-puffy-1-theme';
 export * from './engine';
 export * from './default-theme';
 export * from './christmas-theme';
@@ -7,3 +8,4 @@ export * from './finey-workbench-1-theme';
 export * from './finey-workbench-2-theme';
 export * from './finey-workbench-3-theme';
 export * from './finey-nexus-1-theme';
+export * from './finey-hub-1-theme';

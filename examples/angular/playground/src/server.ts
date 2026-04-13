@@ -6,11 +6,39 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import fs from 'node:fs';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
+
 const angularApp = new AngularNodeAppEngine();
+
+/**
+ * Endpoint para salvar logs locais do fyLib
+ */
+app.post('/api/fylogs', express.json(), (req, res) => {
+  try {
+    const logEntry = req.body;
+    const logDir = join(process.cwd(), 'fylogs');
+    
+    if (!fs.existsSync(logDir)) {
+      fs.mkdirSync(logDir);
+    }
+    
+    const today = new Date().toISOString().split('T')[0];
+    const logFile = join(logDir, `fylib-${today}.log`);
+    
+    const logLine = `[${logEntry.timestamp}] [${logEntry.level.toUpperCase()}] [${logEntry.module}] ${logEntry.message} ${logEntry.data ? JSON.stringify(logEntry.data) : ''}\n`;
+    
+    fs.appendFileSync(logFile, logLine);
+    res.status(200).send({ status: 'ok' });
+  } catch (e) {
+    console.error('Erro ao salvar log no arquivo:', e);
+    res.status(500).send({ error: 'Erro ao salvar log' });
+  }
+});
+
 
 /**
  * Example Express Rest API endpoints can be defined here.

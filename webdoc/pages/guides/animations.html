@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animações e Efeitos | fyLib</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<div id="app-wrapper">
+    <aside id="sidebar">
+        <div class="sidebar-logo">
+            <i class="ph-cube text-primary fs-3"></i>
+            <span class="h5 mb-0 fw-bold">fyLib</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">Início</div>
+            <a href="../../index.html" class="nav-link">
+                <i class="ph-house"></i> Apresentação
+            </a>
+            <a href="getting-started.html" class="nav-link">
+                <i class="ph-rocket-launch"></i> Primeiros Passos
+            </a>
+            
+            <div class="nav-section">Arquitetura</div>
+            <a href="architecture.html" class="nav-link">
+                <i class="ph-tree-structure"></i> Visão Técnica
+            </a>
+            <a href="themes.html" class="nav-link">
+                <i class="ph-palette"></i> Sistema de Temas
+            </a>
+            <a href="animations.html" class="nav-link active">
+                <i class="ph-video-camera"></i> Animações e Efeitos
+            </a>
+            
+            <div class="nav-section">Componentes (Angular)</div>
+            <a href="../components/accordion.html" class="nav-link"><i class="ph-list-bullets"></i> Accordion</a>
+            <a href="../components/badge.html" class="nav-link"><i class="ph-tag"></i> Badge</a>
+            <a href="../components/button.html" class="nav-link"><i class="ph-square"></i> Button</a>
+            <a href="../components/card.html" class="nav-link"><i class="ph-cards"></i> Card</a>
+            <a href="../components/chart.html" class="nav-link"><i class="ph-chart-bar"></i> Chart</a>
+            <a href="../components/icon.html" class="nav-link"><i class="ph-smiley"></i> Icon</a>
+            <a href="../components/input.html" class="nav-link"><i class="ph-text-t"></i> Input</a>
+            <a href="../components/modal.html" class="nav-link"><i class="ph-window"></i> Modal</a>
+            <a href="../components/nav-link.html" class="nav-link"><i class="ph-link"></i> Nav Link</a>
+            <a href="../components/notification-menu.html" class="nav-link"><i class="ph-bell-ringing"></i> Notifications</a>
+            <a href="../components/select.html" class="nav-link"><i class="ph-caret-double-down"></i> Select</a>
+            <a href="../components/table.html" class="nav-link"><i class="ph-table"></i> Table</a>
+            <a href="../components/text.html" class="nav-link"><i class="ph-text-aa"></i> Text (Crypto)</a>
+            <a href="../components/toast.html" class="nav-link"><i class="ph-notification"></i> Toast</a>
+            
+            <div class="nav-section mt-4">
+                <span class="badge-react">React <small>(Em breve)</small></span>
+            </div>
+        </nav>
+    </aside>
+
+    <main id="main-content">
+        <header>
+            <button class="btn d-lg-none me-3" id="sidebar-toggle">
+                <i class="ph-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <div id="theme-toggle">
+                    <i class="ph-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid p-4 p-lg-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../../index.html">Início</a></li>
+                    <li class="breadcrumb-item active">Animações e Efeitos</li>
+                </ol>
+            </nav>
+
+            <h1 class="fw-800 mb-4">Animações e Efeitos Globais</h1>
+            <p class="lead mb-5 text-muted">O fyLib possui um motor de movimento poderoso que desacopla a lógica visual da interação de UI.</p>
+
+            <!-- Overview -->
+            <section class="mb-5">
+                <h3 class="fw-bold mb-4">Como Funciona?</h3>
+                <p>O pacote <code>@fylib/animation</code> gerencia dois tipos de movimentos:</p>
+                <div class="row g-4 mt-2">
+                    <div class="col-md-6">
+                        <div class="doc-card h-100">
+                            <h5 class="fw-bold text-primary"><i class="ph-sparkle me-2"></i> Microinterações</h5>
+                            <p class="text-muted small">Animações locais de componentes, como hover em botões, foco em inputs ou entrada de cards. Elas são definidas por tema mas podem ser sobrescritas por instância.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="doc-card h-100">
+                            <h5 class="fw-bold text-success"><i class="ph-magic-wand me-2"></i> Efeitos Globais</h5>
+                            <p class="text-muted small">Efeitos que afetam a tela toda ou regiões amplas, como confetes, flashes de janela ou transições de sidebar. São disparados por eventos de UI mapeados no AppConfig.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Global Effects -->
+            <section class="mb-5">
+                <h3 class="fw-bold mb-4">Efeitos Disponíveis</h3>
+                <p class="mb-4">Estes efeitos podem ser disparados centralizadamente via <code>effectTriggers</code> no config ou manualmente através das propriedades de componente.</p>
+                
+                <div class="table-responsive">
+                    <table class="table border">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Nome do Efeito</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="fw-bold text-primary">confetti</td>
+                                <td>Dispara uma chuva de confetes coloridos sobre a tela. Aceita parâmetros de <code>intensity</code>, <code>speed</code> e <code>loop</code>. Requer que <code>effectsEnabled</code> esteja ativo no config.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">hearts</td>
+                                <td>Uma chuva de corações animados utilizando as cores do tema Puffy. Ideal para momentos de sucesso ou temas românticos. <strong>Regra de Ativação</strong>: Requer <code>themeEffectsEnabled: true</code> no config E a presença da prop <code>bgEffect</code> no componente layout.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">snow</td>
+                                <td>Efeito de neve caindo, ideal para o tema de Natal. Aceita <code>intensity</code> e <code>speed</code>.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">bubbles</td>
+                                <td>Bolhas flutuantes subindo, ideal para o tema Windows XP.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">matrix</td>
+                                <td>Chuva digital de caracteres verdes, ideal para o tema Nexus Neon.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">particles</td>
+                                <td>Partículas flutuantes sutis, ideal para temas limpos e modernos como o Default.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">stars</td>
+                                <td>Estrelas cintilantes ao fundo, ideal para o tema Workbench 3.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">dots</td>
+                                <td>Padrão técnico de pontos em movimento, ideal para o tema Finey Hub.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">window-open</td>
+                                <td>Um flash suave branco simulando a abertura de uma nova janela.</td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold text-primary">sidebar-slide-in</td>
+                                <td>Glow azul na borda lateral simulando a entrada do menu.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Trigger Example -->
+            <section class="mb-5">
+                <h3 class="fw-bold mb-4">Disparando Efeitos via Eventos</h3>
+                <p>Você pode mapear eventos de UI para efeitos globais centralizadamente no seu <code>AppConfig</code>:</p>
+                <div class="doc-card">
+                    <pre><code>export const themeConfig: AppConfig = {
+  theme: 'default',
+  effectTriggers: {
+    'fy-button.click': 'confetti',
+    'fy-card.submit': 'confetti',
+    'fy-layout.enter': 'window-open'
+  }
+};</code></pre>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="mt-5 pt-5 pb-4 text-center border-top">
+                <p class="text-muted small">© 2026 Finey – Todos os direitos reservados.</p>
+            </footer>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

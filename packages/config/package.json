@@ -5,12 +5,14 @@
   "types": "dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@fylib/animation": "workspace:*",
+    "@fylib/core": "workspace:*",
     "@fylib/crypto": "workspace:*",
-    "@fylib/core": "workspace:*"
+    "@fylib/animation": "workspace:*",
+    "@fylib/logger": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

@@ -55,6 +55,7 @@ packages/
 | **Theme** | Gerencia a aparência visual (Design Tokens). |
 | **Animation** | Controla o movimento e efeitos sazonais. |
 | **License** | Valida permissões e acesso a funcionalidades. |
+| **Logger** | Sistema de logging centralizado com suporte a múltiplos sinks. |
 | **SSE** | Módulo de comunicação em tempo real (Server-Sent Events). |
 | **HTTP** | WebClient reativo com suporte a criptografia e automação. |
 | **Adapter** | Transforma o contrato em UI real (DOM/Componente). |
@@ -115,24 +116,38 @@ Permite a customização do comportamento da biblioteca sem alterar o código-fo
 - **Configuração Tipada:** Expõe o contrato `AppConfig` com tipagens fortes para todos os campos em [`packages/config/src/types.ts`](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/config/src/types.ts).
 - **Controle Externo:** A biblioteca pode monitorar o diretório `/fylib/theme-control/theme-controller.json` para atualizações de tema em tempo real sem necessidade de rebuild, ou receber um objeto `AppConfig` diretamente (como no playground Angular via `theme-controller.config.ts`).
 - **Campos Principais (tipados):**
-  - `theme: ThemeName` – union de nomes de tema (`'default'`, `'finey-workbench-1'`, `'finey-workbench-2'`, `'finey-workbench-3'`, `'windows-xp'`, `'windows-7'`, `'christmas'`).
-  - `animationsEnabled: boolean` – liga/desliga animações globalmente.
-  - `sse: SSEConfig` – configuração de comunicação em tempo real (Server-Sent Events).
+  - `theme: ThemeName` – union de nomes de tema (`'default'`, `'finey-workbench-1'`, `'finey-workbench-2'`, `'finey-workbench-3'`, `'finey-nexus-1'`, `'finey-hub-1'`, `'windows-xp'`, `'windows-7'`, `'christmas'`).
+  - `animationsEnabled?: boolean` – liga/desliga animações globalmente.
+  - `effectsEnabled?: boolean` – controle global de efeitos.
+  - `themeEffectsEnabled?: boolean` – ativa/desativa efeitos de fundo automáticos dos temas (ex: corações no tema Puffy). **Regra de Ativação**: Requer esta flag como `true` e a presença da prop `bgEffect` no componente (ex: `<fy-layout bgEffect>`).
+  - `wallpaperEnabled?: boolean` – ativa/desativa o sistema de papéis de parede globais. **Regra de Ativação**: Requer esta flag como `true` e a presença da diretiva `fyWallpaper` no elemento.
+  - `sse?: SSEConfig` – configuração de comunicação em tempo real (Server-Sent Events).
   - `disableAnimationsForComponents?: ComponentSelector[]` – lista tipada com seletores válidos (`'fy-button'`, `'fy-input'`, `'fy-layout'`, `'fy-slot'`, `'fy-slot:sidebar'`, `'fy-card'`).
-  - `tokenOverrides?: DeepPartial<DesignTokens>` – árvore de tokens fortemente tipada para sobrescrever parcialmente o tema ativo (ex.: apenas `colors.primary`, `layout.header.height`, `effects.card.shadow`, etc.).
-  - `componentAnimationsOverrides?: ComponentAnimationsOverrides` – mapa tipado de animações por componente/evento que sobrescreve as animações definidas no tema (ex.: `'fy-button'.hover`, `'fy-input'.focus`, `'fy-layout'.enter`, `'fy-slot:sidebar'.open`, `'fy-card'.enter`).
+  - `tokenOverrides?: DeepPartial<DesignTokens>` – árvore de tokens fortemente tipada para sobrescrever parcialmente o tema ativo (ex.: apenas `colors.primary`, `layout.header.height`, `effects.card.shadow`, `effects.toast.background`, `effects.table.headerBackground`, etc.).
+  - `componentAnimationsOverrides?: ComponentAnimationsOverrides` – mapa tipado de animações por componente/evento que sobrescreve as animações definidas no tema (ex.: `'fy-button'.hover`, `'fy-input'.focus`, `'fy-layout'.enter`, `'fy-slot:sidebar'.open`, `'fy-card'.enter`, `'fy-table'.enter`).
   - `http?: HttpConfig` – configurações globais para o `FyWebClientService` (baseUrl, timeout, retries, etc.).
   - `effectsEnabled?: boolean` – controle global de efeitos.
+  - `themeEffectsEnabled?: boolean` – habilita efeitos automáticos de tema.
+  - `wallpaperEnabled?: boolean` – habilita o sistema de wallpapers.
   - `disableEffectsForComponents?: ComponentSelector[]` – desativa efeitos por seletor de componente.
-  - `effectTriggers?: Partial<Record<UIEventKey, EffectName>>` – mapa tipado de eventos de UI (`'fy-button.click'`, `'fy-input.focus'`, `'fy-layout.enter'`, `'fy-slot:sidebar.open'`, `'fy-slot:sidebar.close'`, `'fy-card.submit'`, `'fy-table.rowClick'`) para nomes de efeitos globais (`'confetti'`, `'window-open'`, `'sidebar-slide-in'`, `'sidebar-slide-out'`, `'window-macos-sheet-open'`, `'window-macos-sheet-close'`).
+  - `effectTriggers?: Partial<Record<UIEventKey, EffectName>>` – mapa tipado de eventos de UI (`'fy-button.click'`, `'fy-input.focus'`, `'fy-layout.enter'`, `'fy-slot:sidebar.open'`, `'fy-slot:sidebar.close'`, `'fy-card.submit'`, `'fy-table.rowClick'`, `'fy-toast.open'`) para nomes de efeitos globais (`'confetti'`, `'hearts'`, `'window-open'`, `'sidebar-slide-in'`, `'sidebar-slide-out'`, `'window-macos-sheet-open'`, `'window-macos-sheet-close'`).
+  - `logging: LoggingConfig` – configuração centralizada de logs:
+    - `enabled: boolean` – ativa/desativa todos os logs globalmente (interruptor mestre).
+    - `level: 'debug' | 'info' | 'warn' | 'error'` – nível mínimo de log.
+    - `console: { enabled: boolean }` – controla logs no console do navegador.
+    - `localFiles: { enabled: boolean, path: string, filenamePattern?: string }` – controla os logs persistidos em arquivos locais (via servidor de apoio). O fyLib detecta se o `path` é relativo ou absoluto.
+    - `remote: { enabled: boolean, endpoint: string }` – controla o envio de logs para um servidor de telemetria externa.
 
 ### 4️⃣ @fylib/theme
 Sistema de Design Tokens. Fornece variáveis, escalas e temas sem depender de uma engine de CSS específica.
 - **Modos:** Suporte nativo a Light e Dark Mode com mesclagem inteligente de tokens.
 - **Plugins:** Suporta plugins para modificação dinâmica de tokens (ex: filtros de acessibilidade, temas sazonais). O adapter Angular registra um plugin que aplica automaticamente os `tokenOverrides` vindos da camada de config.
-- **Tokens Estruturais e de Efeito:** Além de cores, espaçamentos e tipografia, o tema expõe tokens de layout como `layout.header.height`, `layout.sidebar.width`, `layout.content.padding`, e também tokens de efeitos como `effects.button`, `effects.window`, `effects.input`, `effects.card`, que são convertidos em variáveis CSS (`--fy-layout-header-height`, `--fy-effects-button-background`, `--fy-effects-input-borderColor`, `--fy-effects-card-shadow`, etc.).
+- **Tokens Estruturais, de Efeito e Wallpapers:** Além de cores, espaçamentos e tipografia, o tema expõe tokens de layout como `layout.header.height`, `layout.header.background`, `layout.sidebar.width`, `layout.sidebar.background`, `layout.sidebar.shadow`, `layout.content.padding`, e também tokens de efeitos como `effects.button`, `effects.window`, `effects.input`, `effects.card`, `effects.toast`, `effects.table`, `effects.chart`, que são convertidos em variáveis CSS.
+  - Temas podem definir um `backgroundEffect` (ex: `hearts`) e um `wallpaper` (padrão SVG animado) para criar experiências imersivas automáticas.
   - Componente `fy-card` utiliza `effects.card` para `background`, `borderColor`, `shadow`, `dividerColor` e ícones- `effects.card.icons.header`/`footer`.
-  - `effects.table` para `background`, `borderColor`, `headerBackground`, `rowHoverBackground`, `stripedBackground`.
+  - `effects.table` para `background`, `borderColor`, `headerBackground`, `rowHoverBackground`, `stripedBackground`, `textColor`, `headerTextColor`.
+  - `effects.chart` para `background`, `gridColor`, `labelColor`, `colors` (paleta de séries).
+  - `effects.toast` para `background`, `borderColor`, `textColor`, `shadow`, `borderRadius`, `padding`, `gap`, `iconSize`, `iconColor` (por tipo), `icons` (mapeamento de nomes).
   - Layouts e toggles utilizam tokens `layout.header.toggle` e `layout.sidebar.toggle` para controlar aparência e posicionamento de botões de abertura (incluindo modos `floating` e `tongue`).
   - Temas como `windows-xp`, `windows-7`, `christmas` e `finey-workbench-1` demonstram como o mesmo conjunto de componentes pode assumir identidades visuais de sistemas operacionais completos (Windows/macOS) apenas ajustando tokens.
 
@@ -145,8 +160,11 @@ Gerencia microinterações e efeitos globais (como neve ou fade) de forma isolad
 - **Animações registradas:** inclui `card-fade-in`, `table-fade-in`, `table-row-enter` e animações específicas de temas (`layout-macos-window-enter`, `sidebar-macos-slide-in`, `input-focus-macos-glow`, etc.).
  - **Registro centralizado de plugins:** o adapter Angular expõe um ponto único [`register-all.ts`](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/register-all.ts) para registrar plugins de efeito (confetti e UI overlays) antes de qualquer trigger.
 
-### 6️⃣ @fylib/license
-Sistema central de validação criptográfica para controle de planos e validade da assinatura.
+### 7️⃣ @fylib/testing (Em progresso)
+A infraestrutura de testes do fyLib utiliza **Vitest** para os pacotes do monorepo e ferramentas nativas dos adapters (ex.: Angular Testing Library).
+- **Unit Tests**: Focados em lógica de negócio nos pacotes core.
+- **Component Tests**: Verificam renderização e acessibilidade nos adapters.
+- **Acessibilidade (A11y)**: O fyLib segue os padrões WCAG 2.1 AA, garantindo atributos ARIA corretos e navegação por teclado em todos os componentes.
 
 ---
 

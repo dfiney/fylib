@@ -16,6 +16,7 @@ import { BaseFyComponent } from '../base/base-component';
 import { FyIconComponent } from './icon.component';
 import { FyAccordionComponent } from './accordion.component';
 import { FyNotificationService } from '../services/notification.service';
+import { FyWebClientService } from '../services/webclient.service';
 
 @Component({
   selector: 'fy-notification-menu',
@@ -34,20 +35,21 @@ import { FyNotificationService } from '../services/notification.service';
         [style.color]="themeTokens()?.button?.textColor"
       >
         <fy-icon [name]="themeTokens()?.button?.icon || 'bell'"></fy-icon>
-        <span 
-          *ngIf="unreadCountDisplay > 0" 
-          class="fy-notification-menu__badge"
-          [style.background]="themeTokens()?.button?.badgeBackground"
-          [style.color]="themeTokens()?.button?.badgeTextColor"
-        >
-          {{ unreadCountDisplay > 99 ? '99+' : unreadCountDisplay }}
-        </span>
+        @if (unreadCountDisplay > 0) {
+          <span 
+            class="fy-notification-menu__badge"
+            [style.background]="themeTokens()?.button?.badgeBackground"
+            [style.color]="themeTokens()?.button?.badgeTextColor"
+          >
+            {{ unreadCountDisplay > 99 ? '99+' : unreadCountDisplay }}
+          </span>
+        }
       </button>
 
       <!-- Dropdown -->
-      <div 
-        *ngIf="isOpen() || isClosing()" 
-        class="fy-notification-menu__dropdown"
+      @if (isOpen() || isClosing()) {
+        <div 
+          class="fy-notification-menu__dropdown"
         [class]="composeAnimClasses(animationClassSuffix)"
         [style.width]="themeTokens()?.dropdown?.width"
         [style.background]="themeTokens()?.dropdown?.background"
@@ -60,20 +62,27 @@ import { FyNotificationService } from '../services/notification.service';
           <span class="fy-notification-menu__title">Notificações</span>
           
           <div class="fy-notification-menu__header-actions">
-            <button 
-              *ngIf="resolvedConfig().allowClear && notifications.length > 0"
-              class="fy-notification-menu__action-btn"
-              (click)="clearAll()"
-            >
-              Limpar tudo
-            </button>
+            @if (resolvedConfig().allowClear && notifications.length > 0) {
+              <button 
+                class="fy-notification-menu__action-btn"
+                (click)="clearAll()"
+              >
+                Limpar tudo
+              </button>
+            }
             
-            <button 
-              *ngIf="resolvedConfig().showViewAll && resolvedConfig().viewAllPosition.startsWith('header')"
-              class="fy-notification-menu__action-btn"
-              (click)="viewAll()"
-            >
-              Ver todas
+            @if (resolvedConfig().showViewAll && resolvedConfig().viewAllPosition.startsWith('header')) {
+              <button 
+                class="fy-notification-menu__action-btn"
+                (click)="viewAll()"
+              >
+                Ver todas
+              </button>
+            }
+
+            <!-- Botão fechar (Mobile/Tablet) -->
+            <button class="fy-notification-menu__close-btn" (click)="closeMenu()">
+              <fy-icon name="x"></fy-icon>
             </button>
           </div>
         </div>
@@ -81,64 +90,84 @@ import { FyNotificationService } from '../services/notification.service';
         <!-- List -->
         <div 
           class="fy-notification-menu__body" 
-          [class.fy-notification-menu__body--scroll]="shouldScroll()" 
-          [style.max-height]="shouldScroll() ? scrollHeight() : null"
+          [class.fy-notification-menu__body--scroll]="shouldScroll()"
         >
-          <div *ngIf="_notifications().length === 0" class="fy-notification-menu__empty">
-            Nenhuma notificação por enquanto.
-          </div>
+          @if (_notifications().length === 0) {
+            <div class="fy-notification-menu__empty">
+              Nenhuma notificação por enquanto.
+            </div>
+          }
 
-          <ng-container *ngIf="resolvedConfig().accordionMode; else simpleList">
-            @for (item of accordionItems(); track item.id) {
+          @if (resolvedConfig().accordionMode) {
+            @for (item of displayNotifications(); track item.id) {
               <div class="fy-notification-menu__item-wrapper">
                 <fy-accordion 
-                  [items]="[item]"
+                  [items]="[{ id: item.id, title: item.title, subtitle: item.description, content: item.details }]"
                   [flush]="true"
                   class="fy-notification-menu__accordion-item"
+                  [class.fy-notification-menu__item--unread]="!item.read"
+                  [class.fy-notification-menu__item--read]="item.read"
+                  (fyExpand)="onItemExpand(item)"
                 >
                 </fy-accordion>
+                @if (!item.read) {
+                  <div class="fy-notification-menu__unread-dot"></div>
+                }
               </div>
             }
-          </ng-container>
-
-          <ng-template #simpleList>
+          } @else {
             @for (item of displayNotifications(); track item.id) {
               <div 
                 class="fy-notification-menu__item"
                 [class.fy-notification-menu__item--unread]="!item.read"
+                [class.fy-notification-menu__item--read]="item.read"
                 (click)="onItemClick(item)"
               >
-                <div class="fy-notification-menu__item-icon" *ngIf="item.icon">
-                  <fy-icon [name]="item.icon"></fy-icon>
-                </div>
+                @if (item.icon) {
+                  <div class="fy-notification-menu__item-icon">
+                    <fy-icon [name]="item.icon"></fy-icon>
+                  </div>
+                }
                 <div class="fy-notification-menu__item-content">
                   <div class="fy-notification-menu__item-title">{{ item.title }}</div>
                   <div class="fy-notification-menu__item-desc">{{ item.description }}</div>
                   <div class="fy-notification-menu__item-date">{{ item.date | date:'short' }}</div>
                 </div>
-                <div class="fy-notification-menu__unread-dot" *ngIf="!item.read"></div>
+                @if (!item.read) {
+                  <div class="fy-notification-menu__item-actions">
+                    <button class="fy-notification-menu__read-btn" (click)="onMarkAsRead($event, item)">
+                      <fy-icon name="check"></fy-icon>
+                    </button>
+                  </div>
+                }
+                @if (!item.read) {
+                  <div class="fy-notification-menu__unread-dot"></div>
+                }
               </div>
             }
-          </ng-template>
+          }
         </div>
 
         <!-- Footer -->
-        <div 
-          *ngIf="resolvedConfig().showViewAll && resolvedConfig().viewAllPosition.startsWith('footer')" 
-          class="fy-notification-menu__footer"
-          [style.justify-content]="resolvedConfig().viewAllPosition.endsWith('right') ? 'flex-end' : 'flex-start'"
-        >
-          <button class="fy-notification-menu__action-btn" (click)="viewAll()">Ver todas</button>
-          <button 
-            *ngIf="shouldScroll() && displayNotifications().length < _notifications().length" 
-            class="fy-notification-menu__action-btn" 
-            (click)="loadMore()"
+        @if (resolvedConfig().showViewAll && resolvedConfig().viewAllPosition.startsWith('footer')) {
+          <div 
+            class="fy-notification-menu__footer"
+            [style.justify-content]="resolvedConfig().viewAllPosition.endsWith('right') ? 'flex-end' : 'flex-start'"
           >
-            Carregar mais
-          </button>
-        </div>
+            <button class="fy-notification-menu__action-btn" (click)="viewAll()">Ver todas</button>
+            @if (shouldScroll() && displayNotifications().length < _notifications().length) {
+              <button 
+                class="fy-notification-menu__action-btn" 
+                (click)="loadMore()"
+              >
+                Carregar mais
+              </button>
+            }
+          </div>
+        }
       </div>
-    </div>
+    }
+  </div>
   `,
   styles: [`
     .fy-notification-menu {
@@ -189,6 +218,24 @@ import { FyNotificationService } from '../services/notification.service';
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      box-shadow: var(--fy-notificationMenu-dropdown-shadow, 0 10px 40px rgba(0,0,0,0.1));
+      border: 1px solid var(--fy-notificationMenu-dropdown-borderColor, rgba(0,0,0,0.08));
+      background-color: var(--fy-notificationMenu-dropdown-background, #fff);
+      border-radius: var(--fy-notificationMenu-dropdown-borderRadius, 12px);
+      max-height: var(--fy-notificationMenu-dropdown-maxHeight, 450px);
+    }
+
+    @media (max-width: 768px) {
+      .fy-notification-menu__dropdown {
+        position: fixed;
+        top: calc(var(--fy-layout-header-height, 64px) + 8px);
+        left: 16px;
+        right: 16px;
+        width: calc(100% - 32px) !important;
+        max-height: calc(100vh - var(--fy-layout-header-height, 64px) - 32px) !important;
+        margin-top: 0;
+        z-index: 2000;
+      }
     }
 
     .fy-notification-menu__header {
@@ -197,6 +244,13 @@ import { FyNotificationService } from '../services/notification.service';
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid var(--fy-colors-border, rgba(0,0,0,0.05));
+      flex-shrink: 0;
+    }
+
+    .fy-notification-menu__header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .fy-notification-menu__title {
@@ -218,12 +272,38 @@ import { FyNotificationService } from '../services/notification.service';
       background: rgba(var(--fy-colors-primary-rgb), 0.08);
     }
 
+    .fy-notification-menu__close-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--fy-colors-text, inherit);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .fy-notification-menu__close-btn:hover {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .fy-notification-menu__close-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
     .fy-notification-menu__body {
+      flex: 1;
+      min-height: 0;
       overflow-y: auto;
     }
     .fy-notification-menu__body--scroll {
-      max-height: 320px;
-      overflow-y: auto;
+      max-height: var(--fy-notificationMenu-dropdown-maxHeight, 320px);
     }
 
     .fy-notification-menu__empty {
@@ -249,6 +329,21 @@ import { FyNotificationService } from '../services/notification.service';
 
     .fy-notification-menu__item--unread {
       background: rgba(var(--fy-colors-primary-rgb), 0.02);
+    }
+
+    .fy-notification-menu__item--read {
+      opacity: 0.6;
+      filter: grayscale(0.4);
+      transition: all 0.3s ease;
+    }
+
+    .fy-notification-menu__item--read:hover {
+      opacity: 0.8;
+      filter: grayscale(0.2);
+    }
+
+    .fy-notification-menu__accordion-item.fy-notification-menu__item--read ::ng-deep .fy-accordion__header {
+      opacity: 0.7;
     }
 
     .fy-notification-menu__unread-dot {
@@ -284,6 +379,31 @@ import { FyNotificationService } from '../services/notification.service';
       opacity: 0.7;
     }
 
+    .fy-notification-menu__item-actions {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    .fy-notification-menu__read-btn {
+      background: transparent;
+      border: none;
+      padding: 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--fy-colors-primary, #007aff);
+      opacity: 0.4;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fy-notification-menu__read-btn:hover {
+      opacity: 1;
+      background: rgba(var(--fy-colors-primary-rgb), 0.1);
+    }
+
     .fy-notification-menu__accordion-item {
       display: block;
       border-bottom: 1px solid var(--fy-colors-border, rgba(0,0,0,0.03));
@@ -293,6 +413,7 @@ import { FyNotificationService } from '../services/notification.service';
       padding: 8px 16px;
       border-top: 1px solid var(--fy-colors-border, rgba(0,0,0,0.05));
       display: flex;
+      flex-shrink: 0;
     }
   `],
   encapsulation: ViewEncapsulation.None
@@ -318,6 +439,14 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
   @Input() showViewAll?: boolean;
   @Input() viewAllPosition?: any;
   
+  @Input() markAllAsReadOnOpen?: boolean;
+  @Input() markAsReadOnClick?: boolean;
+  @Input() readApiEndpoint?: string;
+  @Input() readApiMethod?: 'POST' | 'PUT' | 'PATCH';
+  @Input() readApiHeaders?: Record<string, string>;
+  @Input() onRead?: (notification: NotificationItem) => void;
+  @Input() onReadAll?: (notifications: NotificationItem[]) => void;
+  
   @Input() activeAnimations: boolean | null = null;
   @Input() activeEffects: boolean | null = null;
   @Input() customStyles: Record<string, string> | null = null;
@@ -330,6 +459,8 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
   public isOpen = signal(false);
   public isClosing = signal(false);
 
+  private webClient = inject(FyWebClientService, { optional: true });
+
   constructor() {
     super(inject(FyLibService), 'fy-notification-menu');
     
@@ -339,7 +470,7 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
       this._notifications.set(current);
       const limit = this.resolvedConfig().limit;
       this.visibleLimit.set(Math.max(limit ?? 10, 10));
-    }, { allowSignalWrites: true });
+    });
   }
 
   themeTokens = computed(() => this.fylib.tokens().effects?.notificationMenu);
@@ -354,7 +485,12 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
       allowClear: this.enableClearAll ?? themeConfig?.allowClear ?? def.enableClearAll!,
       accordionMode: this.enableAccordion ?? themeConfig?.accordionMode ?? def.enableAccordion!,
       showViewAll: this.showViewAll ?? themeConfig?.showViewAll ?? def.showViewAll!,
-      viewAllPosition: this.viewAllPosition ?? themeConfig?.viewAllPosition ?? def.viewAllPosition!
+      viewAllPosition: this.viewAllPosition ?? themeConfig?.viewAllPosition ?? def.viewAllPosition!,
+      markAllAsReadOnOpen: this.markAllAsReadOnOpen ?? themeConfig?.markAllAsReadOnOpen ?? def.markAllAsReadOnOpen!,
+      markAsReadOnClick: this.markAsReadOnClick ?? themeConfig?.markAsReadOnClick ?? def.markAsReadOnClick!,
+      readApiEndpoint: this.readApiEndpoint ?? themeConfig?.readApiEndpoint,
+      readApiMethod: this.readApiMethod ?? themeConfig?.readApiMethod ?? def.readApiMethod!,
+      readApiHeaders: this.readApiHeaders ?? themeConfig?.readApiHeaders
     };
   });
 
@@ -408,6 +544,11 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
     this.isOpen.set(true);
     this.fyOpen.emit();
     this.triggerByEvent('fy-notification-menu.open', undefined, this.activeEffects);
+    
+    // Marcar todas como lidas se configurado
+    if (this.resolvedConfig().markAllAsReadOnOpen) {
+      this.markAllAsRead();
+    }
   }
 
   closeMenu() {
@@ -437,6 +578,65 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
 
   onItemClick(item: NotificationItem) {
     this.fyNotificationClick.emit(item);
+    if (this.resolvedConfig().markAsReadOnClick && !item.read) {
+      this.markAsRead(item);
+    }
+  }
+
+  onItemExpand(item: NotificationItem) {
+    if (this.resolvedConfig().markAsReadOnClick && !item.read) {
+      this.markAsRead(item);
+    }
+  }
+
+  onMarkAsRead(event: Event, item: NotificationItem) {
+    event.stopPropagation();
+    this.markAsRead(item);
+  }
+
+  private markAsRead(item: NotificationItem) {
+    this.notify.markAsRead(item.id);
+    if (this.onRead) this.onRead(item);
+    
+    // Backend Call
+    const config = this.resolvedConfig();
+    if (config.readApiEndpoint && this.webClient) {
+      this.sendReadToBackend([item.id]);
+    }
+  }
+
+  private markAllAsRead() {
+    const unread = this._notifications().filter(n => !n.read);
+    if (unread.length === 0) return;
+
+    this.notify.markAllAsRead();
+    if (this.onReadAll) this.onReadAll(unread);
+
+    // Backend Call
+    const config = this.resolvedConfig();
+    if (config.readApiEndpoint && this.webClient) {
+      this.sendReadToBackend(unread.map(n => n.id));
+    }
+  }
+
+  private sendReadToBackend(ids: string[]) {
+    const config = this.resolvedConfig();
+    if (!this.webClient || !config.readApiEndpoint) return;
+
+    const body = { ids };
+    const method = (config.readApiMethod || 'POST').toLowerCase();
+    
+    // O FyWebClientService já lida com crypto e headers
+    const request = (this.webClient as any)[method](config.readApiEndpoint, body, {
+      headers: config.readApiHeaders,
+      cryptoEnabled: true // Habilita criptografia se configurada no motor global
+    });
+
+    if (request) {
+      request.subscribe({
+        error: (err: any) => console.error('[FyNotificationMenu] Failed to mark as read in backend', err)
+      });
+    }
   }
 
   get animationClassSuffix(): string {

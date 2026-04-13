@@ -76,9 +76,98 @@ export const myCustomTheme: ThemeDefinition = {
   - Cantos muito arredondados (`10px` a `16px`) para um visual amigável.
   - Efeitos de profundidade e elevação usando sombras suaves e camadas translúcidas.
   - Dark Mode profundo, otimizado para telas OLED, mantendo o efeito de vidro.
+- `finey-nexus-1`: tema focado em alta tecnologia e conexões:
+  - Estética baseada em grids cibernéticos e cores neon sutis.
+  - Papel de parede padrão: `cyber-grid` otimizado.
+- `finey-hub-1`: tema inspirado na UI do GitHub:
+  - Clean, profissional e com suporte nativo a Light/Dark mode.
+  - Mistura de elementos modernos com ícones sutis em 8-bit.
+- `finey-puffy-1`: linha temática "Puffy", com foco em estética 100% feminina:
+  - Paleta de cores em tons de rosa blush, vibrante e lavanda.
+  - Bordas extremamente arredondadas (`16px`) e tipografia suave.
+  - Animações de "Bounce" e efeitos de brilho rosa ("Sparkle").
+  - Dark Mode elegante com fundo cinza-escuro e toques de rosa vibrante.
+  - Efeitos de fundo automáticos: corações caindo (`hearts`) em loop.
+  - Papel de parede padrão: padrão de corações animados flutuando na diagonal.
 
 Todos os temas registram animações específicas em `componentAnimations` para `fy-button`, `fy-input`, `fy-layout`, `fy-slot:sidebar`, `fy-card` e `fy-table`. Temas como `finey-workbench-1`, `finey-workbench-2` e `finey-workbench-3` utilizam nomes de animação próprios (`layout-macos-window-enter`, `sidebar-macos-slide-in`, `input-focus-macos-glow`, `card-macos-fade-in`, etc.), que são registrados em `@fylib/animation`.
 Além disso, `fy-card` utiliza `effects.card` (background, borderColor, shadow, dividerColor) e animação `card-fade-in` como padrão.
+
+### Efeitos de Fundo do Tema (`backgroundEffect`)
+
+Os temas podem pré-definir efeitos de fundo globais que são ativados automaticamente quando o tema é selecionado.
+
+```typescript
+export const fineyPuffy1Theme: ThemeDefinition = {
+  name: 'finey-puffy-1',
+  backgroundEffect: {
+    name: 'hearts',
+    intensity: 40,
+    speed: 1,
+    loop: true
+  },
+  // ... tokens
+};
+```
+
+**Regras de Ativação:**
+Para que o efeito seja renderizado, as seguintes condições devem ser atendidas:
+1.  **Habilitação Global**: A flag `themeEffectsEnabled` deve estar como `true` no seu `AppConfig` (ex: `theme.config.ts`).
+2.  **Uso no Template**: A propriedade `bgEffect` deve ser adicionada explicitamente ao componente (ex: `<fy-layout bgEffect>`). Se o valor for omitido ou for `"auto"`, o sistema buscará o efeito padrão do tema.
+
+### Papéis de Parede (`wallpaper`)
+
+O módulo de Wallpapers permite aplicar padrões de fundo (estáticos ou animados) a qualquer componente.
+
+```typescript
+export const fineyPuffy1Theme: ThemeDefinition = {
+  name: 'finey-puffy-1',
+  // ... backgroundEffect
+  wallpaper: {
+    name: 'hearts',
+    type: 'pattern',
+    opacity: 0.1
+  },
+  tokens: {
+    // Definição de tokens...
+  }
+};
+```
+
+**Regras de Ativação:**
+Assim como os efeitos, os wallpapers seguem uma lógica de dupla confirmação:
+1.  **Habilitação Global**: A flag `wallpaperEnabled` deve estar como `true` no `AppConfig`.
+2.  **Uso da Diretiva**: A diretiva `fyWallpaper` deve estar presente no elemento HTML.
+
+**Exemplos com a diretiva `fyWallpaper`**:
+- `<fy-layout fyWallpaper> ... </fy-layout>` (Aplica o wallpaper padrão do tema ao layout).
+- `<div fyWallpaper="hearts" [wallpaperOpacity]="0.3"> ... </div>` (Aplica um padrão específico, ignorando o do tema).
+- `<div fyWallpaper [wallpaperOpacity]="0.5"> ... </div>` (Usa o padrão do tema com opacidade customizada).
+
+*Nota: O padrão `cyber-grid` foi otimizado para uma aparência mais sutil (opacidade padrão reduzida de 0.4 para 0.15).*
+
+#### Efeitos Paramétricos
+
+Efeitos globais (`confetti`, `hearts`) podem ser disparados com parâmetros:
+
+```typescript
+themeEngine.triggerEffect('hearts', {
+  intensity: 200,
+  speed: 1.5,
+  loop: true,
+  id: 'meu-id-unico'
+});
+```
+
+- `intensity`: Quantidade de partículas.
+- `speed`: Velocidade da queda/movimento.
+- `loop`: Se o efeito deve reiniciar ao terminar.
+- `id`: Usado para identificar o loop de animação e permitir o seu encerramento.
+
+Para parar um efeito em loop:
+```typescript
+themeEngine.triggerEffect('hearts', { id: 'meu-id-unico', stop: true });
+```
 
 ### Alternando entre Modos (Light/Dark)
 
@@ -164,7 +253,8 @@ O contrato completo (`AppConfig`, `ComponentSelector`, `UIEventKey`, `EffectName
         "fy-layout.enter": "window-open",
         "fy-slot:sidebar.open": "sidebar-slide-in",
         "fy-slot:sidebar.close": "sidebar-slide-out",
-        "fy-card.submit": "confetti"
+        "fy-card.submit": "confetti",
+        "fy-toast.open": "confetti"
       }
     }
     ```
@@ -201,7 +291,8 @@ export const themeControllerConfig: AppConfig = {
     'fy-layout.enter': 'window-open',
     'fy-slot:sidebar.open': 'sidebar-slide-in',
     'fy-slot:sidebar.close': 'sidebar-slide-out',
-    'fy-card.submit': 'confetti'
+    'fy-card.submit': 'confetti',
+    'fy-toast.open': 'confetti'
   }
 };
 ```
@@ -218,8 +309,8 @@ Ao usar `AppConfig`, você ganha IntelliSense completo para:
 Além de cores, espaçamento e tipografia, os temas expõem tokens estruturais:
 
 - `layout.app.gap`: espaçamento entre regiões do layout.
-- `layout.header.height`, `layout.header.padding`, `layout.header.shadow`.
-- `layout.sidebar.width`, `layout.sidebar.padding`.
+- `layout.header.height`, `layout.header.padding`, `layout.header.background`, `layout.header.shadow`.
+- `layout.sidebar.width`, `layout.sidebar.padding`, `layout.sidebar.background`.
 - `layout.content.padding`.
 
 Controles de toggle do header e sidebar:
@@ -331,9 +422,24 @@ Grupo `effects.card`:
 - `background`, `borderColor`, `shadow`, `dividerColor`.
 - `effects.card.icons.header` e `effects.card.icons.footer`: ícones padrão sugeridos para header/footer de `fy-card`.
 
+Grupo `effects.table`:
+- `background`, `borderColor`, `headerBackground`, `rowHoverBackground`, `stripedBackground`, `textColor`, `headerTextColor`.
+
+Grupo `effects.chart`:
+- `background`, `gridColor`, `labelColor`, `colors` (paleta de cores para séries).
+
+Grupo `effects.toast`:
+- `background`, `borderColor`, `textColor`, `shadow`, `borderRadius`, `padding`, `gap`, `iconSize`, `closeIcon`, `iconColor` (mapeamento de cores por tipo), `icons` (mapeamento de ícones por tipo).
+
 Grupo `effects.badge`:
 - `background`, `textColor`, `borderRadius`
 - `animation`: `'shine' | 'none'` – animação de brilho em loop para chamar atenção (ex.: rótulos “BETA”/“NEW”).
+
+Grupo `effects.notificationMenu`:
+- `button.background`, `button.textColor`, `button.icon`, `button.badgeBackground`, `button.badgeTextColor`.
+- `dropdown.background`, `dropdown.borderColor`, `dropdown.shadow`, `dropdown.borderRadius`, `dropdown.maxHeight`.
+- `item.background`, `item.hoverBackground`, `item.textColor`, `item.descriptionColor`, `item.dividerColor`, `item.unreadIndicator`.
+- `config.showAll`, `config.limit`, `config.allowClear`, `config.accordionMode`, `config.showViewAll`, `config.viewAllPosition`, `config.markAllAsReadOnOpen`, `config.markAsReadOnClick`, `config.readApiEndpoint`.
 
 Grupo `icons`:
 - `icons.defaultSet`: set padrão de ícones (ex.: `'ph'`, `'fa'`, `'mdi'`).
@@ -393,7 +499,7 @@ animationEngine.registerGlobalEffectPlugin(confettiPlugin);
 ### Disparando Efeitos
 
 ```typescript
-animationEngine.triggerEffect('confetti');
+animationEngine.triggerEffect('confetti', { intensity: 50, loop: true });
 ```
 
 Em aplicações Angular usando o adapter do fyLib, o fluxo recomendado é configurar `effectTriggers` no `theme-controller.json` e deixar que os componentes disparem eventos sem conhecer o motor de efeitos. A regra de prioridade é:
@@ -401,18 +507,27 @@ Em aplicações Angular usando o adapter do fyLib, o fluxo recomendado é config
 - Caso contrário, se o componente fornecer um `EffectName` por props (instância), ele será usado apenas para o seletor corrente.
 - Se nenhum existir, nenhum efeito é disparado.
 
+#### Parâmetros de Efeitos
+Efeitos como `confetti` e `hearts` agora aceitam parâmetros de customização:
+- `intensity`: Quantidade de partículas.
+- `speed`: Velocidade da animação.
+- `loop`: Se deve repetir infinitamente.
+- `id`: ID único para controle (parar/atualizar).
+
 - `fy-button` dispara `fy-button.click`.
 - `fy-input` dispara `fy-input.focus`.
 - `fy-layout` dispara `fy-layout.enter`.
 - `fy-slot` com `name="sidebar"` dispara `fy-slot:sidebar.open` e `fy-slot:sidebar.close`.
 - `fy-card.submit` dispara o evento de submissão do card.
 - `fy-table.rowClick` dispara o evento de clique na linha da tabela.
+- `fy-toast` dispara `fy-toast.open` ao ser exibido.
 
 O `FyLibService` converte esses eventos em chamadas `animationEngine.triggerEffect` usando o mapa configurado e o nome passado por instância como fallback.
 
 ### Efeitos Disponíveis por Padrão
 
 - `confetti`: partículas coloridas sobre a tela (plugin Canvas).
+- `hearts`: corações coloridos caindo (plugin Canvas - cores do tema Puffy).
 - `window-open`: flash suave branco em toda a janela (plugin DOM overlay).
 - `sidebar-slide-in`: glow azul na borda esquerda (plugin DOM overlay).
 - `sidebar-slide-out`: glow vermelho na borda esquerda (plugin DOM overlay).
@@ -428,13 +543,16 @@ Os efeitos acima são registrados automaticamente via:
 - [default-effects.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/animation/src/effects/default-effects.ts)
 - Registradores de plugins no adapter Angular:
   - [confetti.plugin.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/confetti.plugin.ts)
+  - [hearts.plugin.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/hearts.plugin.ts)
   - [ui-effects.plugin.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/ui-effects.plugin.ts)
   - [register-all.ts](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/adapters/angular/src/effects/register-all.ts) – ponto único para registrar todos os plugins.
 
 Para desativar globalmente:
 ```json
 {
-  "effectsEnabled": false
+  "effectsEnabled": false,
+  "themeEffectsEnabled": false,
+  "wallpaperEnabled": false
 }
 ```
 

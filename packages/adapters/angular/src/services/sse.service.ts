@@ -3,8 +3,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { FyLibService } from './fylib.service';
 import { FyNotificationService } from './notification.service';
 import { SSEConfig } from '@fylib/core';
+import { logger } from '@fylib/logger';
 
 @Injectable({
+
   providedIn: 'root'
 })
 export class FySSEService implements OnDestroy {
@@ -41,13 +43,14 @@ export class FySSEService implements OnDestroy {
       });
 
       this.eventSource.onopen = () => {
-        console.log('[fyLib] SSE Connected to:', this.config?.endpoint);
+        logger.info('SSE', 'SSE Connected to:', this.config?.endpoint);
       };
 
       this.eventSource.onerror = (error) => {
-        console.error('[fyLib] SSE Error:', error);
+        logger.error('SSE', 'SSE Error:', error);
         this.reconnect();
       };
+
 
       // Registrar eventos mapeados
       if (this.config.events) {
@@ -64,15 +67,18 @@ export class FySSEService implements OnDestroy {
       }
 
     } catch (e) {
-      console.error('[fyLib] Failed to create EventSource:', e);
+      logger.error('SSE', 'Failed to create EventSource:', e);
       this.reconnect();
     }
   }
 
   private handleEvent(eventName: string, data: any) {
     if (!this.config?.events || !this.config.events[eventName]) return;
+    
+    logger.debug('SSE', `Received event: ${eventName}`, data);
 
     // Executa a função mapeada passando os serviços necessários
+
     this.config.events[eventName](data, {
       notification: this.notification,
       // O menu de notificações será integrado via um serviço de estado global ou via FyNotificationService
@@ -85,9 +91,10 @@ export class FySSEService implements OnDestroy {
     
     const delay = this.config?.reconnectDelay ?? 5000;
     this.reconnectTimeout = setTimeout(() => {
-      console.log('[fyLib] SSE Reconnecting...');
+      logger.info('SSE', 'SSE Reconnecting...');
       this.connect();
     }, delay);
+
   }
 
   disconnect() {

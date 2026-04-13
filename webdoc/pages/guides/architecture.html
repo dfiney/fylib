@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visão Técnica | fyLib</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <style>
+        .arch-layer {
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--fy-border);
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+        .arch-layer:hover {
+            border-color: var(--fy-primary);
+            background-color: var(--fy-surface);
+        }
+        .layer-name {
+            font-weight: 700;
+            color: var(--fy-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ui-level-card {
+            background-color: var(--fy-surface);
+            border: 1px solid var(--fy-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: 100%;
+        }
+        .level-number {
+            font-size: 2rem;
+            font-weight: 800;
+            opacity: 0.2;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-wrapper">
+    <aside id="sidebar">
+        <div class="sidebar-logo">
+            <i class="ph-cube text-primary fs-3"></i>
+            <span class="h5 mb-0 fw-bold">fyLib</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">Início</div>
+            <a href="../../index.html" class="nav-link">
+                <i class="ph-house"></i> Apresentação
+            </a>
+            <a href="getting-started.html" class="nav-link">
+                <i class="ph-rocket-launch"></i> Primeiros Passos
+            </a>
+            
+            <div class="nav-section">Arquitetura</div>
+            <a href="architecture.html" class="nav-link active">
+                <i class="ph-tree-structure"></i> Visão Técnica
+            </a>
+            <a href="themes.html" class="nav-link">
+                <i class="ph-palette"></i> Sistema de Temas
+            </a>
+            <a href="animations.html" class="nav-link">
+                <i class="ph-video-camera"></i> Animações e Efeitos
+            </a>
+            
+            <div class="nav-section">Componentes (Angular)</div>
+            <a href="../components/accordion.html" class="nav-link"><i class="ph-list-bullets"></i> Accordion</a>
+            <a href="../components/badge.html" class="nav-link"><i class="ph-tag"></i> Badge</a>
+            <a href="../components/button.html" class="nav-link"><i class="ph-square"></i> Button</a>
+            <a href="../components/card.html" class="nav-link"><i class="ph-cards"></i> Card</a>
+            <a href="../components/chart.html" class="nav-link"><i class="ph-chart-bar"></i> Chart</a>
+            <a href="../components/icon.html" class="nav-link"><i class="ph-smiley"></i> Icon</a>
+            <a href="../components/input.html" class="nav-link"><i class="ph-text-t"></i> Input</a>
+            <a href="../components/modal.html" class="nav-link"><i class="ph-window"></i> Modal</a>
+            <a href="../components/nav-link.html" class="nav-link"><i class="ph-link"></i> Nav Link</a>
+            <a href="../components/notification-menu.html" class="nav-link"><i class="ph-bell-ringing"></i> Notifications</a>
+            <a href="../components/select.html" class="nav-link"><i class="ph-caret-double-down"></i> Select</a>
+            <a href="../components/table.html" class="nav-link"><i class="ph-table"></i> Table</a>
+            <a href="../components/text.html" class="nav-link"><i class="ph-text-aa"></i> Text (Crypto)</a>
+            <a href="../components/toast.html" class="nav-link"><i class="ph-notification"></i> Toast</a>
+            
+            <div class="nav-section mt-4">
+                <span class="badge-react">React <small>(Em breve)</small></span>
+            </div>
+        </nav>
+    </aside>
+
+    <main id="main-content">
+        <header>
+            <button class="btn d-lg-none me-3" id="sidebar-toggle">
+                <i class="ph-list"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <div id="theme-toggle">
+                    <i class="ph-moon"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="container-fluid p-4 p-lg-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../../index.html">Início</a></li>
+                    <li class="breadcrumb-item active">Visão Técnica</li>
+                </ol>
+            </nav>
+
+            <h1 class="fw-800 mb-4">Arquitetura e Níveis de UI</h1>
+            <p class="lead mb-5 text-muted">Entenda os princípios técnicos que tornam o fyLib a plataforma de UI mais flexível e poderosa do mercado.</p>
+
+            <!-- Modular Layers -->
+            <section class="mb-5">
+                <h3 class="fw-bold mb-4">Estrutura de Módulos</h3>
+                <p class="mb-4">O fyLib é construído sobre uma arquitetura de camadas desacopladas, garantindo que a definição do componente seja independente de sua implementação visual.</p>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="arch-layer">
+                            <div class="layer-name"><i class="ph-book-bookmark"></i> @fylib/catalog</div>
+                            <p class="text-muted small mb-0">O repositório de contratos. Define o "que" é o componente (props, variantes, features) sem conter HTML ou CSS.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="arch-layer">
+                            <div class="layer-name"><i class="ph-palette"></i> @fylib/theme</div>
+                            <p class="text-muted small mb-0">Engine de Design Tokens. Controla toda a aparência visual através de variáveis dinâmicas e escalas de design.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="arch-layer">
+                            <div class="layer-name"><i class="ph-magic-wand"></i> @fylib/animation</div>
+                            <p class="text-muted small mb-0">Gerencia microinterações e efeitos globais (como corações ou confetes) de forma isolada do tema e do componente. Suporta parâmetros de intensidade, velocidade e loop.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="arch-layer">
+                            <div class="layer-name"><i class="ph-plug"></i> Adapters (Angular/React)</div>
+                            <p class="text-muted small mb-0">A camada de renderização. Transforma os contratos do Catalog em componentes funcionais. O adapter Angular utiliza <strong>Angular 17+</strong> com a nova sintaxe de controle de fluxo (<code>&#64if</code>, <code>&#64for</code>) para performance máxima. <strong>Seguro para SSR</strong>: Todos os componentes e diretivas realizam checks de plataforma (<code>isPlatformBrowser</code>) para garantir compatibilidade com Server-Side Rendering.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="arch-layer">
+                            <div class="layer-name"><i class="ph-list-magnifying-glass"></i> @fylib/logger</div>
+                            <p class="text-muted small mb-0">Sistema de logging centralizado. Suporta múltiplos destinos (console, arquivo remoto e local). No Node.js (SSR), grava diretamente em disco via FileSink, resolvendo caminhos relativos ou absolutos automaticamente.</p>
+                        </div>
+
+                        <div class="arch-layer">
+                            <div class="layer-name"><i class="ph-check-square"></i> @fylib/testing</div>
+                            <p class="text-muted small mb-0">Infraestrutura de testes baseada em Vitest e Angular Testing Library. Garante a confiabilidade do monorepo e a conformidade com padrões de Acessibilidade (A11y) WCAG 2.1 AA.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UI Levels -->
+            <section class="mb-5">
+                <h3 class="fw-bold mb-4">Os Três Níveis de UI</h3>
+                <p class="mb-4">Dividimos nossos componentes em três níveis lógicos para garantir escalabilidade e orquestração eficiente.</p>
+                
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="ui-level-card">
+                            <div class="level-number">01</div>
+                            <h5 class="fw-bold">Primitive Components</h5>
+                            <p class="text-muted small">Blocos básicos de construção. Unidades visuais atômicas sem dependências externas.</p>
+                            <span class="badge bg-light text-dark border">Ex: Button, Input, Icon</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ui-level-card">
+                            <div class="level-number">02</div>
+                            <h5 class="fw-bold">Composite Components</h5>
+                            <p class="text-muted small">Componentes de negócio que agrupam primitivos para formar unidades funcionais complexas.</p>
+                            <span class="badge bg-light text-dark border">Ex: Card, Accordion, Toast</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="ui-level-card">
+                            <div class="level-number">03</div>
+                            <h5 class="fw-bold">Layout Structures</h5>
+                            <p class="text-muted small">Unidades estruturais declarativas que orquestram o espaço e a responsividade global.</p>
+                            <span class="badge bg-light text-dark border">Ex: AppLayout, Grid, Sidebar</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hierarchy of Responsibilities -->
+            <section class="mb-5">
+                <div class="doc-card bg-dark text-white border-0">
+                    <h3 class="fw-bold mb-4">Hierarquia de Responsabilidades</h3>
+                    <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-center gap-3">
+                            <span class="badge bg-primary rounded-circle p-2"><i class="ph-layout"></i></span>
+                            <div><strong>Layout</strong> define a Estrutura.</div>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center gap-3">
+                            <span class="badge bg-success rounded-circle p-2"><i class="ph-palette"></i></span>
+                            <div><strong>Theme</strong> define a Aparência.</div>
+                        </li>
+                        <li class="mb-3 d-flex align-items-center gap-3">
+                            <span class="badge bg-warning rounded-circle p-2"><i class="ph-video-camera"></i></span>
+                            <div><strong>Animation</strong> define o Movimento.</div>
+                        </li>
+                        <li class="mb-0 d-flex align-items-center gap-3">
+                            <span class="badge bg-info rounded-circle p-2"><i class="ph-cube"></i></span>
+                            <div><strong>Component</strong> define o Conteúdo.</div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="mt-5 pt-5 pb-4 text-center border-top">
+                <p class="text-muted small">© 2026 Finey – Todos os direitos reservados.</p>
+            </footer>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/main.js"></script>
+</body>
+</html>

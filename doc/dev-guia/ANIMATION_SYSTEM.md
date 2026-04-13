@@ -55,7 +55,7 @@ Os nomes de animações específicos por componente/evento são tipados em `@fyl
 - `ThemeName` – `'default' | 'finey-workbench-1' | 'finey-workbench-2' | 'windows-xp' | 'windows-7' | 'christmas'`.
 - `ComponentSelector` – `'fy-button' | 'fy-input' | 'fy-layout' | 'fy-slot' | 'fy-slot:sidebar' | 'fy-card'`.
 - `UIEventKey` – `'fy-button.click' | 'fy-input.focus' | 'fy-layout.enter' | 'fy-slot:sidebar.open' | 'fy-slot:sidebar.close' | 'fy-card.enter' | 'fy-card.submit'`.
-- `EffectName` – `'confetti' | 'window-open' | 'sidebar-slide-in' | 'sidebar-slide-out' | 'window-macos-sheet-open' | 'window-macos-sheet-close'`.
+- `EffectName` – `'confetti' | 'hearts' | 'window-open' | 'sidebar-slide-in' | 'sidebar-slide-out' | 'window-macos-sheet-open' | 'window-macos-sheet-close'`.
 
 ### Engine de Animações (`@fylib/animation`)
 
@@ -67,12 +67,29 @@ API principal:
 animationEngine.registerAnimation(definition);
 animationEngine.registerEffect(effect);
 animationEngine.playAnimation(name);
-animationEngine.triggerEffect(name);
+animationEngine.triggerEffect(name, params?);
 ```
+
+#### Parâmetros de Efeitos
+
+Efeitos globais como `confetti` e `hearts` agora aceitam os seguintes parâmetros no objeto `params`:
+
+- `intensity: number` – Quantidade de partículas (ex: `50`, `100`, `200`).
+- `speed: number` – Multiplicador de velocidade da animação (ex: `0.5` para lento, `2.0` para rápido).
+- `loop: boolean` – Se `true`, o efeito será executado continuamente até ser explicitamente parado.
+- `id: string` – ID único para o loop de animação, permitindo que o sistema identifique e pare uma instância específica (ex: ao trocar de página ou destruir um componente).
+- `stop: boolean` – Se `true`, para o efeito associado ao `id` informado.
 
 Plugins:
 - `AnimationPlugin` permite interceptar animações (onBeforeAnimation/onAfterAnimation).
-- `GlobalEffectPlugin` permite reagir a efeitos do tipo `global`.
+- `GlobalEffectPlugin` permite reagir a efeitos do tipo `global`. Recebe o efeito completo com `params`.
+
+#### Efeitos Disponíveis por Padrão
+
+- `confetti`: Explosão de confetes coloridos baseada em Canvas.
+- `hearts`: Chuva de corações coloridos baseada em Canvas (otimizado para o tema Puffy).
+- `window-open`: Efeito visual de entrada de janela.
+- `sidebar-slide-in` / `sidebar-slide-out`: Efeitos de transição para a barra lateral.
 
 ### Engine de Tema (`@fylib/theme`)
 
@@ -82,7 +99,33 @@ Além de resolver tokens, expõe:
 
 ```ts
 themeEngine.getComponentAnimation(componentSelector: string, event: string): string | undefined;
+themeEngine.getBackgroundEffect(): { name: string, intensity?: number, speed?: number, loop?: boolean } | undefined;
+themeEngine.getWallpaper(): WallpaperDefinition | undefined;
 ```
+
+#### Configuração de Efeitos de Fundo nos Temas
+
+Os temas podem agora definir efeitos de fundo e papéis de parede padrão diretamente na sua definição (`ThemeDefinition`):
+
+```ts
+export const fineyPuffy1Theme: ThemeDefinition = {
+  name: 'finey-puffy-1',
+  backgroundEffect: {
+    name: 'hearts',
+    intensity: 100,
+    speed: 1,
+    loop: true
+  },
+  wallpaper: {
+    name: 'hearts',
+    type: 'pattern',
+    opacity: 0.1
+  },
+  tokens: { ... }
+};
+```
+
+Esses efeitos só serão ativados se as flags globais `themeEffectsEnabled` e `wallpaperEnabled` no `AppConfig` estiverem marcadas como `true`. Por padrão, ambas são `false` para garantir performance inicial.
 
 Essa função:
 - Lê o tema ativo.
@@ -121,6 +164,7 @@ export type UIEventKey =
 
 export type EffectName =
   | 'confetti'
+  | 'hearts'
   | 'window-open'
   | 'sidebar-slide-in'
   | 'sidebar-slide-out'
@@ -134,6 +178,8 @@ export type DeepPartial<T> = {
 export interface AppConfig {
   theme: ThemeName;
   animationsEnabled: boolean;
+  themeEffectsEnabled?: boolean;
+  wallpaperEnabled?: boolean;
   disableAnimationsForComponents?: ComponentSelector[];
   tokenOverrides?: DeepPartial<DesignTokens>;
   componentAnimationsOverrides?: ComponentAnimationsOverrides;
@@ -153,6 +199,8 @@ Exemplo de uso no JSON:
 {
   "theme": "default",
   "animationsEnabled": true,
+  "themeEffectsEnabled": false,
+  "wallpaperEnabled": false,
   "disableAnimationsForComponents": [],
   "tokenOverrides": {},
   "componentAnimationsOverrides": {
@@ -190,6 +238,34 @@ Para qualquer componente UI (ex.: `fy-button`, `fy-layout`, `fy-slot`), a engine
 
 Se qualquer uma dessas etapas bloquear a animação, nada é executado para aquele evento.
 
+## Ciclo de Decisão de Efeitos de Fundo (Background Effects)
+
+Para efeitos de fundo globais (ex.: `hearts`, `confetti`), a engine segue:
+
+1. **Config Global (`themeEffectsEnabled`)**
+   - Se `false`, efeitos pré-definidos nos temas são ignorados por padrão.
+
+2. **Presença da Propriedade (`bgEffect`)**
+   - O efeito de fundo só será processado se a propriedade `bgEffect` estiver presente no componente (ex: `<fy-layout bgEffect>`).
+
+3. **Resolução de Valor**:
+   - Se `bgEffect` for omitido ou for `"auto"`/`""`, o sistema utiliza o efeito padrão do tema (`backgroundEffect`).
+   - Se for passado um nome específico (ex: `bgEffect="confetti"`), este terá prioridade total.
+
+## Ciclo de Decisão de Wallpapers
+
+O sistema de wallpapers segue uma lógica idêntica aos efeitos de fundo:
+
+1. **Config Global (`wallpaperEnabled`)**
+   - Se `false`, nenhum papel de parede é renderizado.
+
+2. **Presença da Diretiva (`fyWallpaper`)**
+   - O papel de parede só será processado se a diretiva `fyWallpaper` estiver presente no elemento.
+
+3. **Resolução de Valor**:
+   - Se a diretiva for usada sem valor ou com `"auto"`/`""`, utiliza o wallpaper padrão do tema (`wallpaper`).
+   - Se for passado um nome específico (ex: `fyWallpaper="geometric"`), este terá prioridade total.
+
 ### Integração com o Adapter Angular
 
 ### Serviço Central (`FyLibService`)
@@ -201,9 +277,11 @@ Funções relevantes (com tipos fortes):
 ```ts
 isAnimationsEnabledFor(componentSelector: ComponentSelector): boolean;
 playAnimation(name: string): void;
-triggerEffect(name: string): void;
+triggerEffect(name: string, params?: Record<string, any>): void;
 triggerEffectForEvent(eventKey: UIEventKey, componentSelector?: ComponentSelector, instanceFlag?: boolean | null): void;
 getComponentAnimation(componentSelector: ComponentSelector, event: string): string | undefined;
+getThemeBackgroundEffect(): any;
+getThemeWallpaper(): any;
 isEffectsEnabledFor(componentSelector: ComponentSelector, instanceFlag: boolean | null | undefined): boolean;
 ```
 
@@ -232,11 +310,20 @@ Eventos recomendados (tipados em `UIEventKey`):
 
 Efeitos globais padrão registrados (`EffectName`):
 - `confetti`
+- `hearts`
 - `window-open`
 - `sidebar-slide-in`
 - `sidebar-slide-out`
 - `window-macos-sheet-open`
 - `window-macos-sheet-close`
+
+#### Parâmetros de Efeitos Globais (`params`)
+Efeitos como `confetti` e `hearts` aceitam parâmetros para customização:
+- `intensity`: Quantidade de partículas.
+- `speed`: Velocidade da animação.
+- `loop`: Se deve repetir infinitamente.
+- `id`: Identificador único para controle do ciclo de vida.
+- `stop`: Se `true`, interrompe o efeito com o `id` correspondente.
 
 ### Diretiva de Animação (`FyAnimationDirective`)
 

@@ -57,9 +57,9 @@ export class FyIconComponent {
     const tokens = this.fylib.tokens() as any;
     const defaultColor = tokens?.icons?.color;
     const defaultStroke = tokens?.icons?.strokeWidth;
-    const color = this.color ?? defaultColor ?? null;
+    const color = this.color ?? (defaultColor ? String(defaultColor) : null);
     if (color) style['color'] = color;
-    const sw = this.strokeWidth ?? defaultStroke ?? null;
+    const sw = this.strokeWidth ?? (defaultStroke ? String(defaultStroke) : null);
     if (sw != null) style['--fy-icon-stroke-width'] = String(sw);
     return style;
   });

@@ -7,17 +7,42 @@ Este guia detalha como transformar uma definição de componente do `@fylib/cata
 O adapter está organizado para separar as responsabilidades:
 - `base/`: Classes base e utilitários.
 - `components/`: Implementações visuais dos componentes (ex: `fy-button`).
-- `directives/`: Lógica de manipulação de DOM (Temas, Animações).
+- `directives/`: Lógica de manipulação de DOM (Temas, Animações, Wallpapers).
 - `services/`: Singleton para controle de estado global (ThemeEngine, AnimationEngine).
+- `providers.ts`: Definição de `provideFyLib` para inicialização via framework.
+
+## ⚙️ Inicialização e Configuração (provideFyLib)
+
+A forma recomendada de inicializar o fyLib em uma aplicação Angular (v17+) é através do provider de ambiente `provideFyLib`. Ele permite injetar a configuração inicial (`AppConfig`) diretamente no ciclo de vida do framework.
+
+```typescript
+// app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideFyLib } from '@fylib/adapter-angular';
+import { myAppConfig } from './fylib.config';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideFyLib(myAppConfig)
+  ]
+};
+```
+
+O `provideFyLib` aceita um objeto parcial de `AppConfig`. Se não for fornecido, a biblioteca utilizará os valores padrão definidos no `ConfigManager`.
+
+### ⚖️ Regras de Precedência de Configuração
+
+O fyLib no Angular trabalha com a seguinte prioridade para evitar conflitos:
+
+1.  **Provider (`provideFyLib`)**: Se você passar um objeto de configuração no `app.config.ts`, ele será a fonte de verdade absoluta. O polling automático do arquivo JSON é desativado para garantir que a configuração estática (vinda dos arquivos `.config.ts` do seu projeto) não seja sobrescrita acidentalmente em tempo de execução.
+2.  **Remote JSON (`theme-controller.json`)**: Se o provider **não** for utilizado (ou for passado um objeto vazio `{}`), o adapter tentará detectar e monitorar o arquivo `/fylib/theme-control/theme-controller.json` via HTTP a cada 3 segundos.
+3.  **Default Config**: Caso nenhuma das opções acima seja encontrada, o `ConfigManager` utiliza os valores padrão da biblioteca (tema 'default', animações ligadas, logs 'info', efeitos de tema desligados, wallpapers desligados). Ambas as flags `themeEffectsEnabled` e `wallpaperEnabled` são `false` por padrão na engine.
+
+Essa estratégia permite que você utilize arquivos como `theme-controller.config.ts`, `sse.config.ts` e `crypto.config.ts` localmente no seu projeto (como feito no playground) e os injete via provider, mantendo total controle sobre o comportamento da biblioteca.
 
 ## 🧱 Classe Base de Componentes
 
-Todos os componentes do adapter devem herdar de `BaseFyComponent`. Essa classe concentra:
-- Resolução de animações por instância/tema/config (`resolveAnim`).
-- Composição de classes de animação (`composeAnimClasses`).
-- Ativação/desativação de animações por instância (`isAnimationsActive`).
-- Resolução de estilos inline via tokens/overrides (`getHostStyles`).
-- Disparo de efeitos com prioridade correta (`triggerByEvent` e `triggerDirect`).
+Todos os componentes do adapter devem herdar de `BaseFyComponent`. Essa classe concentra a lógica agnóstica e é **segura para SSR** (Server-Side Rendering), realizando verificações de plataforma antes de qualquer manipulação direta do DOM.
 
 Assinaturas relevantes:
 ```ts
@@ -65,7 +90,8 @@ O componente deve:
 2. Implementar a interface de Props do catálogo.
 3. Usar `ViewEncapsulation.None` para permitir que os temas globais afetem o componente.
 4. Aplicar a diretiva `fyThemeVars` para injetar os CSS Variables do tema.
-5. Expor, sempre que fizer sentido, as propriedades padrão de UI:
+5. Utilizar a sintaxe moderna de controle de fluxo (`@if`, `@for`, `@switch`).
+6. Expor, sempre que fizer sentido, as propriedades padrão de UI:
    - `activeAnimations?: boolean | null` para controlar animações daquela instância.
    - `customStyles?: Record<string, string>` para sobrescrever estilos via `[ngStyle]`.
 
@@ -76,7 +102,9 @@ O componente deve:
   imports: [CommonModule, FyThemeVarsDirective],
   template: `
     <div [class]="'fy-my-comp fy-my-comp--' + variant" fyThemeVars>
-      {{ label }}
+      @if (label) {
+        {{ label }}
+      }
     </div>
   `,
   encapsulation: ViewEncapsulation.None
@@ -91,34 +119,59 @@ export class FyMyComponent implements MyComponentProps {
 ### 4. Registrar no Index
 Não esqueça de exportar o componente em `src/index.ts`.
 
+## 🖼️ Módulo de Papéis de Parede (Wallpapers)
+
+A diretiva `fyWallpaper` permite aplicar padrões de fundo animados ou estáticos. Para que o papel de parede seja renderizado, as seguintes condições devem ser atendidas:
+
+1.  **Habilitação Global**: A flag `wallpaperEnabled` deve estar como `true` no seu `AppConfig` (ex: `theme.config.ts`).
+2.  **Presença da Diretiva**: A diretiva `fyWallpaper` deve ser adicionada explicitamente ao elemento HTML.
+
+**Exemplos de Uso:**
+
+- **Usar o wallpaper padrão do tema**:
+  ```html
+  <div fyWallpaper> Conteúdo com fundo do tema </div>
+  ```
+  *(O uso sem valor ou com `"auto"`/`""` busca automaticamente a definição no tema corrente).*
+
+- **Forçar um padrão específico (Override)**:
+  ```html
+  <div fyWallpaper="hearts" [wallpaperOpacity]="0.3">
+    Conteúdo com fundo de corações (mesmo que o tema defina outro)
+  </div>
+  ```
+
+O `FyLayoutComponent` integra esta diretiva internamente, mas ela só será ativada se as regras acima forem respeitadas.
+
 ## 🎨 Temas, Variáveis e Overrides
 Sempre utilize as variáveis CSS injetadas pela engine de tema. Elas seguem o padrão:
 - `var(--fy-colors-primary)`
 - `var(--fy-spacing-md)`
 - `var(--fy-layout-header-height)`
-- `var(--fy-layout-header-toggle-background)`
-- `var(--fy-layout-sidebar-toggle-borderRadius)`
- - `var(--fy-layout-header-toggle-borderColor)`
- - `var(--fy-layout-sidebar-toggle-borderColor)`
+- `var(--fy-effects-toast-background)`
+- `var(--fy-effects-table-headerBackground)`
+- `var(--fy-effects-chart-gridColor)`
 
 Os tokens são derivados do tema ativo e podem ser sobrescritos pelo arquivo `theme-controller.json` através do campo `tokenOverrides`. Esses overrides são mesclados sobre os tokens do tema antes de chegarem aos componentes.
 
 ## ⚡ Animações e Efeitos
 Componentes do adapter devem respeitar a seguinte hierarquia de controle:
 - `animationsEnabled` global no `AppConfig` (seja vindo de JSON ou de um objeto TypeScript).
-- Lista `disableAnimationsForComponents` para desligar animações de um seletor inteiro (`fy-button`, `fy-layout`, `fy-input`, etc).
+- `themeEffectsEnabled` para habilitar/desabilitar efeitos automáticos de fundo dos temas (ex: corações caindo). **Importante**: Assim como o wallpaper, os efeitos de fundo (`bgEffect`) no `fy-layout` só são ativados se esta flag for `true` E a propriedade `bgEffect` estiver presente no componente.
+- Lista `disableAnimationsForComponents` para desligar animações de um seletor inteiro (`fy-button`, `fy-layout`, `fy-input`, `fy-toast`, etc).
 - Propriedade `activeAnimations` em cada instância, permitindo desligar animações apenas para aquele elemento.
 
 Além disso:
-- O tema pode definir animações padrão por componente via `componentAnimations` (ex: `'fy-button'.hover`, `'fy-input'.focus`, `'fy-layout'.enter`, `'fy-slot:sidebar'.open`).
-- O `AppConfig` (JSON ou objeto) pode sobrescrever essas animações com `componentAnimationsOverrides`, usando seletores tipados (`ComponentSelector`) e nomes de animações fortes vindos de `@fylib/animation` (ex: `ButtonHoverAnimationName`, `InputFocusAnimationName`, `LayoutAnimationName`).
-- O componente ainda pode receber inputs específicos (ex: `hoverAnimation`, `clickAnimation`, `focusAnimation`) para ajustar animações por instância, também usando esses tipos.
+- O tema pode definir animações padrão por componente via `componentAnimations` (ex: `'fy-button'.hover`, `'fy-input'.focus`, `'fy-layout'.enter`, `'fy-toast'.open`).
+- O tema pode definir um `backgroundEffect` padrão (ex: `hearts` em loop).
+- O `AppConfig` (JSON ou objeto) pode sobrescrever essas animações com `componentAnimationsOverrides`.
+- O componente ainda pode receber inputs específicos para ajustar animações por instância.
 
-Para casos manuais, ainda é possível usar a diretiva:
-
-```html
-<div [fyAnimation]="'pulse'">Conteúdo</div>
-```
+Para o componente **FyIconComponent**, as cores agora são resolvidas de forma robusta:
+- Se uma prop `[color]` for passada, ela é usada.
+- Caso contrário, ele busca `tokens.icons.color`.
+- Fallback para `currentColor`.
+- Nota: O `FyToastComponent` agora passa explicitamente a cor resolvida do token `effects.toast.iconColor` para o ícone, garantindo fidelidade ao tema mesmo em fundos complexos.
 
 ## 🖼️ Padrões Atuais de Logo e Slots
 
@@ -129,6 +182,8 @@ Para casos manuais, ainda é possível usar a diretiva:
   - Inputs: `[headerLogoFilter]`, `[sidebarLogoFilter]` aceitam qualquer string `filter` CSS e também atuam apenas em `fy-logo__image`.
 - Badge:
   - Inputs: `*LogoBadgeText`, `*LogoBadgeBG`, `*LogoBadgeTextColor`, `*LogoBadgeRadius`, `*LogoBadgeShine`
+- Copyright:
+  - Inputs: `[copyrightText]`, `[copyrightShineDuration]` (ex: `'15s'`)
 - Slots recomendados:
   - Header: `[fy-header-logo]`, `[fy-header-links]` / `[fy-header-links-center]`, `[fy-header-links-right]`, `[fy-header-meta]`
   - Sidebar: `[fy-sidebar-logo]`, `[fy-sidebar-header]`, `[fy-sidebar-links]`, `[fy-sidebar-footer]`
@@ -143,26 +198,16 @@ No adapter Angular, o serviço central [`FyLibService`](file:///c:/Users/victo/D
 - Se nenhum existir, nenhum efeito é disparado.
 
 ```ts
-import {
-  AppConfig,
-  ComponentSelector,
-  UIEventKey
-} from '@fylib/config';
-
-isAnimationsEnabledFor(componentSelector: ComponentSelector): boolean;
-isEffectsEnabledFor(componentSelector: ComponentSelector, instanceFlag: boolean | null | undefined): boolean;
-getComponentAnimation(componentSelector: ComponentSelector, event: string): string | undefined;
-triggerEffectForEvent(eventKey: UIEventKey, effectName?: EffectName, componentSelector?: ComponentSelector, instanceFlag?: boolean | null): void;
-```
-
-Quando você dispara animações/efeitos a partir de um componente Angular, use sempre os seletores/eventos tipados e delegue a resolução de prioridade para o serviço/base:
-
-```ts
 // Exemplo: dentro de um componente Angular
 onSubmit() {
   if (this.mode === 'form' && this.isAnimationsActive(this.activeAnimations)) {
     this.triggerByEvent('fy-card.submit', this.submitEffect, this.activeEffects);
   }
+}
+
+// Exemplo: Toast disparando efeito ao abrir
+ngOnInit() {
+  this.triggerByEvent('fy-toast.open', undefined, this.activeEffects);
 }
 ```
 
@@ -175,6 +220,8 @@ export const themeControllerConfig: AppConfig = {
   theme: 'christmas',
   animationsEnabled: true,
   effectsEnabled: true,
+  themeEffectsEnabled: false,
+  wallpaperEnabled: false,
   disableAnimationsForComponents: [],
   disableEffectsForComponents: [],
   tokenOverrides: {},
@@ -189,7 +236,7 @@ Isso garante IntelliSense completo para nomes de tema, seletores, eventos, efeit
 
 ## 🔌 Registro de Plugins de Efeito
 O adapter Angular registra todos os plugins de efeito necessários em um único ponto, garantindo que o `animationEngine` esteja pronto antes de qualquer trigger:
-- `register-all.ts` registra `confetti` e outros efeitos de UI.
+- `register-all.ts` registra `confetti`, `hearts` e outros efeitos de UI.
 - O `FyLibService` executa esse registro no `constructor` (em ambiente de browser) e antes de qualquer chamada de `triggerEffect`.
 - Componentes que disparam efeitos por props ou evento também se beneficiam desse registro.
 
