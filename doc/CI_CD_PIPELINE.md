@@ -56,7 +56,12 @@ Para que a pipeline funcione, você deve configurar os segredos no seu repositó
 
 #### 1. NPM_TOKEN
 Este token permite que o GitHub publique seus pacotes no npmjs.com.
-- **Como gerar**:
+
+**IMPORTANTE (Erro 404 na Publicação):**
+Se a pipeline falhar com o erro `E404 Not Found - PUT @fylib/core`, isso significa que a organização `@fylib` ainda não foi criada no npm ou você não tem permissão para publicar nela.
+- **Como corrigir**: Acesse [npmjs.com](https://www.npmjs.com/), faça login e crie uma **Organização** chamada `fylib`. Se preferir usar outro nome de escopo, você precisará renomear os pacotes no `package.json` de cada módulo (ex: `@seu-usuario/core`).
+
+- **Como gerar o token**:
   - Faça login no [npmjs.com](https://www.npmjs.com/).
   - Vá em **Access Tokens** > **Generate New Token** > **Classic Token**.
   - Selecione o tipo **Automation** (para que ele ignore o 2FA durante a publicação).
@@ -89,6 +94,10 @@ Para gerenciar as versões, utilizamos o `Changesets`. Siga este fluxo:
    - A pipeline de CD detectará o novo arquivo de changeset.
    - Ela criará automaticamente uma PR chamada "Version Packages".
    - Quando esta PR for mergeada, a pipeline publicará os pacotes no npm e criará as tags no GitHub.
+
+3. **Configuração Técnica Adicional**:
+   - Todos os pacotes no monorepo devem ter o campo `"publishConfig": { "access": "public" }` em seus respectivos `package.json` para que a publicação ocorra sem erros de permissão em contas gratuitas do npm.
+   - O comando de publicação oficial configurado no root `package.json` é `pnpm build && changeset publish`.
 
 3. **Branches de Versão (`release/X.Y`)**:
    - Para manter uma versão antiga, crie uma branch `release/1.1` a partir da tag correspondente.
