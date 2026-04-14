@@ -1,5 +1,12 @@
 # playground
 
+## 0.0.2
+
+### Patch Changes
+
+- Updated dependencies [92eef71]
+  - @fylib/adapter-angular@0.2.1
+
 ## 0.0.1
 
 ### Patch Changes
