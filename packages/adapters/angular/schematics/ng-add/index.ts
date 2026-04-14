@@ -8,26 +8,29 @@ import {
   move,
   chain,
   mergeWith,
+  externalSchematic,
 } from '@angular-devkit/schematics';
 import { strings } from '@angular-devkit/core';
+import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
-export function ngAdd(_options: any): Rule {
-  return (tree: Tree, _context: SchematicContext) => {
+export function ngAdd(options: any): Rule {
+  return (tree: Tree, context: SchematicContext) => {
     return chain([
       addFiles(),
       updateAppConfig(),
       updateAppComponent(),
-    ])(tree, _context);
+      installDependencies(),
+    ])(tree, context);
   };
 }
 
 function addFiles(): Rule {
   return mergeWith(
-    apply(url('./templates'), [
+    apply(url('../templates'), [
       template({
         ...strings,
       }),
-      move('src'),
+      move('src/fylib'),
     ])
   );
 }
@@ -73,13 +76,11 @@ function updateAppComponent(): Rule {
       `import { themeConfig } from '../fylib/theme.config';\n` +
       content;
 
-    // Adiciona imports no @Component
     updatedContent = updatedContent.replace(
       /imports:\s*\[/,
       `imports: [FyThemeVarsDirective, `
     );
 
-    // Adiciona lógica na classe
     updatedContent = updatedContent.replace(
       /export class (\w+) \{/,
       `export class $1 implements OnInit {\n  private fylib = inject(FyLibService);\n  private sse = inject(FySSEService);\n  protected readonly mode = signal<'light' | 'dark'>('light');\n\n  ngOnInit() {\n    this.fylib.setTheme(themeConfig.theme);\n    this.fylib.setMode(this.mode());\n  }\n`
@@ -87,5 +88,24 @@ function updateAppComponent(): Rule {
 
     tree.overwrite(targetPath, updatedContent);
     return tree;
+  };
+}
+
+function installDependencies(): Rule {
+  return (_tree: Tree, context: SchematicContext) => {
+    context.addTask(
+      new NodePackageInstallTask({
+        packageName: [
+          '@fylib/core',
+          '@fylib/config',
+          '@fylib/theme',
+          '@fylib/animation',
+          '@fylib/catalog',
+          '@fylib/crypto',
+          '@fylib/logger',
+          '@fylib/adapter-angular',
+        ].join(' '),
+      })
+    );
   };
 }
