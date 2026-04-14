@@ -1,0 +1,7 @@
+import { SSEConfig } from '@fylib/config';
+
+export const sseConfig: SSEConfig = {
+  enabled: false,
+  endpoint: 'http://localhost:3000/sse',
+  reconnectDelay: 3000
+};

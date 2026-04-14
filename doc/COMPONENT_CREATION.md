@@ -52,9 +52,11 @@ export const MyComponentDefinition: UIComponentDefinition<MyComponentProps> = {
 
 Exporte a definição no arquivo `index.ts` do pacote `@fylib/catalog`.
 
+**Dica de Produtividade**: Em novos projetos, use o comando `ng add @fylib/adapter-angular` para configurar o ambiente de desenvolvimento do fyLib automaticamente.
+
 ---
 
-### 2. Implementação no Adapter (Angular)
+## 2. Implementação no Adapter (Angular)
 Com a reserva criada, implemente o componente visual no adapter seguindo o padrão da classe base:
 - Use `BaseFyComponent` para herdar utilitários comuns.
 - Utilize a sintaxe moderna de controle de fluxo (`@if`, `@for`).

@@ -20,6 +20,8 @@
   - Testes (reserva):
     - Criar arquivo de teste unitário `*.test.ts` para utilitários ou `*.spec.ts` para o componente.
 
+**Dica de Produtividade**: Em novos projetos, use o comando `ng add @fylib/adapter-angular` para configurar o ambiente de desenvolvimento do fyLib automaticamente.
+
 ## Etapa 2 — Implementação do Componente
 - Objetivo: implementar props específicas, renderização e integração com tema/animações/efeitos.
 - Passos:

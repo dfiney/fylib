@@ -6,11 +6,12 @@
   "files": [
     "dist"
   ],
+  "schematics": "./dist/schematics/collection.json",
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.schematics.json && node scripts/copy-schematics.js",
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
@@ -28,6 +29,8 @@
     "@fylib/config": "workspace:*",
     "@fylib/crypto": "workspace:*",
     "@fylib/logger": "workspace:*",
+    "@angular-devkit/schematics": "catalog:",
+    "@angular-devkit/core": "catalog:",
     "chart.js": "catalog:",
     "ng2-charts": "catalog:",
     "rxjs": "catalog:",

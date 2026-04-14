@@ -9,7 +9,24 @@ O adapter está organizado para separar as responsabilidades:
 - `components/`: Implementações visuais dos componentes (ex: `fy-button`).
 - `directives/`: Lógica de manipulação de DOM (Temas, Animações, Wallpapers).
 - `services/`: Singleton para controle de estado global (ThemeEngine, AnimationEngine).
+- `schematics/`: Automações de instalação e configuração (`ng add`).
 - `providers.ts`: Definição de `provideFyLib` para inicialização via framework.
+
+## 🚀 Instalação Automatizada (ng add)
+
+O adapter Angular fornece um schematic `ng-add` que facilita a integração da biblioteca em novos projetos.
+
+### O que o `ng add` faz:
+1.  **Instalação**: Adiciona `@fylib/adapter-angular` e suas dependências internas ao `package.json`.
+2.  **Configuração**: Cria a pasta `src/fylib/` contendo arquivos de configuração base (`theme`, `sse`, `crypto`, `logging`).
+3.  **Bootstrapping**:
+    - Adiciona `provideFyLib` ao `app.config.ts`.
+    - Injeta e inicializa o `FyLibService` no `app.component.ts`.
+
+### Como rodar:
+```bash
+ng add @fylib/adapter-angular
+```
 
 ## ⚙️ Inicialização e Configuração (provideFyLib)
 

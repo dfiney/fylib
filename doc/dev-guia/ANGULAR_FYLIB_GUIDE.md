@@ -1,5 +1,30 @@
 # Guia de Uso do fyLib no Angular
 
+## 🚀 Instalação e Configuração Automatizada
+
+A forma mais simples e recomendada de integrar o fyLib ao seu projeto Angular (v17+) é utilizando o comando `ng add`. Este comando automatiza a instalação das dependências, cria os arquivos de configuração padrão e configura o bootstrapping da aplicação.
+
+### 1. Comando de Instalação
+
+No diretório raiz do seu projeto Angular, execute:
+
+```bash
+ng add @fylib/adapter-angular
+```
+
+### 2. O que o `ng add` faz por você?
+
+*   **Instalação de Pacotes**: Adiciona `@fylib/adapter-angular` e todas as dependências do monorepo (`core`, `theme`, `config`, etc.) ao seu `package.json`.
+*   **Arquivos de Configuração**: Cria a pasta `src/fylib/` com arquivos de configuração padrão:
+    *   `theme.config.ts`: Configurações de tema, animações e efeitos.
+    *   `sse.config.ts`: Configuração para Server-Sent Events.
+    *   `crypto.config.ts`: Configuração de criptografia para o WebClient.
+    *   `logging.config.ts`: Configuração do sistema de logs.
+*   **Bootstrapping (`app.config.ts`)**: Adiciona o `provideFyLib` ao array de providers, injetando todas as configurações criadas.
+*   **Inicialização (`app.component.ts`)**: Injeta o `FyLibService` e configura a inicialização do tema e modo (light/dark) no `ngOnInit`.
+
+---
+
 ## Visão Geral
 - `@fylib/catalog`: define contratos dos componentes (props, variantes).
 - `@fylib/theme`: registra temas e gera Design Tokens.

@@ -134,14 +134,22 @@
 
             <!-- Step 1.1 -->
             <section class="mb-5">
-                <h3 class="fw-bold mb-3">2. Instalação</h3>
-                <p>Adicione os pacotes principais do fyLib ao seu projeto via npm ou pnpm:</p>
-                <pre><code>npm install @fylib/core @fylib/config @fylib/theme @fylib/animation @fylib/adapter-angular</code></pre>
+                <h3 class="fw-bold mb-3">2. Instalação Automatizada (Recomendado)</h3>
+                <p>A forma mais rápida de começar é usando o comando <code>ng add</code>. Ele instala as dependências, cria os arquivos de configuração e prepara o bootstrapping da sua aplicação:</p>
+                <pre><code>ng add @fylib/adapter-angular</code></pre>
+                
+                <h4 class="fw-bold mt-4 mb-2">O que o comando faz:</h4>
+                <ul class="text-muted">
+                    <li>Instala <code>@fylib/adapter-angular</code> e módulos core (theme, config, etc).</li>
+                    <li>Cria a pasta <code>src/fylib/</code> com configurações padrão.</li>
+                    <li>Configura o <code>provideFyLib</code> no seu <code>app.config.ts</code>.</li>
+                    <li>Inicializa o <code>FyLibService</code> no <code>app.component.ts</code>.</li>
+                </ul>
             </section>
 
             <!-- Step 2 -->
             <section class="mb-5">
-                <h3 class="fw-bold mb-3">2. Configuração via Provider (Precedência)</h3>
+                <h3 class="fw-bold mb-3">3. Configuração via Provider (Precedência)</h3>
                 <p>No seu arquivo <code>app.config.ts</code>, configure o serviço principal do fyLib usando o <code>provideFyLib</code>. Ao passar uma configuração aqui, ela se torna a <strong>fonte de verdade</strong> e o polling automático do JSON é desativado:</p>
                 <pre><code>import { ApplicationConfig } from '@angular/core';
 import { provideFyLib } from '@fylib/adapter-angular';
@@ -168,7 +176,7 @@ export const appConfig: ApplicationConfig = {
 
             <!-- Alternative Config -->
             <section class="mb-5">
-                <h3 class="fw-bold mb-3">3. Configuração Dinâmica (Fallback JSON)</h3>
+                <h3 class="fw-bold mb-3">4. Configuração Dinâmica (Fallback JSON)</h3>
                 <p>Se o <code>provideFyLib</code> for utilizado sem argumentos (ou não for utilizado), o fyLib ativará automaticamente o monitoramento do arquivo remoto:</p>
                 <pre><code>/fylib/theme-control/theme-controller.json</code></pre>
                 <p>O polling ocorre a cada 3 segundos, permitindo trocar temas ou ativar efeitos globais instantaneamente através do JSON remoto. O provider sempre tem precedência sobre o JSON para evitar conflitos de configuração em tempo de execução.</p>
@@ -176,7 +184,7 @@ export const appConfig: ApplicationConfig = {
 
             <!-- Step 3 -->
             <section class="mb-5">
-                <h3 class="fw-bold mb-3">4. Uso de Componentes</h3>
+                <h3 class="fw-bold mb-3">5. Uso de Componentes</h3>
                 <p>Importe os componentes desejados diretamente nos seus componentes standalone:</p>
                 <pre><code>import { FyButtonComponent, FyCardComponent } from '@fylib/adapter-angular';
 

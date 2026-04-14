@@ -58,7 +58,7 @@ packages/
 | **Logger** | Sistema de logging centralizado com suporte a múltiplos sinks. |
 | **SSE** | Módulo de comunicação em tempo real (Server-Sent Events). |
 | **HTTP** | WebClient reativo com suporte a criptografia e automação. |
-| **Adapter** | Transforma o contrato em UI real (DOM/Componente). |
+| **Adapter** | Transforma o contrato em UI real (DOM/Componente). Inclui automações (`ng add`) para setup rápido. |
 
 ---
 

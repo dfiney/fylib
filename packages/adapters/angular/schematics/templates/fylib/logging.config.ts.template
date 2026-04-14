@@ -1,0 +1,9 @@
+import { LoggingConfig } from '@fylib/config';
+
+export const loggingConfig: LoggingConfig = {
+  enabled: true,
+  level: 'info',
+  console: { enabled: true },
+  localFiles: { enabled: false, path: 'logs' },
+  remote: { enabled: false, endpoint: '' }
+};

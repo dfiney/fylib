@@ -61,12 +61,21 @@ Este token permite que o GitHub publique seus pacotes no npmjs.com.
 Se a pipeline falhar com o erro `E404 Not Found - PUT @fylib/core`, isso significa que a organização `@fylib` ainda não foi criada no npm ou você não tem permissão para publicar nela.
 - **Como corrigir**: Acesse [npmjs.com](https://www.npmjs.com/), faça login e crie uma **Organização** chamada `fylib`. Se preferir usar outro nome de escopo, você precisará renomear os pacotes no `package.json` de cada módulo (ex: `@seu-usuario/core`).
 
+**IMPORTANTE (2FA e Tokens de Automação):**
+Não adicione códigos de OTP (2FA) ou segredos dinâmicos no GitHub. A pipeline utiliza um token estático.
+- Para que a pipeline funcione sem pedir código 2FA, o seu `NPM_TOKEN` **DEVE** ser do tipo **Automation**.
+- Tokens do tipo "Automation" ignoram a exigência de 2FA apenas para a publicação de pacotes que já foram "batizados" (publicados ao menos uma vez manualmente por um humano).
+
 - **Como gerar o token**:
   - Faça login no [npmjs.com](https://www.npmjs.com/).
   - Vá em **Access Tokens** > **Generate New Token** > **Classic Token**.
-  - Selecione o tipo **Automation** (para que ele ignore o 2FA durante a publicação).
-  - Copie o token gerado.
-- **No GitHub**: Nomeie como `NPM_TOKEN` e cole o valor.
+  - Selecione o tipo **Automation**.
+  - Copie o token gerado e atualize o segredo `NPM_TOKEN` no GitHub.
+
+**IMPORTANTE (Bootstrap Publish):**
+Tokens de automação não têm permissão para criar o *primeiro* registro de um pacote em uma organização/escopo novo.
+- Se você estiver adicionando um pacote inédito ao `@fylib`, a primeira publicação **DEVE** ser feita manualmente por um desenvolvedor via terminal (`npm publish --access public`).
+- Uma vez que a versão `0.1.0` (ou inicial) exista no npm, a pipeline passará a ter permissão para publicar as versões subsequentes automaticamente.
 
 #### 2. GH_TOKEN
 Este token permite que a pipeline crie Pull Requests de versão, faça commits e crie Releases no GitHub.

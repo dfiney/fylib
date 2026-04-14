@@ -190,8 +190,8 @@ export interface AppConfig {
 ```
 
 No Angular:
-- o arquivo `public/fylib/theme-control/theme-controller.json` pode alimentar essa configuração via HTTP (quando o polling está habilitado).
-- o playground utiliza um arquivo TypeScript (`theme-controller.config.ts`) que exporta um objeto `AppConfig` tipado, oferecendo IntelliSense completo para temas, seletores, animações, efeitos e tokens.
+- o arquivo `public/fylib/theme-control/theme-controller.json` pode alimentar essa configuração via HTTP.
+- a configuração recomendada é via arquivos TypeScript na pasta `src/fylib/` (ex: `theme.config.ts`), que são gerados automaticamente pelo comando `ng add @fylib/adapter-angular`.
 
 Exemplo de uso no JSON:
 

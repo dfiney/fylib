@@ -62,6 +62,8 @@ export const AppLayoutDefinition: UILayoutDefinition = {
 ### Uso no Framework (Exemplo Angular)
 O fyLib fornece componentes orquestradores que traduzem a definição para o DOM. O `fy-layout` integra o sistema de wallpapers e efeitos de fundo através de props e diretivas.
 
+**Dica**: Utilize o comando `ng add @fylib/adapter-angular` para gerar automaticamente os arquivos de configuração padrão onde estas flags podem ser ativadas.
+
 **Importante**: Para que os efeitos e wallpapers funcionem, as flags globais correspondentes (`themeEffectsEnabled` e `wallpaperEnabled`) devem estar habilitadas no seu arquivo de configuração (`AppConfig`).
 
 ```html
