@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.schematics.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@fylib/*": ["../../../*/dist/index"]
+    }
+  }
+}

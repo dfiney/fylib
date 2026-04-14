@@ -5,6 +5,8 @@ packages:
   - examples/**
 
 catalog:
+  '@angular-devkit/core': ^18.2.21
+  '@angular-devkit/schematics': ^18.2.21
   '@angular/build': ^18.0.0 || ^21.0.0
   '@angular/cli': ^18.0.0 || ^21.0.0
   '@angular/common': ^18.0.0 || ^21.0.0

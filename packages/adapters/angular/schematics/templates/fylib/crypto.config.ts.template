@@ -1,0 +1,7 @@
+import { CryptoConfig } from '@fylib/config';
+
+export const cryptoConfig: CryptoConfig = {
+  enabled: true,
+  algorithm: 'AES-GCM',
+  // Configuration for your crypto engine
+};

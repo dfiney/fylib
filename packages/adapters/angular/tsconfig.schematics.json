@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2021",
+    "lib": ["es2021"],
+    "outDir": "dist/schematics",
+    "rootDir": "schematics",
+    "moduleResolution": "node",
+    "declaration": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "types": ["node", "@angular-devkit/schematics", "@angular-devkit/core"]
+  },
+  "include": ["schematics/**/*.ts"],
+  "exclude": ["schematics/templates/**"]
+}

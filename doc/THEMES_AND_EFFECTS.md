@@ -204,8 +204,10 @@ themeEngine.registerPlugin(myPlugin);
 ### Controle Dinâmico por Arquivo ou Objeto (Config System)
 
 O fyLib pode ser configurado dinamicamente através de:
-- Um arquivo JSON externo.
-- Um objeto TypeScript que implemente o contrato `AppConfig` de `@fylib/config` (usado no playground Angular).
+- Um arquivo JSON externo (`/fylib/theme-control/theme-controller.json`).
+- Um objeto TypeScript que implemente o contrato `AppConfig` de `@fylib/config`.
+
+**Dica**: O comando `ng add @fylib/adapter-angular` automatiza a criação destes arquivos na pasta `src/fylib/` e configura o bootstrapping da aplicação.
 
 O contrato completo (`AppConfig`, `ComponentSelector`, `UIEventKey`, `EffectName`, `ThemeName`, `DeepPartial`) está em [`packages/config/src/types.ts`](file:///c:/Users/victo/Documents/victor/projetos/finey/fylib/packages/config/src/types.ts) e é totalmente tipado.
 

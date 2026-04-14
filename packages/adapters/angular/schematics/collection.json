@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "ng-add": {
+      "description": "Configura o fyLib no seu projeto Angular automaticamente.",
+      "factory": "./ng-add/index#ngAdd"
+    }
+  }
+}

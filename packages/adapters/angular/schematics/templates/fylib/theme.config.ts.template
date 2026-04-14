@@ -1,0 +1,9 @@
+import { AppConfig } from '@fylib/config';
+
+export const themeConfig: AppConfig = {
+  theme: 'default',
+  animationsEnabled: true,
+  effectsEnabled: true,
+  themeEffectsEnabled: true,
+  wallpaperEnabled: true
+};

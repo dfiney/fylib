@@ -7,9 +7,6 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "composite": false,
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "composite": false
   }
 }
