@@ -8,9 +8,10 @@ import {
   move,
   chain,
   mergeWith,
-  externalSchematic,
+  forEach,
+  FileEntry,
 } from '@angular-devkit/schematics';
-import { strings } from '@angular-devkit/core';
+import { strings, Path } from '@angular-devkit/core';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 
 export function ngAdd(options: any): Rule {
@@ -26,11 +27,20 @@ export function ngAdd(options: any): Rule {
 
 function addFiles(): Rule {
   return mergeWith(
-    apply(url('../templates'), [
+    apply(url('../templates/fylib'), [
       template({
         ...strings,
       }),
       move('src/fylib'),
+      forEach((fileEntry: FileEntry) => {
+        if (fileEntry.path.endsWith('.template')) {
+          return {
+            content: fileEntry.content,
+            path: fileEntry.path.replace('.template', '') as Path,
+          };
+        }
+        return fileEntry;
+      }),
     ])
   );
 }
