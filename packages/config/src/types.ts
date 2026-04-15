@@ -1,4 +1,4 @@
-import { DesignTokens, SSEConfig } from '@fylib/core';
+import { DesignTokens, SSEConfig, SSEServices } from '@fylib/core';
 import { CryptoConfig } from '@fylib/crypto';
 import {
   ButtonClickAnimationName,
@@ -12,6 +12,21 @@ import {
   TableAnimationName,
   ChartAnimationName
 } from '@fylib/animation';
+
+export type { DesignTokens, SSEConfig, SSEServices };
+export type { CryptoConfig };
+export type {
+  ButtonClickAnimationName,
+  ButtonHoverAnimationName,
+  ButtonStateAnimationName,
+  InputFocusAnimationName,
+  InputStateAnimationName,
+  LayoutAnimationName,
+  SidebarAnimationName,
+  CardAnimationName,
+  TableAnimationName,
+  ChartAnimationName
+};
 
 export type ThemeName = 
   | 'default'

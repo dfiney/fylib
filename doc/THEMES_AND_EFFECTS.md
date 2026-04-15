@@ -347,7 +347,7 @@ Campos adicionais suportados nos toggles:
  No playground Angular, recomenda-se criar um arquivo separado `sse.config.ts`:
 
  ```typescript
- import { SSEConfig } from '@fylib/core';
+ import { SSEConfig } from '@fylib/config';
 
  export const sseConfig: SSEConfig = {
    enabled: true,
