@@ -1,5 +1,11 @@
 # @fylib/adapter-angular
 
+## 0.2.2
+
+### Patch Changes
+
+- ec51708: fix: corrigido ng-add schematic para evitar duplicação de pasta, remover extensão .template e usar ThemeConfig no tema
+
 ## 0.2.1
 
 ### Patch Changes
