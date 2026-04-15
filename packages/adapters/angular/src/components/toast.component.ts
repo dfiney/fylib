@@ -159,6 +159,9 @@ export class FyToastComponent extends BaseFyComponent<'fy-toast'> implements Toa
 
   constructor() {
     super(inject(FyLibService), 'fy-toast');
+    
+    // Garantir que efeitos reativos sejam permitidos se necessário no futuro
+    // (Por enquanto o Toast usa ngOnInit para disparar eventos)
   }
 
   ngOnInit() {

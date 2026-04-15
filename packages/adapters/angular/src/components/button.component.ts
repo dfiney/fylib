@@ -18,28 +18,49 @@ import { logger } from '@fylib/logger';
   standalone: true,
   imports: [CommonModule, FyIconComponent],
   template: `
-    <button 
-      [class]="'fy-button fy-button--' + variant + ' fy-button--' + size + animationClassSuffix"
-      [disabled]="disabled || loading"
-      (click)="handleClick($event)"
-      (mouseenter)="handleHover()"
-      [style]="hostStyles"
-      [attr.aria-busy]="loading"
-      [attr.aria-live]="loading ? 'polite' : null"
-      [attr.aria-label]="label || iconName || icon"
-    >
-      @if(loading) {
-        <span class="fy-button__loader"></span>
-      }
-      @if(iconName && !loading) {
-        <fy-icon [name]="iconName" [set]="iconSet" class="fy-button__icon"></fy-icon>
-      } @else if(icon && !loading) {
-        <span [class]="'fy-button__icon ' + icon"></span>
-      }
-      @if (label) {
-        <span class="fy-button__label">{{ label }}</span>
-      }
-    </button>
+    @if (link) {
+      <a 
+        [href]="link"
+        [target]="target"
+        [class]="'fy-button fy-button--' + variant + ' fy-button--' + size + animationClassSuffix"
+        [style]="hostStyles"
+        (click)="handleClick($event)"
+        (mouseenter)="handleHover()"
+        [attr.aria-label]="label || iconName || icon"
+      >
+        @if(iconName) {
+          <fy-icon [name]="iconName" [set]="iconSet" class="fy-button__icon"></fy-icon>
+        } @else if(icon) {
+          <span [class]="'fy-button__icon ' + icon"></span>
+        }
+        @if (label) {
+          <span class="fy-button__label">{{ label }}</span>
+        }
+      </a>
+    } @else {
+      <button 
+        [class]="'fy-button fy-button--' + variant + ' fy-button--' + size + animationClassSuffix"
+        [disabled]="disabled || loading"
+        (click)="handleClick($event)"
+        (mouseenter)="handleHover()"
+        [style]="hostStyles"
+        [attr.aria-busy]="loading"
+        [attr.aria-live]="loading ? 'polite' : null"
+        [attr.aria-label]="label || iconName || icon"
+      >
+        @if(loading) {
+          <span class="fy-button__loader"></span>
+        }
+        @if(iconName && !loading) {
+          <fy-icon [name]="iconName" [set]="iconSet" class="fy-button__icon"></fy-icon>
+        } @else if(icon && !loading) {
+          <span [class]="'fy-button__icon ' + icon"></span>
+        }
+        @if (label) {
+          <span class="fy-button__label">{{ label }}</span>
+        }
+      </button>
+    }
   `,
   styles: [`
     .fy-button {
@@ -137,6 +158,8 @@ export class FyButtonComponent extends BaseFyComponent<'fy-button'> implements B
   @Input() icon?: string = ButtonDefinition.defaultProps!.icon;
   @Input() iconName?: string;
   @Input() iconSet?: 'ph' | 'fa' | 'mdi';
+  @Input() link?: string;
+  @Input() target?: string = '_self';
   @Input() activeAnimations: boolean | null = null;
   @Input() activeEffects: boolean | null = null;
   @Input() customStyles: Record<string, string> | null = null;
