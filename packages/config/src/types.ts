@@ -177,7 +177,7 @@ export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 export interface LoggingConfig {
   enabled: boolean; // Interruptor global mestre
-  level: LogLevel;   // Nível mínimo (debug, info, warn, error)
+  level?: LogLevel;   // Nível mínimo (debug, info, warn, error)
   console?: {
     enabled: boolean;
   };
@@ -194,7 +194,7 @@ export interface LoggingConfig {
 
 export interface ThemeConfig {
   theme: ThemeName;
-  animationsEnabled: boolean;
+  animationsEnabled?: boolean;
   themeEffectsEnabled?: boolean;
   wallpaperEnabled?: boolean;
   disableAnimationsForComponents?: ComponentSelector[];

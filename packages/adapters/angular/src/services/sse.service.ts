@@ -38,6 +38,9 @@ export class FySSEService implements OnDestroy {
     this.disconnect();
 
     try {
+      if (!this.config.endpoint) {
+        throw new Error('[fyLib/SSE] endpoint is required when SSE is enabled');
+      }
       this.eventSource = new EventSource(this.config.endpoint, {
         withCredentials: this.config.withCredentials ?? false
       });
