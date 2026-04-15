@@ -1,5 +1,16 @@
 # @fylib/config
 
+## 0.2.3
+
+### Patch Changes
+
+- 5a1591a: fix: campos das interfaces de configuração (AppConfig, LoggingConfig, ThemeConfig, SSEConfig, CryptoConfig) e Design Tokens tornados opcionais para maior flexibilidade e suporte a configurações parciais.
+- Updated dependencies [5a1591a]
+  - @fylib/core@0.2.2
+  - @fylib/crypto@0.2.2
+  - @fylib/animation@0.2.2
+  - @fylib/logger@0.2.2
+
 ## 0.2.2
 
 ### Patch Changes
