@@ -71,7 +71,7 @@ export interface SSEServices {
 
 export interface SSEConfig {
   enabled: boolean;
-  endpoint: string;
+  endpoint?: string;
   withCredentials?: boolean;
   heartbeatTimeout?: number;
   reconnectDelay?: number;

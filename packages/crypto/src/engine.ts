@@ -38,6 +38,11 @@ async function importKey(secret: string): Promise<CryptoKey> {
 
 export async function encrypt(text: string, cfg: CryptoConfig): Promise<string> {
   if (!cfg.enabled) return text;
+  
+  if (!cfg.secret) throw new Error('[fyLib/Crypto] secret is required when crypto is enabled');
+  if (!cfg.ivSize) throw new Error('[fyLib/Crypto] ivSize is required when crypto is enabled');
+  if (!cfg.tagSize) throw new Error('[fyLib/Crypto] tagSize is required when crypto is enabled');
+
   logger.debug('Crypto', 'Encrypting data');
   const subtle = getSubtle();
   if (!subtle) {
@@ -55,6 +60,11 @@ export async function encrypt(text: string, cfg: CryptoConfig): Promise<string> 
 
 export async function decrypt(payload: string, cfg: CryptoConfig): Promise<string> {
   if (!cfg.enabled) return payload;
+
+  if (!cfg.secret) throw new Error('[fyLib/Crypto] secret is required when crypto is enabled');
+  if (!cfg.ivSize) throw new Error('[fyLib/Crypto] ivSize is required when crypto is enabled');
+  if (!cfg.tagSize) throw new Error('[fyLib/Crypto] tagSize is required when crypto is enabled');
+
   logger.debug('Crypto', 'Decrypting data');
   const subtle = getSubtle();
   if (!subtle) {
