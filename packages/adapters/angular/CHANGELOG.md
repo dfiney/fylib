@@ -1,5 +1,11 @@
 # @fylib/adapter-angular
 
+## 0.2.1
+
+### Patch Changes
+
+- 92eef71: fix: corrige ng-add schematic para criar arquivos de config na pasta fylib e instalar dependências automaticamente
+
 ## 0.2.0
 
 ### Minor Changes
