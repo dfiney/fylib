@@ -1,5 +1,25 @@
 # @fylib/adapter-angular
 
+## 0.3.0
+
+### Minor Changes
+
+- 5a1591a: feat: adicionado catálogo de temas ao template de boas-vindas do schematic ng-add, permitindo a troca dinâmica de temas diretamente na página inicial.
+  fix: adicionado suporte a links (`link` e `target`) no `FyButtonComponent`, corrigindo problemas de navegação no template de boas-vindas.
+  fix: corrigido erro NG0600 (escrita em signals dentro de effects) nos componentes FyText, FyLayout e FyNotificationMenu, garantindo compatibilidade com Angular 18+.
+
+### Patch Changes
+
+- Updated dependencies [5a1591a]
+- Updated dependencies [5a1591a]
+  - @fylib/catalog@0.3.0
+  - @fylib/config@0.2.3
+  - @fylib/core@0.2.2
+  - @fylib/crypto@0.2.2
+  - @fylib/animation@0.2.2
+  - @fylib/logger@0.2.2
+  - @fylib/theme@0.2.2
+
 ## 0.2.9
 
 ### Patch Changes

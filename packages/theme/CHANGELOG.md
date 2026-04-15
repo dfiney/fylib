@@ -1,5 +1,14 @@
 # @fylib/theme
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [5a1591a]
+  - @fylib/core@0.2.2
+  - @fylib/animation@0.2.2
+  - @fylib/logger@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes
