@@ -21,16 +21,17 @@ export class FyTextComponent {
     effect(async () => {
       const raw = this._raw();
       const cfg = this.fylib.config().crypto;
+      let finalValue = raw;
+
       if (this.cryptoEnabled && cfg?.enabled) {
         try {
-          const dec = await cryptoEngine.decrypt(raw, cfg);
-          this.value.set(dec);
+          finalValue = await cryptoEngine.decrypt(raw, cfg);
         } catch {
-          this.value.set(raw);
+          finalValue = raw;
         }
-      } else {
-        this.value.set(raw);
       }
-    });
+      
+      this.value.set(finalValue);
+    }, { allowSignalWrites: true });
   }
 }

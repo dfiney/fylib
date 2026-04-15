@@ -470,7 +470,7 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
       this._notifications.set(current);
       const limit = this.resolvedConfig().limit;
       this.visibleLimit.set(Math.max(limit ?? 10, 10));
-    });
+    }, { allowSignalWrites: true });
   }
 
   themeTokens = computed(() => this.fylib.tokens().effects?.notificationMenu);

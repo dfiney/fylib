@@ -10,6 +10,8 @@ export interface ButtonProps {
   icon?: string;
   iconName?: string;
   iconSet?: IconSet;
+  link?: string;
+  target?: string;
   onClick?: () => void;
 }
 
