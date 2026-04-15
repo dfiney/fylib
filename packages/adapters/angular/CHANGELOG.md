@@ -1,5 +1,12 @@
 # @fylib/adapter-angular
 
+## 0.2.8
+
+### Patch Changes
+
+- Updated dependencies [8f16cc6]
+  - @fylib/config@0.2.1
+
 ## 0.2.7
 
 ### Patch Changes
