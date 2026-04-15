@@ -1,5 +1,14 @@
 # @fylib/crypto
 
+## 0.2.1
+
+### Patch Changes
+
+- afb59d8: fix: tornados opcionais diversos campos nas interfaces de configuração (AppConfig, LoggingConfig, ThemeConfig, SSEConfig, CryptoConfig) e nos Design Tokens para aumentar a flexibilidade e evitar erros de validação em configurações parciais.
+- Updated dependencies [afb59d8]
+  - @fylib/core@0.2.1
+  - @fylib/logger@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes
