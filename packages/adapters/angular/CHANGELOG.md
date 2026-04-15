@@ -1,5 +1,11 @@
 # @fylib/adapter-angular
 
+## 0.2.3
+
+### Patch Changes
+
+- df6eca8: fix: corrige erro de standalone imports no app.component e adiciona página de boas-vindas temática no ng-add
+
 ## 0.2.2
 
 ### Patch Changes
