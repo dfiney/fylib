@@ -1,6 +1,6 @@
 {
   "name": "@fylib/adapter-angular",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,7 +11,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && tsc -p tsconfig.schematics.json && node scripts/copy-schematics.js",
+    "build": "ngc -p tsconfig.json && tsc -p tsconfig.schematics.json && node scripts/copy-schematics.js",
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
@@ -41,6 +41,7 @@
     "@angular/common": "catalog:",
     "@angular/core": "catalog:",
     "@angular/compiler": "catalog:",
+    "@angular/compiler-cli": "catalog:",
     "@types/node": "catalog:"
   }
 }

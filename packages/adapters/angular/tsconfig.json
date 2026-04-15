@@ -17,5 +17,11 @@
       "@fylib/crypto": ["../../crypto/dist/index"]
     }
   },
+  "angularCompilerOptions": {
+    "compilationMode": "partial",
+    "skipTemplateCodegen": true,
+    "strictMetadataEmit": true,
+    "enableResourceInlining": true
+  },
   "include": ["src"]
 }
