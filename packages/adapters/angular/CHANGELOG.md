@@ -1,5 +1,11 @@
 # @fylib/adapter-angular
 
+## 0.2.7
+
+### Patch Changes
+
+- feace8f: fix: corrigido build do adapter-angular para usar o Angular Compiler (ngc) em modo partial, garantindo suporte a componentes standalone em projetos externos (Angular 17+)
+
 ## 0.2.5
 
 ### Patch Changes
