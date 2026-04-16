@@ -1,4 +1,4 @@
-import { Injectable, signal, computed, inject, PLATFORM_ID, Signal, Optional, Inject } from '@angular/core';
+import { Injectable, signal, computed, inject, PLATFORM_ID, Signal, Optional, Inject, untracked } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { themeEngine, defaultTheme } from '@fylib/theme';
 import { animationEngine } from '@fylib/animation';
@@ -72,17 +72,19 @@ export class FyLibService {
     configManager.subscribe(config => {
       if (!config) return;
       
-      const oldConfig = this.configSignal();
-      this.configSignal.set(config);
-      
-      const themeName = config.theme?.theme;
-      if (themeName && themeName !== oldConfig.theme?.theme) {
-        try {
-          this.setTheme(themeName);
-        } catch (e) {
-          logger.error('Theme', `Erro ao carregar tema: ${themeName}`);
+      untracked(() => {
+        const oldConfig = this.configSignal();
+        this.configSignal.set(config);
+        
+        const themeName = config.theme?.theme;
+        if (themeName && themeName !== oldConfig.theme?.theme) {
+          try {
+            this.setTheme(themeName);
+          } catch (e) {
+            logger.error('Theme', `Erro ao carregar tema: ${themeName}`);
+          }
         }
-      }
+      });
     });
 
 
