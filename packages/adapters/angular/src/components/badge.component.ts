@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, inject, computed } from '@angular/core';
+import { Component, Input, ViewEncapsulation, inject, computed, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FyLibService } from '../services/fylib.service';
 import { BaseFyComponent } from '../base/base-component';
@@ -67,9 +67,18 @@ export class FyBadgeComponent extends BaseFyComponent<'fy-badge'> {
   @Input() textColor?: string | null;
   @Input() borderRadius?: string | null;
   @Input() shine?: boolean | null;
+  @Input() glow?: boolean | null;
   @Input() variant: string = 'default';
   @Input() customStyles: Record<string, string> | null = null;
   @Input() activeAnimations: boolean | null = null;
+
+  @HostBinding('style.box-shadow')
+  get glowStyle(): string | null {
+    if (this.glow) {
+      return '0 0 12px var(--fy-badge-background, #ff4757)';
+    }
+    return null;
+  }
 
   badgeStyle = computed(() => {
     const style: Record<string, string> = {};

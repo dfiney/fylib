@@ -115,7 +115,7 @@ function updateAppComponent(): Rule {
     const fylibImports = [
       'FyLibService', 'FySSEService', 'FyThemeVarsDirective', 
       'FyLayoutComponent', 'FyCardComponent', 'FyButtonComponent', 
-      'FyIconComponent', 'FyTextComponent'
+      'FyIconComponent', 'FyTextComponent', 'FySlotComponent', 'FyBadgeComponent'
     ];
     content = `import { ${fylibImports.join(', ')} } from '@fylib/adapter-angular';\n` +
               `import { themeConfig } from '../fylib/theme.config';\n` + content;
@@ -124,20 +124,20 @@ function updateAppComponent(): Rule {
     if (content.includes('imports: [')) {
       content = content.replace(
         /imports:\s*\[/,
-        `imports: [\n    FyThemeVarsDirective, FyLayoutComponent, FyCardComponent, FyButtonComponent, FyIconComponent, FyTextComponent,`
+        `imports: [\n    FyThemeVarsDirective, FyLayoutComponent, FyCardComponent, FyButtonComponent, FyIconComponent, FyTextComponent, FySlotComponent, FyBadgeComponent,`
       );
     } else {
       // If no imports array, add it (assuming it's a standalone component)
       content = content.replace(
         /@Component\({/,
-        `@Component({\n  standalone: true,\n  imports: [\n    FyThemeVarsDirective, FyLayoutComponent, FyCardComponent, FyButtonComponent, FyIconComponent, FyTextComponent\n  ],`
+        `@Component({\n  standalone: true,\n  imports: [\n    FyThemeVarsDirective, FyLayoutComponent, FyCardComponent, FyButtonComponent, FyIconComponent, FyTextComponent, FySlotComponent, FyBadgeComponent\n  ],`
       );
     }
 
     // 4. Update Class Definition
     content = content.replace(
       /export class (\w+) \{/,
-      `export class $1 implements OnInit {\n  private fylib = inject(FyLibService);\n  private sse = inject(FySSEService);\n  protected readonly mode = signal<'light' | 'dark'>('light');\n  protected readonly themes = ${JSON.stringify(THEMES, null, 2)};\n\n  ngOnInit() {\n    this.fylib.setTheme(themeConfig.theme);\n    this.fylib.setMode(this.mode());\n  }\n\n  changeTheme(theme: string) {\n    this.fylib.setTheme(theme as any);\n  }\n\n  toggleMode() {\n    this.mode.set(this.mode() === 'light' ? 'dark' : 'light');\n    this.fylib.setMode(this.mode());\n  }\n`
+      `export class $1 implements OnInit {\n  protected fylib = inject(FyLibService);\n  private sse = inject(FySSEService);\n  protected readonly mode = signal<'light' | 'dark'>('light');\n  protected readonly themes = ${JSON.stringify(THEMES, null, 2)};\n\n  ngOnInit() {\n    this.fylib.setTheme(themeConfig.theme);\n    this.fylib.setMode(this.mode());\n  }\n\n  changeTheme(theme: string) {\n    this.fylib.setTheme(theme as any);\n  }\n\n  toggleMode() {\n    this.mode.set(this.mode() === 'light' ? 'dark' : 'light');\n    this.fylib.setMode(this.mode());\n  }\n\n  triggerConfetti() {\n    this.fylib.triggerEffect('confetti');\n  }\n`
     );
 
     tree.overwrite(targetPath, content);
@@ -176,15 +176,15 @@ function updateAppHTML(): Rule {
 
 function getWelcomeHTML(): string {
   return `
-<fy-layout name="app-layout" bgEffect="auto" fyWallpaper fyThemeVars>
+<fy-layout name="app-layout" bgEffect="auto" fyWallpaper fyThemeVars [fixedHeight]="true">
   <!-- Slot: Header (Usando regiões nativas do fyLib) -->
   <fy-slot name="header">
-    <div [fy-header-logo] style="display: flex; align-items: center; gap: 12px;">
+    <div fy-header-logo style="display: flex; align-items: center; gap: 12px;">
       <fy-icon name="star" size="lg" style="color: var(--fy-colors-primary)"></fy-icon>
       <fy-text text="fyLib Starter" [strong]="true" size="lg"></fy-text>
     </div>
 
-    <div [fy-header-links-right] style="display: flex; align-items: center; gap: 16px;">
+    <div fy-header-links-right style="display: flex; align-items: center; gap: 16px;">
       <fy-button variant="ghost" [iconName]="mode() === 'light' ? 'moon' : 'sun'" (click)="toggleMode()"></fy-button>
       <fy-button variant="primary" label="Documentação" iconName="book-open" link="https://github.com/dfiney/fylib/" target="_blank"></fy-button>
     </div>
@@ -192,11 +192,11 @@ function getWelcomeHTML(): string {
 
   <!-- Slot: Sidebar (Catálogo de Temas) -->
   <fy-slot name="sidebar">
-    <div [fy-sidebar-header] style="padding: 16px 24px;">
+    <div fy-sidebar-header style="padding: 16px 24px;">
       <fy-text text="Temas Disponíveis" size="sm" [strong]="true" style="opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;"></fy-text>
     </div>
     
-    <div [fy-sidebar-links] style="padding: 0 12px;">
+    <div fy-sidebar-links style="padding: 0 12px;">
       @for (theme of themes; track theme.id) {
         <fy-button 
           variant="ghost" 
@@ -212,8 +212,8 @@ function getWelcomeHTML(): string {
       }
     </div>
     
-    <div [fy-sidebar-footer] style="padding: 24px; border-top: 1px solid var(--fy-colors-border);">
-       <fy-badge text="v1.0.0" [glow]="true" style="width: 100%; justify-content: center;"></fy-badge>
+    <div fy-sidebar-footer style="padding: 24px; border-top: 1px solid var(--fy-colors-border);">
+       <fy-badge text="v1.0.0" [shine]="true" style="width: 100%; justify-content: center;"></fy-badge>
     </div>
   </fy-slot>
 
@@ -248,7 +248,7 @@ function getWelcomeHTML(): string {
             <fy-text text="Engine de Efeitos" [strong]="true"></fy-text>
           </div>
           <fy-text text="Dispare efeitos globais como confetes ou neve diretamente de qualquer componente." size="sm" style="margin-bottom: 20px; display: block; opacity: 0.8;"></fy-text>
-          <fy-button label="Testar Confetti" (click)="fylib.triggerEffect('confetti')" style="width: 100%"></fy-button>
+          <fy-button label="Testar Confetti" (click)="triggerConfetti()" style="width: 100%"></fy-button>
         </fy-card>
 
         <fy-card>
@@ -314,6 +314,10 @@ export class FylibWelcomeComponent implements OnInit {
   toggleMode() {
     this.mode.set(this.mode() === 'light' ? 'dark' : 'light');
     this.fylib.setMode(this.mode());
+  }
+
+  triggerConfetti() {
+    this.fylib.triggerEffect('confetti');
   }
 }
 `;
