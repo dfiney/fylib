@@ -5,7 +5,7 @@ export const fineyNexus1Theme: ThemeDefinition = {
   tokens: {
     colors: {
       primary: '#22c55e',
-      secondary: '#4ade80',
+      secondary: '#86efac',
       success: '#22c55e',
       danger: '#ef4444',
       warning: '#f59e0b',
@@ -13,7 +13,7 @@ export const fineyNexus1Theme: ThemeDefinition = {
       white: '#ffffff',
       black: '#000000',
       background: '#06090b',
-      text: '#eafaf2',
+      text: '#ffffff',
       'primary-rgb': '34,197,94',
       surface: '#0c1319',
       border: 'rgba(34,197,94,0.12)'
@@ -319,7 +319,7 @@ export const fineyNexus1Theme: ThemeDefinition = {
         effects: {
           card: {
             background: '#0c1319',
-            borderColor: 'rgba(34, 197, 94, 0.3)',
+            borderColor: 'var(--fy-colors-border)',
             shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
           }
         }
