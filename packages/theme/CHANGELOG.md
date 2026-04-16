@@ -1,5 +1,20 @@
 # @fylib/theme
 
+## 0.3.0
+
+### Minor Changes
+
+- d716809: feat: adicionado suporte a estilos por variante de componente (`componentVariants`) diretamente na `ThemeDefinition`.
+  feat: todos os temas padrão foram atualizados com estilos específicos para variantes de botões, cards e outros componentes, reforçando a identidade visual de cada tema (XP, Win7, Puffy, Nexus, etc.).
+  feat: todos os componentes do adapter Angular agora respeitam as variações de estilo definidas pelo tema ativo, permitindo customização profunda sem alteração de código.
+
+### Patch Changes
+
+- Updated dependencies [d716809]
+  - @fylib/core@0.3.0
+  - @fylib/animation@0.2.3
+  - @fylib/logger@0.2.3
+
 ## 0.2.2
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # playground
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [d716809]
+  - @fylib/core@0.3.0
+  - @fylib/theme@0.3.0
+  - @fylib/adapter-angular@0.4.0
+  - @fylib/animation@0.2.3
+  - @fylib/catalog@0.3.1
+  - @fylib/config@0.2.4
+  - @fylib/crypto@0.2.3
+  - @fylib/logger@0.2.3
+
 ## 0.0.9
 
 ### Patch Changes

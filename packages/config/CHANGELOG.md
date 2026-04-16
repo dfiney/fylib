@@ -1,5 +1,15 @@
 # @fylib/config
 
+## 0.2.4
+
+### Patch Changes
+
+- Updated dependencies [d716809]
+  - @fylib/core@0.3.0
+  - @fylib/animation@0.2.3
+  - @fylib/crypto@0.2.3
+  - @fylib/logger@0.2.3
+
 ## 0.2.3
 
 ### Patch Changes
