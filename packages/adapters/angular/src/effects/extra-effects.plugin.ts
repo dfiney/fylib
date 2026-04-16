@@ -143,7 +143,13 @@ function renderMatrix(count: number, speed: number, loop: boolean, id: string) {
 
   const fontSize = 16;
   const columns = Math.floor(canvas.width / fontSize);
-  const drops: number[] = new Array(columns).fill(1);
+  // Use count (intensity) to determine which columns are active
+  // If count is 100, all columns are active. If 20, ~20% are active.
+  const activeProbability = Math.min(Math.max(count / 100, 0.05), 1);
+  const drops: (number | null)[] = new Array(columns).fill(null).map(() => 
+    Math.random() < activeProbability ? Math.floor(Math.random() * -20) : null
+  );
+  
   const chars = "0123456789ABCDEFHIJKLMNOPQRSTUVWXYZ@#$%^&*()".split("");
 
   let animationId: number;
@@ -155,26 +161,35 @@ function renderMatrix(count: number, speed: number, loop: boolean, id: string) {
   activeLoops.set(id, { stop });
 
   let lastTime = 0;
-  const interval = 50 / speed;
+  const interval = 60 / speed;
 
   function frame(time: number) {
     if (time - lastTime > interval) {
-      // Usar uma opacidade muito baixa para o rastro, para não escurecer a tela (overlay sutil)
-      ctx!.fillStyle = "rgba(10, 15, 18, 0.03)"; 
+      // Usar destination-out para "limpar" a camada anterior sem adicionar cores sólidas à tela (impede o escurecimento)
+      ctx!.globalCompositeOperation = 'destination-out';
+      ctx!.fillStyle = "rgba(0, 0, 0, 0.05)"; 
       ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
+      ctx!.globalCompositeOperation = 'source-over';
       
-      // Caracteres bem sutis
-      ctx!.fillStyle = "rgba(34, 197, 94, 0.15)"; 
+      // Caracteres bem sutis e finos
+      ctx!.fillStyle = "rgba(34, 197, 94, 0.12)"; 
       ctx!.font = fontSize + "px monospace";
 
       for (let i = 0; i < drops.length; i++) {
+        if (drops[i] === null) continue;
+
         const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx!.fillText(text, i * fontSize, drops[i] * fontSize);
+        const x = i * fontSize;
+        const y = drops[i]! * fontSize;
         
-        if (drops[i] * fontSize > canvas!.height && Math.random() > 0.975) {
+        if (y > 0) {
+          ctx!.fillText(text, x, y);
+        }
+        
+        if (drops[i]! * fontSize > canvas!.height && Math.random() > 0.98) {
           drops[i] = 0;
         }
-        drops[i]++;
+        drops[i]!++;
       }
       lastTime = time;
     }

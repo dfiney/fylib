@@ -202,6 +202,12 @@ export const fineyHub1Theme: ThemeDefinition = {
           showViewAll: true,
           viewAllPosition: 'footer-right'
         }
+      },
+      chart: {
+        background: 'transparent',
+        gridColor: 'rgba(0,0,0,0.05)',
+        labelColor: '#64748b',
+        colors: ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6']
       }
     }
   },
@@ -223,6 +229,7 @@ export const fineyHub1Theme: ThemeDefinition = {
     },
     layout: {
       header: {
+        background: '#010409',
         shadow: '0 1px 0 rgba(1,4,9,0.85)',
         toggle: {
           textColor: '#e6edf3',
@@ -230,6 +237,7 @@ export const fineyHub1Theme: ThemeDefinition = {
         }
       },
       sidebar: {
+        background: '#0d1117',
         toggle: {
           background: '#161b22',
           textColor: '#e6edf3',
@@ -305,6 +313,12 @@ export const fineyHub1Theme: ThemeDefinition = {
         shadow: '0 8px 24px rgba(1,4,9,0.5)',
         borderRadius: '6px'
       },
+      chart: {
+        background: 'transparent',
+        gridColor: 'rgba(255,255,255,0.05)',
+        labelColor: '#7d8590',
+        colors: ['#2f81f7', '#238636', '#d29922', '#f85149', '#bc8cff']
+      },
       notificationMenu: {
         button: {
           background: 'transparent',
@@ -338,6 +352,12 @@ export const fineyHub1Theme: ThemeDefinition = {
           viewAllPosition: 'footer-right'
         }
       }
+    },
+    scrollbar: {
+      trackBackground: '#0d1117',
+      thumbBackground: '#30363d',
+      thumbHoverBackground: '#484f58',
+      thumbBorderColor: '#0d1117'
     }
   },
   componentAnimations: {
@@ -349,6 +369,39 @@ export const fineyHub1Theme: ThemeDefinition = {
     },
     'fy-layout': {
       enter: 'layout-fade-in'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        effects: {
+          button: {
+            background: '#22c55e',
+            textColor: '#ffffff',
+            shadow: '0 1px 2px rgba(0,0,0,0.05)'
+          }
+        }
+      },
+      secondary: {
+        effects: {
+          button: {
+            background: '#f8fafc',
+            textColor: '#334155',
+            borderColor: '#e2e8f0'
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: '#f1f5f9',
+            shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+          }
+        }
+      }
     }
   }
 };

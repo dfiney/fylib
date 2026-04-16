@@ -194,7 +194,7 @@ export const christmasTheme: ThemeDefinition = {
       notificationMenu: {
         button: {
           background: 'transparent',
-          textColor: 'var(--fy-colors-white)',
+          textColor: '#af111c',
           icon: 'bell',
           badgeBackground: '#af111c',
           badgeTextColor: '#ffffff'
@@ -239,6 +239,23 @@ export const christmasTheme: ThemeDefinition = {
       text: '#e8f5e9',
       secondary: '#4caf50',
       surface: '#102016'
+    },
+    layout: {
+      header: {
+        background: '#102016',
+        shadow: '0 1px 0 rgba(255,255,255,0.08)',
+        toggle: {
+          background: '#4caf50',
+          textColor: '#e8f5e9'
+        }
+      },
+      sidebar: {
+        background: '#0a1a0f',
+        toggle: {
+          background: '#4caf50',
+          textColor: '#e8f5e9'
+        }
+      }
     },
     effects: {
       card: {
@@ -315,7 +332,7 @@ export const christmasTheme: ThemeDefinition = {
       notificationMenu: {
         button: {
           background: 'transparent',
-          textColor: 'var(--fy-colors-text)',
+          textColor: '#e8f5e9',
           icon: 'bell',
           badgeBackground: '#d42426',
           badgeTextColor: '#ffffff'
@@ -369,6 +386,41 @@ export const christmasTheme: ThemeDefinition = {
     'fy-accordion': {
         expand: 'accordion-expand',
         collapse: 'accordion-collapse'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        effects: {
+          button: {
+            background: '#af111c',
+            textColor: '#ffffff',
+            borderColor: '#d4af37',
+            shadow: '0 4px 10px rgba(175, 17, 28, 0.4)'
+          }
+        }
+      },
+      secondary: {
+        effects: {
+          button: {
+            background: '#004a1f',
+            textColor: '#ffffff',
+            borderColor: '#d4af37'
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: '#af111c',
+            shadow: '0 10px 30px rgba(175, 17, 28, 0.2)',
+            borderRadius: '12px'
+          }
+        }
+      }
     }
   }
 };

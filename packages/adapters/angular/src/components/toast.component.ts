@@ -24,7 +24,7 @@ import { FyIconComponent } from './icon.component';
       class="fy-toast"
       [class]="'fy-toast--' + type"
       [class]="composeAnimClasses(animationClassSuffix)"
-      [style]="getHostStyles(customStyles)"
+      [style]="getHostStyles(customStyles, getVariantStyles(variant))"
     >
       @if (showIcon) {
         <div class="fy-toast__icon">
@@ -143,6 +143,7 @@ export class FyToastComponent extends BaseFyComponent<'fy-toast'> implements Toa
   @Input() title?: string;
   @Input() message!: string;
   @Input() type: 'info' | 'success' | 'warning' | 'error' = 'info';
+  @Input() variant: string = 'default';
   @Input() duration: number = 3000;
   @Input() showIcon: boolean = true;
   @Input() closable: boolean = true;

@@ -86,11 +86,22 @@ export interface ThemeComponentAnimations {
   };
 }
 
+export interface ThemeComponentVariants {
+  [componentSelector: string]: {
+    [variant: string]: DesignTokens | {
+      light: DesignTokens;
+      dark: DesignTokens;
+    };
+  };
+}
+
 export interface ThemeDefinition {
   name: string;
   tokens: DesignTokens;
   darkTokens?: DesignTokens;
   componentAnimations?: ThemeComponentAnimations;
+  componentVariants?: ThemeComponentVariants;
+  chart?: TokenTree;
   backgroundEffect?: {
     name: string;
     intensity?: number;
@@ -257,12 +268,12 @@ export interface EffectsTokens extends TokenTree {
   [key: string]: any;
 }
 
-export interface ToastTokens {
-  background: string;
-  borderColor: string;
-  textColor: string;
-  shadow: string;
-  borderRadius: string;
+export interface ToastTokens extends TokenTree {
+  background?: string;
+  borderColor?: string;
+  textColor?: string;
+  shadow?: string;
+  borderRadius?: string;
   padding?: string;
   minWidth?: string;
   maxWidth?: string;
@@ -293,37 +304,37 @@ export interface ToastTokens {
   };
 }
 
-export interface NotificationMenuTokens {
+export interface NotificationMenuTokens extends TokenTree {
   button?: {
-    background: string;
-    textColor: string;
-    icon: string;
-    badgeBackground: string;
-    badgeTextColor: string;
+    background?: string;
+    textColor?: string;
+    icon?: string;
+    badgeBackground?: string;
+    badgeTextColor?: string;
   };
   dropdown?: {
-    background: string;
-    borderColor: string;
-    shadow: string;
-    width: string;
-    maxHeight: string;
-    borderRadius: string;
+    background?: string;
+    borderColor?: string;
+    shadow?: string;
+    width?: string;
+    maxHeight?: string;
+    borderRadius?: string;
   };
   item?: {
-    background: string;
-    hoverBackground: string;
-    textColor: string;
-    descriptionColor: string;
-    dividerColor: string;
-    unreadIndicator: string;
+    background?: string;
+    hoverBackground?: string;
+    textColor?: string;
+    descriptionColor?: string;
+    dividerColor?: string;
+    unreadIndicator?: string;
   };
   config?: {
-    showAll: boolean;
-    limit: number;
-    allowClear: boolean;
-    accordionMode: boolean;
-    showViewAll: boolean;
-    viewAllPosition: 'header-left' | 'header-right' | 'footer-left' | 'footer-right';
+    showAll?: boolean;
+    limit?: number;
+    allowClear?: boolean;
+    accordionMode?: boolean;
+    showViewAll?: boolean;
+    viewAllPosition?: 'header-left' | 'header-right' | 'footer-left' | 'footer-right';
     markAllAsReadOnOpen?: boolean;
     markAsReadOnClick?: boolean;
     readApiEndpoint?: string;
@@ -335,7 +346,7 @@ export interface NotificationMenuTokens {
 export interface IconsTokens extends TokenTree {
   defaultSet?: 'ph' | 'fa' | 'mdi' | string;
   color?: TokenPrimitive;
-  size?: {
+  size?: TokenPrimitive | {
     sm?: TokenPrimitive;
     md?: TokenPrimitive;
     lg?: TokenPrimitive;

@@ -2,59 +2,48 @@ import { ThemeDefinition } from '@fylib/core';
 
 export const defaultTheme: ThemeDefinition = {
   name: 'default',
-  backgroundEffect: {
-    name: 'particles',
-    intensity: 40,
-    speed: 0.5,
-    loop: true
-  },
-  wallpaper: {
-    name: 'geometric',
-    type: 'pattern',
-    opacity: 0.05
-  },
   tokens: {
     colors: {
       primary: '#3b82f6',
       secondary: '#64748b',
-      success: '#22c55e',
+      success: '#10b981',
       danger: '#ef4444',
       warning: '#f59e0b',
       info: '#3b82f6',
       white: '#ffffff',
-      black: '#000000',
-      background: '#ffffff',
-      text: '#1f2937',
+      black: '#0f172a',
+      background: '#f8fafc',
+      text: '#0f172a',
       'primary-rgb': '59, 130, 246',
-      surface: '#dfe9f5'
+      surface: '#ffffff'
     },
     spacing: {
       xs: '4px',
       sm: '8px',
       md: '16px',
       lg: '24px',
-      xl: '32px',
+      xl: '32px'
     },
     borderRadius: {
       sm: '4px',
       md: '8px',
       lg: '12px',
-      full: '9999px',
+      full: '9999px'
     },
     typography: {
       fontFamily: {
-        base: '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        heading: '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        mono: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+        base: 'system-ui, -apple-system, sans-serif',
+        heading: 'system-ui, -apple-system, sans-serif',
+        mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace'
       },
       fontSize: {
         sm: '12px',
-        md: '16px',
-        lg: '20px',
+        md: '14px',
+        lg: '16px'
       },
       fontWeight: {
         normal: '400',
-        bold: '700',
+        bold: '700'
       }
     },
     layout: {
@@ -64,32 +53,28 @@ export const defaultTheme: ThemeDefinition = {
       header: {
         height: '64px',
         padding: '0 24px',
-        background: 'transparent',
-        shadow: '0 1px 0 rgba(0,0,0,0.06)',
+        background: '#ffffff',
+        shadow: '0 1px 2px rgba(0,0,0,0.05)',
         toggle: {
-          background: 'var(--fy-colors-primary)',
-          textColor: 'var(--fy-colors-white)',
-          borderRadius: '5px',
-          borderWidth: '1px',
-          borderColor: "white",
+          background: 'transparent',
+          textColor: 'var(--fy-colors-secondary)',
+          borderRadius: 'var(--fy-borderRadius-md)',
           icon: 'menu'
-        },
-        logoFilterDarkOpacity: '0.85'
+        }
       },
       sidebar: {
         width: '260px',
+        background: '#f1f5f9',
         padding: '16px 0',
-        background: 'transparent',
+        shadow: 'none',
         toggle: {
           background: 'var(--fy-colors-primary)',
-          textColor: 'var(--fy-colors-white)',
-          borderRadius: '5px',
-          borderColor: "var(--fy-colors-white)",
+          textColor: '#ffffff',
+          borderRadius: 'var(--fy-borderRadius-full)',
           icon: 'menu',
           mode: 'floating',
           tonguePosition: 'bottom'
-        },
-        logoFilterDarkOpacity: '0.85'
+        }
       },
       content: {
         padding: '24px'
@@ -99,104 +84,69 @@ export const defaultTheme: ThemeDefinition = {
       button: {
         background: 'var(--fy-colors-primary)',
         borderColor: 'transparent',
-        shadow: 'none',
-        textColor: 'var(--fy-colors-white)'
+        shadow: '0 1px 2px rgba(0,0,0,0.05)',
+        textColor: '#ffffff'
       },
       window: {
-        background: 'var(--fy-colors-background)',
-        shadow: '0 1px 3px rgba(15, 23, 42, 0.08)'
+        background: '#ffffff',
+        shadow: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)'
       },
       modal: {
         background: '#ffffff',
-        borderColor: 'rgba(15, 23, 42, 0.12)',
-        shadow: '0 20px 60px rgba(15, 23, 42, 0.25)',
-        overlayColor: 'rgba(0,0,0,0.45)',
+        borderColor: '#e2e8f0',
+        shadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+        overlayColor: 'rgba(15, 23, 42, 0.5)',
         borderWidth: '1px',
-        borderRadius: 'var(--fy-borderRadius-md)',
-        dividerColor: 'rgba(15, 23, 42, 0.08)'
-      },
-      input: {
-        background: '#ffffff',
-        borderColor: 'rgba(15, 23, 42, 0.12)',
-        shadow: 'none',
-        placeholderColor: '#6b7280',
-        borderWidth: '1px',
-        borderRadius: 'var(--fy-borderRadius-md)',
-        icons: {
-          mode: 'inside',
-          name: 'search',
-          position: 'left',
-          outsideGap: '8px',
-          color: 'currentColor'
-        }
-      },
-      select: {
-        background: '#ffffff',
-        borderColor: 'rgba(15, 23, 42, 0.12)',
-        shadow: '0 6px 16px rgba(15, 23, 42, 0.08)',
-        borderWidth: '1px',
-        borderRadius: 'var(--fy-borderRadius-md)'
-      },
-      table: {
-        background: 'var(--fy-colors-white)',
-        borderColor: 'rgba(15, 23, 42, 0.08)',
-        headerBackground: 'rgba(15, 23, 42, 0.02)',
-        rowHoverBackground: 'rgba(15, 23, 42, 0.01)',
-        stripedBackground: 'rgba(15, 23, 42, 0.005)',
-        textColor: 'var(--fy-colors-text)',
-        headerTextColor: 'var(--fy-colors-secondary)'
-      },
-      chart: {
-        background: 'transparent',
-        borderColor: 'rgba(15, 23, 42, 0.08)',
-        shadow: 'none',
-        gridColor: 'rgba(15, 23, 42, 0.05)',
-        labelColor: '#64748b',
-        colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'],
-        fontFamily: 'inherit'
-      },
-      card: {
-        background: '#ffffff',
-        borderColor: 'rgba(15, 23, 42, 0.08)',
-        shadow: '0 10px 30px rgba(15, 23, 42, 0.06)',
-        dividerColor: 'rgba(15, 23, 42, 0.08)',
-        icons: {
-          header: '',
-          footer: ''
-        }
+        borderRadius: 'var(--fy-borderRadius-lg)',
+        dividerColor: '#f1f5f9'
       },
       accordion: {
         background: '#ffffff',
-        borderColor: 'rgba(15, 23, 42, 0.12)',
+        borderColor: '#e2e8f0',
         shadow: 'none',
-        dividerColor: 'rgba(15, 23, 42, 0.08)',
+        dividerColor: '#f1f5f9',
         borderRadius: 'var(--fy-borderRadius-md)',
         headerBackground: 'transparent'
       },
-      badge: {
-        background: '#ef4444',
-        textColor: '#ffffff',
-        borderRadius: '9999px',
-        animation: 'shine'
+      input: {
+        background: '#ffffff',
+        borderColor: '#e2e8f0',
+        placeholderColor: '#94a3b8',
+        shadow: 'inset 0 1px 2px rgba(0,0,0,0.05)'
+      },
+      select: {
+        background: '#ffffff',
+        borderColor: '#e2e8f0',
+        shadow: '0 1px 2px rgba(0,0,0,0.05)'
+      },
+      card: {
+        background: '#ffffff',
+        borderColor: '#f1f5f9',
+        dividerColor: '#f1f5f9',
+        shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+      },
+      table: {
+        background: '#ffffff',
+        borderColor: '#f1f5f9',
+        headerBackground: '#f8fafc',
+        rowHoverBackground: '#f1f5f9',
+        stripedBackground: '#f8fafc',
+        textColor: '#0f172a',
+        headerTextColor: '#64748b'
+      },
+      chart: {
+        background: 'transparent',
+        gridColor: '#f1f5f9',
+        labelColor: '#64748b',
+        colors: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
       },
       toast: {
         background: '#ffffff',
-        borderColor: 'rgba(15, 23, 42, 0.12)',
-        textColor: '#1f2937',
+        borderColor: '#f1f5f9',
+        textColor: '#0f172a',
         shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         borderRadius: 'var(--fy-borderRadius-md)',
-        padding: '12px 16px',
-        gap: '12px',
-        minWidth: '320px',
-        maxWidth: '420px',
-        titleFontSize: '14px',
-        titleFontWeight: '600',
-        messageFontSize: '13px',
-        messageLineHeight: '1.5',
-        iconSize: '20px',
-        closeIcon: 'x',
-        closeButtonSize: '18px',
-        closeButtonOpacity: '0.5',
+        closeButtonOpacity: '0.4',
         closeButtonHoverOpacity: '1',
         iconColor: {
           info: '#3b82f6',
@@ -207,46 +157,34 @@ export const defaultTheme: ThemeDefinition = {
       },
       notificationMenu: {
         button: {
-          background: 'transparent',
-          textColor: 'var(--fy-colors-text)',
-          icon: 'bell',
+          textColor: 'var(--fy-colors-secondary)',
           badgeBackground: '#ef4444',
+          background: 'transparent',
+          icon: 'bell',
           badgeTextColor: '#ffffff'
         },
         dropdown: {
           background: '#ffffff',
-          borderColor: 'rgba(15, 23, 42, 0.12)',
-          shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+          borderColor: '#f1f5f9',
+          shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
           width: '320px',
           maxHeight: '400px',
           borderRadius: 'var(--fy-borderRadius-md)'
         },
         item: {
-          background: 'transparent',
           hoverBackground: '#f8fafc',
-          textColor: '#1f2937',
+          textColor: '#0f172a',
           descriptionColor: '#64748b',
-          dividerColor: 'rgba(15, 23, 42, 0.08)',
-          unreadIndicator: '#3b82f6'
-        },
-        config: {
-          showAll: false,
-          limit: 5,
-          allowClear: true,
-          accordionMode: true,
-          showViewAll: true,
-          viewAllPosition: 'footer-right'
+          dividerColor: '#f1f5f9',
+          unreadIndicator: '#3b82f6',
+          background: ''
         }
       }
     },
     icons: {
       defaultSet: 'ph',
-      size: {
-        sm: '12px',
-        md: '16px',
-        lg: '20px'
-      },
-      strokeWidth: '1.5',
+      size: { sm: '16px', md: '20px', lg: '24px' },
+      strokeWidth: '2',
       variant: 'regular'
     },
     scrollbar: {
@@ -266,6 +204,23 @@ export const defaultTheme: ThemeDefinition = {
       text: '#f9fafb',
       secondary: '#9ca3af',
       surface: '#0f172a'
+    },
+    layout: {
+      header: {
+        background: '#0f172a',
+        shadow: '0 1px 2px rgba(0,0,0,0.5)',
+        toggle: {
+          background: 'rgba(255,255,255,0.05)',
+          textColor: '#60a5fa'
+        }
+      },
+      sidebar: {
+        background: '#111827',
+        toggle: {
+          background: '#60a5fa',
+          textColor: '#ffffff'
+        }
+      }
     },
     effects: {
       card: {
@@ -300,68 +255,54 @@ export const defaultTheme: ThemeDefinition = {
       select: {
         background: '#111827',
         borderColor: 'rgba(255,255,255,0.12)',
-        shadow: '0 6px 16px rgba(15, 23, 42, 0.08)',
-        borderWidth: '1px',
-        borderRadius: 'var(--fy-borderRadius-md)'
+        shadow: '0 6px 16px rgba(0, 0, 0, 0.4)'
       },
       table: {
-        background: '#1f2937',
+        background: '#0f172a',
         borderColor: 'rgba(255,255,255,0.08)',
-        headerBackground: 'rgba(255,255,255,0.05)',
+        headerBackground: 'rgba(255,255,255,0.04)',
         rowHoverBackground: 'rgba(255,255,255,0.02)',
         stripedBackground: 'rgba(255,255,255,0.01)',
         textColor: '#f9fafb',
         headerTextColor: '#9ca3af'
       },
-      chart: {
-        background: 'transparent',
-        gridColor: 'rgba(255,255,255,0.05)',
-        labelColor: '#9ca3af',
-        colors: ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#a78bfa']
-      },
-      button: {
-        textColor: '#ffffff'
-      },
       toast: {
         background: '#1f2937',
-        borderColor: 'rgba(255,255,255,0.1)',
+        borderColor: 'rgba(255,255,255,0.08)',
         textColor: '#f9fafb',
-        shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4)',
-        borderRadius: 'var(--fy-borderRadius-md)',
-        closeButtonOpacity: '0.6',
-        closeButtonHoverOpacity: '1',
-        iconColor: {
-          info: '#60a5fa',
-          success: '#34d399',
-          warning: '#fbbf24',
-          error: '#f87171'
-        }
+        shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)'
       },
       notificationMenu: {
         button: {
-          textColor: 'var(--fy-colors-text)',
-          badgeBackground: '#f87171',
           background: 'transparent',
+          textColor: '#f9fafb',
           icon: 'bell',
+          badgeBackground: '#ef4444',
           badgeTextColor: '#ffffff'
         },
         dropdown: {
           background: '#1f2937',
-          borderColor: 'rgba(255,255,255,0.1)',
-          shadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
+          borderColor: 'rgba(255,255,255,0.08)',
+          shadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)',
           width: '320px',
           maxHeight: '400px',
           borderRadius: 'var(--fy-borderRadius-md)'
         },
         item: {
-          hoverBackground: 'rgba(255,255,255,0.05)',
+          background: 'transparent',
+          hoverBackground: '#374151',
           textColor: '#f9fafb',
           descriptionColor: '#9ca3af',
           dividerColor: 'rgba(255,255,255,0.08)',
-          unreadIndicator: '#60a5fa',
-          background: ''
+          unreadIndicator: '#60a5fa'
         }
       }
+    },
+    scrollbar: {
+      trackBackground: '#111827',
+      thumbBackground: '#374151',
+      thumbHoverBackground: '#4b5563',
+      thumbBorderColor: '#111827'
     }
   },
   componentAnimations: {
@@ -406,6 +347,75 @@ export const defaultTheme: ThemeDefinition = {
     'fy-table': {
       enter: 'table-fade-in',
       rowEnter: 'table-row-enter'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        effects: {
+          button: {
+            background: 'var(--fy-colors-primary)',
+            textColor: 'var(--fy-colors-white)',
+            borderColor: 'transparent'
+          }
+        }
+      },
+      secondary: {
+        effects: {
+          button: {
+            background: 'var(--fy-colors-secondary)',
+            textColor: 'var(--fy-colors-white)',
+            borderColor: 'transparent'
+          }
+        }
+      },
+      ghost: {
+        effects: {
+          button: {
+            background: 'transparent',
+            textColor: 'var(--fy-colors-primary)',
+            borderColor: 'var(--fy-colors-primary)'
+          }
+        }
+      },
+      danger: {
+        effects: {
+          button: {
+            background: 'var(--fy-colors-danger)',
+            textColor: 'var(--fy-colors-white)',
+            borderColor: 'transparent'
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: 'rgba(15, 23, 42, 0.08)',
+            shadow: '0 1px 3px rgba(15, 23, 42, 0.08)'
+          }
+        }
+      },
+      elevated: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: 'transparent',
+            shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+          }
+        }
+      },
+      outlined: {
+        effects: {
+          card: {
+            background: 'transparent',
+            borderColor: 'var(--fy-colors-secondary)',
+            shadow: 'none'
+          }
+        }
+      }
     }
   }
 };

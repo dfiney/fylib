@@ -2,32 +2,21 @@ import { ThemeDefinition } from '@fylib/core';
 
 export const fineyNexus1Theme: ThemeDefinition = {
   name: 'finey-nexus-1',
-  backgroundEffect: {
-    name: 'matrix',
-    intensity: 40,
-    speed: 0.8,
-    loop: true
-  },
-  // wallpaper: {
-  //   name: 'cyber-grid',
-  //   type: 'pattern',
-  //   opacity: 1
-  // },
   tokens: {
     colors: {
       primary: '#22c55e',
-      secondary: '#0fe3ff',
+      secondary: '#4ade80',
       success: '#22c55e',
       danger: '#ef4444',
       warning: '#f59e0b',
-      info: '#0fe3ff',
+      info: '#22c55e',
       white: '#ffffff',
       black: '#000000',
-      background: '#0a0f12',
+      background: '#06090b',
       text: '#eafaf2',
       'primary-rgb': '34,197,94',
       surface: '#0c1319',
-      border: 'rgba(255,255,255,0.08)'
+      border: 'rgba(34,197,94,0.12)'
     },
     spacing: {
       xs: '4px',
@@ -65,21 +54,23 @@ export const fineyNexus1Theme: ThemeDefinition = {
       header: {
         height: '64px',
         padding: '0 24px',
-        shadow: '0 1px 0 rgba(255,255,255,0.06)',
+        background: '#06090b',
+        shadow: '0 1px 0 rgba(34,197,94,0.1)',
         toggle: {
-          background: '#0a0f12',
+          background: '#06090b',
           textColor: '#22c55e',
           borderColor: 'rgba(34,197,94,0.6)',
           borderRadius: '5px',
           icon: 'menu'
         },
-        logoFilterDarkOpacity: '0.85'
+        logoFilterDarkOpacity: '1'
       },
       sidebar: {
         width: '260px',
         padding: '16px 0',
+        background: '#06090b',
         toggle: {
-          background: '#0a0f12',
+          background: '#06090b',
           textColor: '#22c55e',
           borderColor: 'rgba(34,197,94,0.6)',
           borderRadius: '5px',
@@ -87,7 +78,7 @@ export const fineyNexus1Theme: ThemeDefinition = {
           mode: 'floating',
           tonguePosition: 'bottom'
         },
-        logoFilterDarkOpacity: '0.85'
+        logoFilterDarkOpacity: '1'
       },
       content: {
         padding: '24px'
@@ -95,29 +86,29 @@ export const fineyNexus1Theme: ThemeDefinition = {
     },
     effects: {
       button: {
-        background: 'linear-gradient(90deg, #00c8ff 0%, #22c55e 100%)',
+        background: 'linear-gradient(90deg, #10b981 0%, #22c55e 100%)',
         borderColor: 'transparent',
         shadow: '0 12px 40px rgba(34,197,94,0.35)',
-        textColor: '#0b0f14'
+        textColor: '#06090b'
       },
       window: {
-        background: '#0f172a',
+        background: '#0c1319',
         shadow: '0 12px 40px rgba(0,0,0,0.55)',
-        borderColor: 'rgba(255,255,255,0.08)'
+        borderColor: 'rgba(34,197,94,0.2)'
       },
       modal: {
         background: '#0c1319',
-        borderColor: 'rgba(255,255,255,0.16)',
+        borderColor: 'rgba(34,197,94,0.25)',
         shadow: '0 28px 70px rgba(0,0,0,0.65)',
-        overlayColor: 'rgba(0,0,0,0.55)',
+        overlayColor: 'rgba(0,0,0,0.75)',
         borderWidth: '1px',
         borderRadius: '14px',
-        dividerColor: 'rgba(255,255,255,0.12)'
+        dividerColor: 'rgba(34,197,94,0.12)'
       },
       input: {
-        background: '#0a0f12',
-        borderColor: 'rgba(255,255,255,0.16)',
-        shadow: '0 0 0 1px rgba(255,255,255,0.08) inset',
+        background: '#06090b',
+        borderColor: 'rgba(34,197,94,0.2)',
+        shadow: '0 0 0 1px rgba(34,197,94,0.1) inset',
         placeholderColor: '#93b5a6',
         borderWidth: '1px',
         borderRadius: '14px',
@@ -130,17 +121,17 @@ export const fineyNexus1Theme: ThemeDefinition = {
         }
       },
       select: {
-        background: '#0a0f12',
-        borderColor: 'rgba(255,255,255,0.16)',
-        shadow: '0 0 0 1px rgba(255,255,255,0.08) inset',
+        background: '#06090b',
+        borderColor: 'rgba(34,197,94,0.2)',
+        shadow: '0 0 0 1px rgba(34,197,94,0.1) inset',
         borderWidth: '1px',
         borderRadius: '14px'
       },
       table: {
         background: '#0c1319',
         borderColor: 'rgba(34, 197, 94, 0.2)',
-        headerBackground: 'rgba(34, 197, 94, 0.05)',
-        rowHoverBackground: 'rgba(34, 197, 94, 0.08)',
+        headerBackground: 'rgba(34, 197, 94, 0.08)',
+        rowHoverBackground: 'rgba(34, 197, 94, 0.12)',
         stripedBackground: 'rgba(255, 255, 255, 0.01)',
         textColor: '#eafaf2',
         headerTextColor: '#22c55e'
@@ -150,14 +141,14 @@ export const fineyNexus1Theme: ThemeDefinition = {
         borderColor: 'rgba(34, 197, 94, 0.2)',
         gridColor: 'rgba(255, 255, 255, 0.05)',
         labelColor: '#93b5a6',
-        colors: ['#22c55e', '#0fe3ff', '#00c8ff', '#14b8a6', '#06b6d4'],
+        colors: ['#22c55e', '#4ade80', '#10b981', '#14b8a6', '#059669'],
         fontFamily: 'inherit'
       },
       accordion: {
         background: '#0c1319',
-        borderColor: 'rgba(255,255,255,0.16)',
+        borderColor: 'rgba(34,197,94,0.2)',
         shadow: 'none',
-        dividerColor: 'rgba(255,255,255,0.12)',
+        dividerColor: 'rgba(34,197,94,0.12)',
         borderRadius: '14px',
         headerBackground: 'transparent'
       },
@@ -165,7 +156,7 @@ export const fineyNexus1Theme: ThemeDefinition = {
         background: '#0c1319',
         borderColor: 'rgba(34,197,94,0.7)',
         shadow: '0 24px 50px rgba(0,0,0,0.6)',
-        dividerColor: 'rgba(255,255,255,0.08)',
+        dividerColor: 'rgba(34,197,94,0.12)',
         icons: {
           header: '',
           footer: ''
@@ -173,12 +164,12 @@ export const fineyNexus1Theme: ThemeDefinition = {
       },
       badge: {
         background: '#22c55e',
-        textColor: '#0b0f14',
+        textColor: '#06090b',
         borderRadius: '9999px',
         animation: 'shine'
       },
       toast: {
-        background: 'rgba(12, 19, 25, 0.95)',
+        background: 'rgba(6, 9, 11, 0.95)',
         borderColor: '#22c55e',
         textColor: '#eafaf2',
         shadow: '0 0 20px rgba(34, 197, 94, 0.3), inset 0 0 10px rgba(34, 197, 94, 0.1)',
@@ -200,7 +191,7 @@ export const fineyNexus1Theme: ThemeDefinition = {
         closeButtonBorder: '1px solid rgba(34, 197, 94, 0.3)',
         closeButtonBorderRadius: '2px',
         iconColor: {
-          info: '#00c8ff',
+          info: '#22c55e',
           success: '#22c55e',
           warning: '#f59e0b',
           error: '#ef4444'
@@ -233,7 +224,7 @@ export const fineyNexus1Theme: ThemeDefinition = {
           hoverBackground: 'rgba(34, 197, 94, 0.1)',
           textColor: '#eafaf2',
           descriptionColor: '#93b5a6',
-          dividerColor: 'rgba(255,255,255,0.08)',
+          dividerColor: 'rgba(34, 197, 94, 0.12)',
           unreadIndicator: '#22c55e'
         },
         config: {
@@ -258,125 +249,15 @@ export const fineyNexus1Theme: ThemeDefinition = {
     },
     scrollbar: {
       width: '12px',
-      trackBackground: '#0a0f12',
-      thumbBackground: 'linear-gradient(180deg, #00c8ff 0%, #22c55e 100%)',
-      thumbHoverBackground: 'linear-gradient(180deg, #00e1ff 0%, #28ff6c 100%)',
+      trackBackground: '#06090b',
+      thumbBackground: 'linear-gradient(180deg, #10b981 0%, #22c55e 100%)',
+      thumbHoverBackground: 'linear-gradient(180deg, #4ade80 0%, #22c55e 100%)',
       thumbBorderRadius: '2px',
       thumbBorderWidth: '2px',
-      thumbBorderColor: '#0a0f12'
+      thumbBorderColor: '#06090b'
     }
   },
-  darkTokens: {
-    colors: {
-      primary: '#22c55e',
-      background: '#0b0f14',
-      text: '#e5e7eb',
-      secondary: '#14b8a6',
-      surface: '#0f172a'
-    },
-    effects: {
-      modal: {
-        background: '#0f172a',
-        borderColor: 'rgba(255,255,255,0.18)',
-        shadow: '0 32px 80px rgba(0,0,0,0.75)',
-        overlayColor: 'rgba(0,0,0,0.55)',
-        borderWidth: '1px',
-        borderRadius: '14px',
-        dividerColor: 'rgba(255,255,255,0.12)'
-      },
-      input: {
-        borderColor: 'rgba(255,255,255,0.18)',
-        placeholderColor: '#a3a3a3',
-        shadow: 'none'
-      },
-      select: {
-        borderColor: 'rgba(255,255,255,0.18)',
-        shadow: 'none',
-        borderWidth: '1px',
-        borderRadius: '14px'
-      },
-      accordion: {
-        borderColor: 'rgba(255,255,255,0.18)',
-        shadow: 'none',
-        dividerColor: 'rgba(255,255,255,0.12)',
-        borderRadius: '14px',
-        headerBackground: 'transparent'
-      },
-      button: {
-        background: 'linear-gradient(90deg, #0b1e13 0%, #0d2518 100%)',
-        borderColor: 'rgba(34, 197, 94, 0.4)',
-        shadow: '0 0 15px rgba(34, 197, 94, 0.2)',
-        textColor: '#22c55e'
-      },
-      card: {
-        background: '#0c1319',
-        borderColor: 'rgba(34, 197, 94, 0.3)',
-        dividerColor: 'rgba(255, 255, 255, 0.08)',
-        shadow: '0 24px 50px rgba(0,0,0,0.8), 0 0 20px rgba(34, 197, 94, 0.05)'
-      },
-      table: {
-        background: '#0b0f14',
-        borderColor: 'rgba(34, 197, 94, 0.3)',
-        headerBackground: 'rgba(34, 197, 94, 0.1)',
-        rowHoverBackground: 'rgba(34, 197, 94, 0.15)',
-        stripedBackground: 'rgba(255, 255, 255, 0.02)',
-        textColor: '#e5e7eb',
-        headerTextColor: '#22c55e'
-      },
-      chart: {
-        background: 'transparent',
-        gridColor: 'rgba(255, 255, 255, 0.08)',
-        labelColor: '#9ca3af',
-        colors: ['#22c55e', '#0fe3ff', '#00c8ff', '#14b8a6', '#06b6d4']
-      },
-      toast: {
-        background: 'rgba(15, 23, 42, 0.95)',
-        borderColor: '#22c55e',
-        textColor: '#e5e7eb',
-        shadow: '0 0 30px rgba(34, 197, 94, 0.5), inset 0 0 15px rgba(34, 197, 94, 0.2)',
-        borderRadius: '4px',
-        closeButtonOpacity: '0.8',
-        closeButtonHoverOpacity: '1',
-        iconColor: {
-          info: '#00c8ff',
-          success: '#22c55e',
-          warning: '#f59e0b',
-          error: '#ef4444'
-        },
-        icons: {
-          info: 'lightning-fill',
-          success: 'check-circle-fill',
-          warning: 'warning-diamond-fill',
-          error: 'fire-fill'
-        }
-      },
-      notificationMenu: {
-        button: {
-          background: 'transparent',
-          textColor: '#22c55e',
-          icon: 'bell',
-          badgeBackground: '#ef4444',
-          badgeTextColor: '#ffffff'
-        },
-        dropdown: {
-          background: '#0f172a',
-          borderColor: 'rgba(34, 197, 94, 0.5)',
-          shadow: '0 20px 60px rgba(0,0,0,0.9), 0 0 20px rgba(34, 197, 94, 0.2)',
-          width: '320px',
-          maxHeight: '420px',
-          borderRadius: '14px'
-        },
-        item: {
-          background: 'transparent',
-          hoverBackground: 'rgba(34, 197, 94, 0.15)',
-          textColor: '#e5e7eb',
-          descriptionColor: '#9ca3af',
-          dividerColor: 'rgba(255,255,255,0.1)',
-          unreadIndicator: '#22c55e'
-        }
-      }
-    }
-  },
+  darkTokens: {}, // Empty since tokens are already dark
   componentAnimations: {
     'fy-button': {
       hover: 'button-hover-soft',
@@ -410,6 +291,39 @@ export const fineyNexus1Theme: ThemeDefinition = {
     },
     'fy-card': {
       enter: 'card-fade-in'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        effects: {
+          button: {
+            background: 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)',
+            textColor: '#06090b',
+            shadow: '0 4px 14px 0 rgba(34, 197, 94, 0.39)'
+          }
+        }
+      },
+      secondary: {
+        effects: {
+          button: {
+            background: '#0c1319',
+            textColor: '#22c55e',
+            borderColor: 'rgba(34, 197, 94, 0.4)'
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        effects: {
+          card: {
+            background: '#0c1319',
+            borderColor: 'rgba(34, 197, 94, 0.3)',
+            shadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          }
+        }
+      }
     }
   }
 };

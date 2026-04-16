@@ -132,7 +132,7 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
         }
       },
       select: {
-        background: 'rgba(255, 255, 255, 0.5)',
+        background: 'rgba(255, 255, 255, 0.96)',
         borderColor: 'rgba(0,0,0,0.1)',
         shadow: 'none',
         borderWidth: '1px',
@@ -145,10 +145,10 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
         rowHoverBackground: 'rgba(0,122,255,0.05)',
         stripedBackground: 'rgba(0,0,0,0.01)',
         textColor: '#1d1d1f',
-        headerTextColor: '#86868b'
+        headerTextColor: '#86868b',
       },
       modal: {
-        background: 'rgba(255, 255, 255, 0.85)',
+        background: 'rgba(255, 255, 255, 0.96)',
         borderColor: 'rgba(0,0,0,0.1)',
         shadow: '0 40px 100px rgba(0,0,0,0.25)',
         overlayColor: 'rgba(0,0,0,0.3)',
@@ -165,7 +165,7 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
         headerBackground: 'transparent'
       },
       card: {
-        background: 'rgba(255, 255, 255, 0.6)',
+        background: 'rgba(255, 255, 255, 0.96)',
         borderColor: 'rgba(0,0,0,0.05)',
         shadow: '0 10px 20px rgba(0,0,0,0.04)',
         dividerColor: 'rgba(0,0,0,0.05)',
@@ -189,7 +189,7 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
         fontFamily: 'inherit'
       },
       toast: {
-        background: 'rgba(255, 255, 255, 0.72)',
+        background: 'rgba(255, 255, 255, 0.90)',
         borderColor: 'rgba(255, 255, 255, 0.4)',
         textColor: '#1d1d1f',
         shadow: '0 8px 32px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.5)',
@@ -281,7 +281,28 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
       secondary: '#86868b',
       surface: 'rgba(29, 29, 31, 0.72)'
     },
+    layout: {
+      header: {
+        background: 'rgba(29, 29, 31, 0.96)',
+        shadow: 'none',
+        toggle: {
+          background: 'transparent',
+          textColor: '#0a84ff'
+        }
+      },
+      sidebar: {
+        background: 'rgba(29, 29, 31, 0.96)',
+        toggle: {
+          background: 'transparent',
+          textColor: '#0a84ff'
+        }
+      }
+    },
     effects: {
+      accordion: {
+        borderColor: '#f5f5f71c',
+        dividerColor: '#f5f5f71c',
+      },
       button: {
         background: 'rgba(255, 255, 255, 0.1)',
         borderColor: 'rgba(255, 255, 255, 0.1)',
@@ -299,7 +320,7 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
         shadow: '0 10px 20px rgba(0,0,0,0.2)'
       },
       modal: {
-        background: 'rgba(44, 44, 46, 0.85)',
+        background: 'rgba(44, 44, 46, 0.96)',
         borderColor: 'rgba(255,255,255,0.1)',
         shadow: '0 40px 100px rgba(0,0,0,0.5)',
         overlayColor: 'rgba(0,0,0,0.5)',
@@ -313,7 +334,7 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
         placeholderColor: '#86868b'
       },
       select: {
-        background: 'rgba(255, 255, 255, 0.05)',
+        background: 'rgba(44, 44, 46, 0.98)',
         borderColor: 'rgba(255, 255, 255, 0.1)',
         shadow: 'none',
         borderWidth: '1px',
@@ -347,12 +368,6 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
           success: '#30d158',
           warning: '#ffd60a',
           error: '#ff453a'
-        },
-        icons: {
-          info: 'info-fill',
-          success: 'check-circle-fill',
-          warning: 'warning-fill',
-          error: 'x-circle-fill'
         }
       },
       notificationMenu: {
@@ -382,8 +397,10 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
       }
     },
     scrollbar: {
+      trackBackground: 'transparent',
       thumbBackground: 'rgba(255,255,255,0.2)',
-      thumbHoverBackground: 'rgba(255,255,255,0.3)'
+      thumbHoverBackground: 'rgba(255,255,255,0.3)',
+      thumbBorderColor: 'transparent'
     }
   },
   componentAnimations: {
@@ -418,6 +435,29 @@ export const fineyWorkbench3Theme: ThemeDefinition = {
     'fy-table': {
       enter: 'table-fade-in',
       rowEnter: 'table-row-enter'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        effects: {
+          button: {
+            background: '#007aff',
+            textColor: '#ffffff'
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: 'rgba(255,255,255,0.1)',
+            shadow: '0 4px 12px rgba(0,0,0,0.2)'
+          }
+        }
+      }
     }
   }
 };

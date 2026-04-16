@@ -281,6 +281,23 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
       secondary: '#6b6b6b',
       surface: '#2d2d2d'
     },
+    layout: {
+      header: {
+        background: '#2d2d2d',
+        shadow: '0 1px 0 rgba(0,0,0,0.5)',
+        toggle: {
+          background: 'transparent',
+          textColor: '#0a84ff'
+        }
+      },
+      sidebar: {
+        background: '#2d2d2dff',
+        toggle: {
+          background: 'transparent',
+          textColor: '#0a84ff',
+        }
+      }
+    },
     effects: {
       button: {
         background: 'linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%)',
@@ -335,8 +352,8 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
       chart: {
         background: 'transparent',
         gridColor: 'rgba(255,255,255,0.05)',
-        labelColor: '#6b6b6b',
-        colors: ['#0a84ff', '#32d74b', '#ffd60a', '#ff453a', '#64d2ff']
+        labelColor: '#8e8e93',
+        colors: ['#0a84ff', '#30d158', '#ff453a', '#ffd60a', '#64d2ff']
       },
       toast: {
         background: '#2d2d2d',
@@ -348,36 +365,33 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
         closeButtonHoverOpacity: '1',
         iconColor: {
           info: '#0a84ff',
-          success: '#32d74b',
+          success: '#30d158',
           warning: '#ffd60a',
           error: '#ff453a'
         }
       },
       notificationMenu: {
         button: {
-          background: 'transparent',
-          textColor: 'var(--fy-colors-text)',
-          icon: 'bell',
-          badgeBackground: '#ff453a',
-          badgeTextColor: '#ffffff'
+          textColor: '#d1d1d1'
         },
         dropdown: {
           background: '#2d2d2d',
           borderColor: '#3a3a3a',
-          shadow: '0 20px 40px rgba(0,0,0,0.6)',
-          width: '320px',
-          maxHeight: '400px',
-          borderRadius: '5px'
+          shadow: '0 25px 50px rgba(0,0,0,0.7)'
         },
         item: {
-          background: 'transparent',
-          hoverBackground: 'rgba(10, 132, 255, 0.1)',
+          hoverBackground: '#3a3a3a',
           textColor: '#d1d1d1',
           descriptionColor: '#6b6b6b',
-          dividerColor: '#3a3a3a',
-          unreadIndicator: '#0a84ff'
+          dividerColor: '#3a3a3a'
         }
       }
+    },
+    scrollbar: {
+      trackBackground: '#1e1e1e',
+      thumbBackground: '#4a4a4a',
+      thumbHoverBackground: '#5a5a5a',
+      thumbBorderColor: '#1e1e1e'
     }
   },
   componentAnimations: {
@@ -412,6 +426,39 @@ export const fineyWorkbench2Theme: ThemeDefinition = {
     'fy-table': {
       enter: 'table-fade-in',
       rowEnter: 'table-row-enter'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        effects: {
+          button: {
+            background: '#0a84ff',
+            textColor: '#ffffff',
+            shadow: '0 1px 3px rgba(0,0,0,0.2)'
+          }
+        }
+      },
+      secondary: {
+        effects: {
+          button: {
+            background: 'rgba(10, 132, 255, 0.15)',
+            textColor: '#0a84ff',
+            borderColor: 'transparent'
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: 'rgba(255,255,255,0.1)',
+            shadow: '0 4px 12px rgba(0,0,0,0.2)'
+          }
+        }
+      }
     }
   }
 };

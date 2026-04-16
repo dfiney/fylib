@@ -10,7 +10,9 @@ import { EffectName } from '@fylib/config';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div [class]="'fy-layout fy-layout--' + name" [ngStyle]="customStyles || null">
+    <div [class]="'fy-layout fy-layout--' + name" 
+         [class.fy-layout--fixed-height]="fixedHeight"
+         [ngStyle]="customStyles || null">
       <ng-content></ng-content>
     </div>
   `,
@@ -21,7 +23,7 @@ import { EffectName } from '@fylib/config';
       min-height: 100vh;
       width: 100%;
       overflow-x: hidden;
-      background-color: var(--fy-colors-background);
+      background: var(--fy-colors-background);
       color: var(--fy-colors-text);
       font-family: var(--fy-typography-fontFamily-base, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
       transition: background-color 0.3s ease, color 0.3s ease;
@@ -49,7 +51,8 @@ import { EffectName } from '@fylib/config';
     }
 
     /* Fixed Sidebar mode: Lock height to viewport and disable global scroll */
-    .fy-layout--app-layout:has(.fy-slot--sidebar-fixed) {
+    .fy-layout--app-layout:has(.fy-slot--sidebar-fixed),
+    .fy-layout--fixed-height {
       height: 100vh;
       min-height: 100vh;
       max-height: 100vh;
@@ -57,9 +60,11 @@ import { EffectName } from '@fylib/config';
     }
 
     /* Ensure content area takes full height and scrolls internally in fixed mode */
-    .fy-layout--app-layout:has(.fy-slot--sidebar-fixed) .fy-slot--content {
+    .fy-layout--app-layout:has(.fy-slot--sidebar-fixed) .fy-slot--content,
+    .fy-layout--fixed-height .fy-slot--content {
       height: 100%;
       overflow-y: auto;
+      min-height: 0; /* Critical for grid item scrolling */
     }
 
     @media (max-width: 768px) {
@@ -89,6 +94,7 @@ export class FyLayoutComponent implements OnInit, OnChanges, OnDestroy {
   protected currentTheme = signal<string>('default');
 
   @Input() name: string = AppLayoutDefinition.name;
+  @Input() fixedHeight: boolean = false;
   @Input() activeAnimations: boolean | null = null;
   @Input() activeEffects: boolean | null = null;
   @Input() customStyles: Record<string, string> | null = null;
@@ -117,7 +123,7 @@ export class FyLayoutComponent implements OnInit, OnChanges, OnDestroy {
       }
       
       this.applyBgEffect();
-    }, { allowSignalWrites: true });
+    });
   }
 
   ngOnInit() {

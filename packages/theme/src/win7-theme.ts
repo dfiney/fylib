@@ -84,9 +84,11 @@ export const windows7Theme: ThemeDefinition = {
         padding: '0 10px',
         shadow: '0 1px 0 rgba(0,0,0,0.25)',
         toggle: {
-          background: '#2979ff',
-          textColor: '#ffffff',
+          background: 'linear-gradient(to bottom, #d9e7f7 0%, #b8d2f1 49%, #93b9e9 50%, #76a3de 100%)',
+          textColor: '#003399',
           borderRadius: '12px',
+          borderColor: '#707070',
+          borderWidth: '1px',
           icon: 'menu'
         }
       },
@@ -94,9 +96,11 @@ export const windows7Theme: ThemeDefinition = {
         width: '240px',
         padding: '8px 0',
         toggle: {
-          background: '#2979ff',
-          textColor: '#ffffff',
+          background: 'linear-gradient(to bottom, #d9e7f7 0%, #b8d2f1 49%, #93b9e9 50%, #76a3de 100%)',
+          textColor: '#003399',
           borderRadius: '12px',
+          borderColor: '#707070',
+          borderWidth: '1px',
           icon: 'menu',
           mode: 'floating',
           tonguePosition: 'bottom'
@@ -229,7 +233,7 @@ export const windows7Theme: ThemeDefinition = {
       notificationMenu: {
         button: {
           background: 'transparent',
-          textColor: '#ffffff',
+          textColor: '#0f172a',
           icon: 'bell',
           badgeBackground: '#ffb300',
           badgeTextColor: '#0f172a'
@@ -281,8 +285,29 @@ export const windows7Theme: ThemeDefinition = {
       primary: '#4c8dff',
       background: '#1e293b',
       secondary: '#334e7b',
-      textOverlay: '#0f172a',
+      textOverlay: '#ffffff',
       text: '#f9fafb'
+    },
+    layout: {
+      header: {
+        background: '#0f172a',
+        shadow: '0 1px 0 rgba(255,255,255,0.1)',
+        toggle: {
+          background: 'linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%)',
+          textColor: '#f9fafb',
+          borderColor: '#242424',
+          borderWidth: '1px'
+        }
+      },
+      sidebar: {
+        background: '#1e293b',
+        toggle: {
+          background: 'linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%)',
+          textColor: '#f9fafb',
+          borderColor: '#242424',
+          borderWidth: '1px'
+        }
+      }
     },
     effects: {
       modal: {
@@ -293,6 +318,18 @@ export const windows7Theme: ThemeDefinition = {
         borderWidth: '1px',
         borderRadius: '4px',
         dividerColor: 'rgba(255,255,255,0.12)'
+      },
+      input: {
+        background: '#0f172a',
+        borderColor: '#4c8dff',
+        placeholderColor: '#94a3b8'
+      },
+      select: {
+        background: '#0f172a',
+        borderColor: '#4c8dff',
+        shadow: 'none',
+        borderWidth: '1px',
+        borderRadius: '4px'
       },
       table: {
         background: '#1e293b',
@@ -317,6 +354,17 @@ export const windows7Theme: ThemeDefinition = {
         borderRadius: '4px',
         headerBackground: 'transparent'
       },
+      card: {
+        background: '#1e293b',
+        borderColor: 'rgba(255,255,255,0.1)',
+        dividerColor: 'rgba(255,255,255,0.15)',
+        shadow: '0 10px 30px rgba(0,0,0,0.5)'
+      },
+      button: {
+        background: '#334e7b',
+        textColor: '#ffffff',
+        borderColor: '#4c8dff'
+      },
       toast: {
         background: 'linear-gradient(to bottom, #1e293b 0%, #111d2e 100%)',
         borderColor: '#4c8dff',
@@ -335,7 +383,7 @@ export const windows7Theme: ThemeDefinition = {
       notificationMenu: {
         button: {
           background: 'transparent',
-          textColor: 'var(--fy-colors-text)',
+          textColor: '#f9fafb',
           icon: 'bell',
           badgeBackground: '#ffb300',
           badgeTextColor: '#0f172a'
@@ -350,13 +398,19 @@ export const windows7Theme: ThemeDefinition = {
         },
         item: {
           background: 'transparent',
-          hoverBackground: 'rgba(255, 255, 255, 0.05)',
+          hoverBackground: 'rgba(255,255,255,0.05)',
           textColor: '#f9fafb',
           descriptionColor: '#94a3b8',
-          dividerColor: 'rgba(255,255,255,0.1)',
+          dividerColor: 'rgba(255,255,255,0.08)',
           unreadIndicator: '#4c8dff'
         }
       }
+    },
+    scrollbar: {
+      trackBackground: '#1e293b',
+      thumbBackground: '#334e7b',
+      thumbHoverBackground: '#4c8dff',
+      thumbBorderColor: '#1e293b'
     }
   },
   componentAnimations: {
@@ -384,6 +438,78 @@ export const windows7Theme: ThemeDefinition = {
     'fy-accordion': {
         expand: 'accordion-expand',
         collapse: 'accordion-collapse'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        light: {
+          effects: {
+            button: {
+              background: 'linear-gradient(to bottom, #d9e7f7 0%, #b8d2f1 49%, #93b9e9 50%, #76a3de 100%)',
+              textColor: '#003399',
+              borderColor: '#707070',
+              borderRadius: '3px'
+            }
+          }
+        },
+        dark: {
+          effects: {
+            button: {
+              background: 'linear-gradient(to bottom, #d9e7f7 0%, #b8d2f1 49%, #93b9e9 50%, #76a3de 100%)',
+              textColor: '#242424',
+              borderColor: '#242424',
+              borderRadius: '3px'
+            }
+          }
+        }
+      },
+      secondary: {
+        light: {
+          effects: {
+            button: {
+              background: '#ffffff',
+              textColor: '#003399',
+              borderColor: '#707070',
+              borderRadius: '3px'
+            }
+          }
+        },
+        dark: {
+          effects: {
+            button: {
+              background: '#334e7b',
+              textColor: '#ffffff',
+              borderColor: '#4c8dff',
+              borderRadius: '3px'
+            }
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        light: {
+          effects: {
+            card: {
+              background: 'rgba(255, 255, 255, 0.7)',
+              borderColor: 'rgba(255, 255, 255, 0.4)',
+              shadow: '0 10px 30px rgba(0,0,0,0.3)',
+              borderRadius: '8px'
+            }
+          }
+        },
+        dark: {
+          effects: {
+            card: {
+              background: 'rgba(30, 41, 59, 0.7)',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              shadow: '0 10px 30px rgba(0,0,0,0.5)',
+              borderRadius: '8px'
+            }
+          }
+        }
+      }
     }
   }
 };
