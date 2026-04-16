@@ -36,6 +36,6 @@ export class FyTextComponent extends BaseFyComponent<'fy-text'> {
       }
       
       this.value.set(finalValue);
-    });
+    }, { allowSignalWrites: true });
   }
 }

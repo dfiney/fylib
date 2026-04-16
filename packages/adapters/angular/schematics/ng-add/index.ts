@@ -176,196 +176,97 @@ function updateAppHTML(): Rule {
 
 function getWelcomeHTML(): string {
   return `
-<div fyThemeVars class="fy-app-container">
-  <fy-layout name="app-layout" bgEffect="aurora" [bgEffectIntensity]="0.4">
-    <div class="welcome-container">
-      <div class="theme-mode-toggle">
-        <fy-button variant="ghost" [iconName]="mode() === 'light' ? 'moon' : 'sun'" (click)="toggleMode()"></fy-button>
-      </div>
+<fy-layout name="app-layout" bgEffect="auto" fyWallpaper fyThemeVars>
+  <!-- Slot: Header (Usando regiões nativas do fyLib) -->
+  <fy-slot name="header">
+    <div [fy-header-logo] style="display: flex; align-items: center; gap: 12px;">
+      <fy-icon name="star" size="lg" style="color: var(--fy-colors-primary)"></fy-icon>
+      <fy-text text="fyLib Starter" [strong]="true" size="lg"></fy-text>
+    </div>
+
+    <div [fy-header-links-right] style="display: flex; align-items: center; gap: 16px;">
+      <fy-button variant="ghost" [iconName]="mode() === 'light' ? 'moon' : 'sun'" (click)="toggleMode()"></fy-button>
+      <fy-button variant="primary" label="Documentação" iconName="book-open" link="https://github.com/dfiney/fylib/" target="_blank"></fy-button>
+    </div>
+  </fy-slot>
+
+  <!-- Slot: Sidebar (Catálogo de Temas) -->
+  <fy-slot name="sidebar">
+    <div [fy-sidebar-header] style="padding: 16px 24px;">
+      <fy-text text="Temas Disponíveis" size="sm" [strong]="true" style="opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;"></fy-text>
+    </div>
+    
+    <div [fy-sidebar-links] style="padding: 0 12px;">
+      @for (theme of themes; track theme.id) {
+        <fy-button 
+          variant="ghost" 
+          [label]="theme.name" 
+          [iconName]="theme.icon" 
+          (click)="changeTheme(theme.id)"
+          style="width: 100%; justify-content: flex-start; margin-bottom: 4px; --fy-colors-primary: {{theme.color}}"
+        >
+          <div style="margin-left: auto; display: flex; gap: 4px;">
+            <div [style.background]="theme.color" style="width: 8px; height: 8px; border-radius: 50%;"></div>
+          </div>
+        </fy-button>
+      }
+    </div>
+    
+    <div [fy-sidebar-footer] style="padding: 24px; border-top: 1px solid var(--fy-colors-border);">
+       <fy-badge text="v1.0.0" [glow]="true" style="width: 100%; justify-content: center;"></fy-badge>
+    </div>
+  </fy-slot>
+
+  <!-- Slot: Content (Área Principal) -->
+  <fy-slot name="content">
+    <div style="max-width: 900px; margin: 40px auto; display: flex; flex-direction: column; gap: 32px; padding: 0 24px;">
       
-      <fy-card variant="elevated" class="welcome-card">
-        <div fy-card-header class="welcome-header">
-          <div class="logo-box">
-            <fy-icon name="star" size="lg"></fy-icon>
-          </div>
-          <fy-text text="Bem-vindo ao fyLib" class="welcome-title"></fy-text>
+      <fy-card variant="elevated">
+        <div fy-card-header>
+          <fy-text text="🚀 Bem-vindo ao Universo fyLib" size="xl" [strong]="true"></fy-text>
+        </div>
+        
+        <div style="padding: 16px 0;">
+          <fy-text 
+            text="Sua jornada para criar interfaces incríveis, modulares e temáticas começa agora. O fyLib separa a definição da renderização, permitindo que você troque toda a identidade visual da sua aplicação em tempo de execução."
+            style="line-height: 1.8; color: var(--fy-colors-secondary); display: block;"
+          ></fy-text>
         </div>
 
-        <div class="welcome-content">
-          <p class="welcome-desc">
-            Sua jornada para criar interfaces incríveis, modulares e temáticas começa aqui. 
-            O fyLib já está configurado e pronto para uso!
-          </p>
-
-          <div class="welcome-actions">
-            <fy-button variant="primary" label="GitHub do Projeto" iconName="search" link="https://github.com/dfiney/fylib/" target="_blank"></fy-button>
-            <fy-button variant="secondary" label="LinkedIn do Autor" iconName="user" link="https://www.linkedin.com/in/victor-barberino-373797231/" target="_blank"></fy-button>
-          </div>
-        </div>
-
-        <div fy-card-footer class="welcome-footer">
-          <fy-text text="© Finey 2026 · Built with Passion"></fy-text>
+        <div fy-card-footer style="display: flex; gap: 16px; align-items: center;">
+          <fy-button variant="primary" label="Explorar GitHub" iconName="github-logo" link="https://github.com/dfiney/fylib/" target="_blank"></fy-button>
+          <fy-button variant="secondary" label="Ver LinkedIn" iconName="linkedin-logo" link="https://www.linkedin.com/in/victor-barberino-373797231/" target="_blank"></fy-button>
+          
+          <fy-text text="Finey 2026" size="sm" style="margin-left: auto; opacity: 0.5;"></fy-text>
         </div>
       </fy-card>
 
-      <div class="theme-catalog">
-        <h3 class="catalog-title">Explore nossos Temas</h3>
-        <div class="theme-grid">
-          @for (theme of themes; track theme.id) {
-            <fy-card (click)="changeTheme(theme.id)" class="theme-card">
-              <div class="theme-card-content">
-                <div class="theme-icon-box" [style.background]="theme.color">
-                  <fy-icon [name]="theme.icon" size="md"></fy-icon>
-                </div>
-                <span class="theme-name">{{ theme.name }}</span>
-                <div class="theme-palette">
-                  <div class="color-dot" [style.background]="theme.color"></div>
-                  <div class="color-dot" style="background: #64748b"></div>
-                  <div class="color-dot" style="background: #f1f5f9"></div>
-                </div>
-              </div>
-            </fy-card>
-          }
-        </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+        <fy-card>
+          <div fy-card-header style="display: flex; align-items: center; gap: 12px;">
+            <fy-icon name="magic-wand" size="md" style="color: var(--fy-colors-primary)"></fy-icon>
+            <fy-text text="Engine de Efeitos" [strong]="true"></fy-text>
+          </div>
+          <fy-text text="Dispare efeitos globais como confetes ou neve diretamente de qualquer componente." size="sm" style="margin-bottom: 20px; display: block; opacity: 0.8;"></fy-text>
+          <fy-button label="Testar Confetti" (click)="fylib.triggerEffect('confetti')" style="width: 100%"></fy-button>
+        </fy-card>
+
+        <fy-card>
+          <div fy-card-header style="display: flex; align-items: center; gap: 12px;">
+            <fy-icon name="palette" size="md" style="color: var(--fy-colors-primary)"></fy-icon>
+            <fy-text text="Design Tokens" [strong]="true"></fy-text>
+          </div>
+          <fy-text text="Todos os estilos são guiados por tokens, facilitando a manutenção e consistência visual." size="sm" style="margin-bottom: 20px; display: block; opacity: 0.8;"></fy-text>
+          <div style="display: flex; gap: 8px;">
+            <fy-badge text="Primary" style="--fy-badge-background: var(--fy-colors-primary); --fy-badge-textColor: white;"></fy-badge>
+            <fy-badge text="Secondary" style="--fy-badge-background: var(--fy-colors-secondary); --fy-badge-textColor: white;"></fy-badge>
+            <fy-badge text="Dark Mode" [glow]="mode() === 'dark'"></fy-badge>
+          </div>
+        </fy-card>
       </div>
     </div>
-  </fy-layout>
-</div>
-
-<style>
-  .fy-app-container {
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-  }
-  .welcome-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100%;
-    padding: 60px 20px;
-    overflow-y: auto;
-    gap: 40px;
-    position: relative;
-  }
-  .theme-mode-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 100;
-  }
-  .welcome-card {
-    max-width: 600px;
-    width: 100%;
-    animation: fadeInScale 0.6s ease-out;
-    flex-shrink: 0;
-  }
-  .welcome-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    padding: 32px 0 16px;
-  }
-  .logo-box {
-    background: var(--fy-colors-primary);
-    color: white;
-    padding: 16px;
-    border-radius: 16px;
-    box-shadow: 0 8px 16px rgba(var(--fy-colors-primary-rgb), 0.3);
-  }
-  .welcome-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--fy-colors-text);
-  }
-  .welcome-content {
-    text-align: center;
-    padding: 0 24px 24px;
-  }
-  .welcome-desc {
-    color: var(--fy-colors-secondary);
-    line-height: 1.6;
-    margin-bottom: 32px;
-  }
-  .welcome-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .welcome-actions fy-button {
-    width: 100%;
-  }
-  .welcome-footer {
-    opacity: 0.6;
-    font-size: 12px;
-    justify-content: center;
-  }
-
-  .theme-catalog {
-    width: 100%;
-    max-width: 1000px;
-    animation: fadeInUp 0.8s ease-out;
-  }
-  .catalog-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 24px;
-    text-align: center;
-    color: var(--fy-colors-text);
-  }
-  .theme-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
-  .theme-card {
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .theme-card:hover {
-    transform: translateY(-5px);
-  }
-  .theme-card-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 20px;
-  }
-  .theme-icon-box {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
-  .theme-name {
-    font-weight: 600;
-    font-size: 14px;
-  }
-  .theme-palette {
-    display: flex;
-    gap: 4px;
-  }
-  .color-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-
-  @keyframes fadeInScale {
-    from { opacity: 0; transform: scale(0.95) translateY(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-</style>
+  </fy-slot>
+</fy-layout>
 `;
 }
 
@@ -378,56 +279,28 @@ function createWelcomeComponent(): Rule {
 import { 
   FyLayoutComponent, FyCardComponent, FyButtonComponent, 
   FyIconComponent, FyTextComponent, FyThemeVarsDirective,
-  FyLibService 
+  FySlotComponent, FyBadgeComponent, FyLibService 
 } from '@fylib/adapter-angular';
+
+const THEMES = ${JSON.stringify(THEMES, null, 2)};
 
 @Component({
   selector: 'app-fylib-welcome',
   standalone: true,
   imports: [
-    FyThemeVarsDirective, FyLayoutComponent, FyCardComponent, 
-    FyButtonComponent, FyIconComponent, FyTextComponent
+    FyLayoutComponent, FyCardComponent, FyButtonComponent, 
+    FyIconComponent, FyTextComponent, FyThemeVarsDirective,
+    FySlotComponent, FyBadgeComponent
   ],
-  templateUrl: './fylib-welcome.component.html',
+  template: \`${getWelcomeHTML()}\`,
   styles: [\`
     :host { display: block; height: 100vh; }
-    .fy-app-container { height: 100vh; width: 100%; overflow: hidden; }
-    .welcome-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%; padding: 60px 20px; overflow-y: auto; gap: 40px; position: relative; }
-    .theme-mode-toggle { position: absolute; top: 20px; right: 20px; z-index: 100; }
-    .welcome-card { max-width: 600px; width: 100%; animation: fadeInScale 0.6s ease-out; flex-shrink: 0; }
-    .welcome-header { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 32px 0 16px; }
-    .logo-box { background: var(--fy-colors-primary); color: white; padding: 16px; border-radius: 16px; box-shadow: 0 8px 16px rgba(var(--fy-colors-primary-rgb), 0.3); }
-    .welcome-title { font-size: 28px; font-weight: 800; color: var(--fy-colors-text); }
-    .welcome-content { text-align: center; padding: 0 24px 24px; }
-    .welcome-desc { color: var(--fy-colors-secondary); line-height: 1.6; margin-bottom: 32px; }
-    .welcome-actions { display: flex; flex-direction: column; gap: 12px; }
-    .welcome-footer { opacity: 0.6; font-size: 12px; justify-content: center; }
-    
-    .theme-catalog { width: 100%; max-width: 1000px; animation: fadeInUp 0.8s ease-out; }
-    .catalog-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; text-align: center; color: var(--fy-colors-text); }
-    .theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-    .theme-card { cursor: pointer; transition: transform 0.2s; }
-    .theme-card:hover { transform: translateY(-5px); }
-    .theme-card-content { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px; }
-    .theme-icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; }
-    .theme-name { font-weight: 600; font-size: 14px; }
-    .theme-palette { display: flex; gap: 4px; }
-    .color-dot { width: 12px; height: 12px; border-radius: 50%; }
-
-    @keyframes fadeInScale {
-      from { opacity: 0; transform: scale(0.95) translateY(10px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   \`]
 })
 export class FylibWelcomeComponent implements OnInit {
-  private fylib = inject(FyLibService);
+  protected fylib = inject(FyLibService);
   protected readonly mode = signal<'light' | 'dark'>('light');
-  protected readonly themes = ${JSON.stringify(THEMES, null, 2)};
+  protected readonly themes = THEMES;
 
   ngOnInit() {
     this.fylib.setTheme('default');

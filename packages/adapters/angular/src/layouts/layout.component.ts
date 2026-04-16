@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation, HostBinding, inject, OnInit, OnChanges, SimpleChanges, OnDestroy, effect, PLATFORM_ID, signal } from '@angular/core';
+import { Component, Input, ViewEncapsulation, HostBinding, inject, OnInit, OnChanges, SimpleChanges, OnDestroy, effect, PLATFORM_ID, signal, computed } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FyLibService } from '../services/fylib.service';
 import { AppLayoutDefinition } from '@fylib/catalog';
@@ -91,7 +91,7 @@ export class FyLayoutComponent implements OnInit, OnChanges, OnDestroy {
   private fylib = inject(FyLibService);
   private platformId = inject(PLATFORM_ID);
   private layoutEffectId = `layout-bg-effect-${Math.random().toString(36).substr(2, 9)}`;
-  protected currentTheme = signal<string>('default');
+  protected currentTheme = computed(() => this.fylib.config().theme?.theme || 'default');
 
   @Input() name: string = AppLayoutDefinition.name;
   @Input() fixedHeight: boolean = false;
@@ -114,14 +114,6 @@ export class FyLayoutComponent implements OnInit, OnChanges, OnDestroy {
   constructor() {
     // Reage a mudanças na configuração global de efeitos de tema (themeEffectsEnabled)
     effect(() => {
-      const config = this.fylib.config();
-      
-      // Sincronizar o sinal currentTheme de forma segura
-      const theme = config.theme?.theme;
-      if (theme) {
-        this.currentTheme.set(theme);
-      }
-      
       this.applyBgEffect();
     });
   }
