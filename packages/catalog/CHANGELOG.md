@@ -1,5 +1,14 @@
 # @fylib/catalog
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [d716809]
+  - @fylib/core@0.3.0
+  - @fylib/theme@0.3.0
+  - @fylib/animation@0.2.3
+
 ## 0.3.0
 
 ### Minor Changes
