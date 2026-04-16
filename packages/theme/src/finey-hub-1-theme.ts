@@ -214,7 +214,7 @@ export const fineyHub1Theme: ThemeDefinition = {
   darkTokens: {
     colors: {
       primary: '#2f81f7',
-      secondary: '#7d8590',
+      secondary: '#9198a1',
       success: '#238636',
       danger: '#f85149',
       warning: '#d29922',
@@ -222,7 +222,7 @@ export const fineyHub1Theme: ThemeDefinition = {
       white: '#f0f6fc',
       black: '#010409',
       background: '#0d1117',
-      text: '#e6edf3',
+      text: '#ffffff',
       'primary-rgb': '47,129,247',
       surface: '#161b22',
       border: '#30363d'
@@ -397,7 +397,7 @@ export const fineyHub1Theme: ThemeDefinition = {
         effects: {
           card: {
             background: 'var(--fy-colors-surface)',
-            borderColor: '#f1f5f9',
+            borderColor: 'var(--fy-colors-border)',
             shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
           }
         }

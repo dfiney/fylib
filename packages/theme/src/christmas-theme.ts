@@ -234,10 +234,10 @@ export const christmasTheme: ThemeDefinition = {
   },
   darkTokens: {
     colors: {
-      primary: '#d42426',
+      primary: '#ff4d4d', // Red brightened for dark mode
       background: '#0a1a0f',
-      text: '#e8f5e9',
-      secondary: '#4caf50',
+      text: '#ffffff',
+      secondary: '#a5d6a7', // Light green
       surface: '#102016'
     },
     layout: {

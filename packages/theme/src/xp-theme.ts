@@ -179,7 +179,7 @@ export const windowsXpTheme: ThemeDefinition = {
         headerBackground: 'transparent'
       },
       card: {
-        background: '#a80000ff',
+        background: '#ffffff',
         borderColor: 'rgba(0,0,0,0.18)',
         shadow: '0 6px 20px rgba(0,0,0,0.25)',
         dividerColor: 'rgba(0,0,0,0.2)',
