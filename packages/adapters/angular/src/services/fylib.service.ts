@@ -149,6 +149,10 @@ export class FyLibService {
     return themeEngine.getWallpaper();
   }
 
+  getComponentVariantTokens(componentSelector: ComponentSelector, variant: string): Partial<DesignTokens> | undefined {
+    return themeEngine.getComponentVariantTokens(componentSelector, variant);
+  }
+
   triggerEffect(name: string, params?: Record<string, any>) {
     animationEngine.triggerEffect(name, params);
   }

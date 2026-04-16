@@ -12,6 +12,7 @@ import { FyLibService } from '../services/fylib.service';
     <div class="fy-accordion" 
          [class.fy-accordion--bordered]="bordered" 
          [class.fy-accordion--flush]="flush"
+         [style]="getHostStyles(customStyles, getVariantStyles(variant))"
          role="presentation">
       @for (it of items; track it.id; let i = $index) {
         <section class="fy-accordion__item" 
@@ -146,6 +147,7 @@ export class FyAccordionComponent extends BaseFyComponent<'fy-accordion'> implem
   }
 
   @Input() items: AccordionItem[] = AccordionDefinition.defaultProps!.items!;
+  @Input() variant: string = 'default';
   @Input() activeIndex?: number | number[];
   @Input() expandMode: AccordionExpandMode = AccordionDefinition.defaultProps!.expandMode!;
   @Input() size: AccordionProps['size'] = AccordionDefinition.defaultProps!.size!;

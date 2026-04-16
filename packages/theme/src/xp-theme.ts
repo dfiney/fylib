@@ -83,9 +83,11 @@ export const windowsXpTheme: ThemeDefinition = {
         padding: '0 8px',
         shadow: '0 1px 0 rgba(0,0,0,0.35)',
         toggle: {
-          background: '#dfe9f5',
-          textColor: '#3a6ea5',
+          background: 'linear-gradient(to bottom, #4b7bd1 0%, #2b4f9d 40%, #214173 100%)',
+          textColor: '#ffffff',
           borderRadius: '4px',
+          borderColor: '#1f4f8b',
+          borderWidth: '1px',
           icon: 'menu'
         }
       },
@@ -93,10 +95,11 @@ export const windowsXpTheme: ThemeDefinition = {
         width: '220px',
         padding: '8px 0',
         toggle: {
-          background: '#3a6ea5',
+          background: 'linear-gradient(to bottom, #4b7bd1 0%, #2b4f9d 40%, #214173 100%)',
           textColor: '#ffffff',
           borderRadius: '4px',
           borderColor: '#ffffff',
+          borderWidth: '1px',
           icon: 'menu',
           mode: 'floating',
           tonguePosition: 'bottom'
@@ -176,7 +179,7 @@ export const windowsXpTheme: ThemeDefinition = {
         headerBackground: 'transparent'
       },
       card: {
-        background: '#ffffff',
+        background: '#a80000ff',
         borderColor: 'rgba(0,0,0,0.18)',
         shadow: '0 6px 20px rgba(0,0,0,0.25)',
         dividerColor: 'rgba(0,0,0,0.2)',
@@ -229,7 +232,7 @@ export const windowsXpTheme: ThemeDefinition = {
       notificationMenu: {
         button: {
           background: 'transparent',
-          textColor: '#ffffff',
+          textColor: '#000000',
           icon: 'bell',
           badgeBackground: '#ffcc00',
           badgeTextColor: '#000000'
@@ -295,107 +298,125 @@ export const windowsXpTheme: ThemeDefinition = {
   },
   darkTokens: {
     colors: {
-      primary: '#4c8ad3',
-      background: '#1a2948',
-      text: '#f9fafb',
-      secondary: '#68718bff',
-      surface: '#0e1f3d'
+      primary: '#4b7bd1',
+      background: '#000000',
+      text: '#ffffff',
+      secondary: '#7b7b7b',
+      surface: '#1e1e1e'
     },
     layout: {
       header: {
-        logoFilterDarkOpacity: '0.85'
+        background: '#1e1e1e',
+        shadow: '0 1px 0 rgba(255,255,255,0.1)',
+        toggle: {
+          background: 'linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%)',
+          textColor: '#ffffff',
+          borderColor: '#242424',
+          borderWidth: '1px'
+        }
       },
       sidebar: {
-        logoFilterDarkOpacity: '0.85'
+        background: '#000000',
+        toggle: {
+          background: 'linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%)',
+          textColor: '#ffffff',
+          borderColor: '#242424',
+          borderWidth: '1px'
+        }
       }
     },
     effects: {
-      card: {
-        background: '#0e1f3d',
-        borderColor: 'rgba(255,255,255,0.12)',
-        dividerColor: 'rgba(255,255,255,0.18)',
-        shadow: '0 6px 20px rgba(0,0,0,0.6)',
-
-      },
       modal: {
-        background: '#0e1f3d',
-        borderColor: 'rgba(255,255,255,0.18)',
-        shadow: '0 32px 80px rgba(0,0,0,0.75)',
-        overlayColor: 'rgba(0,0,0,0.6)',
-        borderWidth: '1px',
-        borderRadius: '6px',
-        dividerColor: 'rgba(255,255,255,0.18)'
+        background: '#1e1e1e',
+        borderColor: '#2b4f9d',
+        shadow: '0 24px 60px rgba(0,0,0,0.7)',
+        overlayColor: 'rgba(0,0,0,0.6)'
       },
       input: {
-        background: '#132a4f',
-        borderColor: 'rgba(255,255,255,0.18)',
-        placeholderColor: '#cbd5e1'
+        background: '#000000',
+        borderColor: '#2b4f9d',
+        placeholderColor: '#7b7b7b'
       },
       select: {
-        background: '#132a4f',
-        borderColor: 'rgba(255,255,255,0.18)',
-        shadow: 'none',
+        background: '#000000',
+        borderColor: '#2b4f9d',
+        shadow: 'inset 0 1px 0 rgba(255,255,255,0.1)',
         borderWidth: '1px',
         borderRadius: '6px'
       },
       table: {
-        background: '#0e1f3d',
-        borderColor: 'rgba(255,255,255,0.12)',
-        headerBackground: 'rgba(255,255,255,0.05)',
-        rowHoverBackground: 'rgba(76, 138, 211, 0.15)',
+        background: '#1e1e1e',
+        borderColor: '#2b4f9d',
+        headerBackground: '#2b4f9d',
+        rowHoverBackground: 'rgba(255,255,255,0.05)',
         stripedBackground: 'rgba(255,255,255,0.02)',
         textColor: '#ffffff',
-        headerTextColor: '#4c8ad3'
+        headerTextColor: '#ffffff'
+      },
+      accordion: {
+        background: '#1e1e1e',
+        borderColor: '#2b4f9d',
+        shadow: 'none',
+        dividerColor: 'rgba(255,255,255,0.1)',
+        borderRadius: '6px',
+        headerBackground: 'transparent'
+      },
+      card: {
+        background: '#1e1e1e',
+        borderColor: '#2b4f9d',
+        shadow: '0 6px 20px rgba(0,0,0,0.6)',
+        dividerColor: 'rgba(255,255,255,0.1)'
+      },
+      toast: {
+        background: '#1e1e1e',
+        borderColor: '#2b4f9d',
+        textColor: '#ffffff'
       },
       chart: {
         background: 'transparent',
         gridColor: 'rgba(255,255,255,0.05)',
-        labelColor: '#cbd5e1',
-        colors: ['#4c8ad3', '#3cb371', '#ffcc00', '#ff4444', '#68718b']
-      },
-      accordion: {
-        background: '#0e1f3d',
-        borderColor: 'rgba(255,255,255,0.18)',
-        shadow: 'none',
-        dividerColor: 'rgba(255,255,255,0.18)',
-        borderRadius: '6px',
-        headerBackground: 'transparent'
-      },
-      button: {
-        textColor: '#000000ff'
-      },
-      toast: {
-        background: '#0e1f3d',
-        borderColor: '#4c8ad3',
-        textColor: '#ffffff',
-        shadow: '2px 2px 0 rgba(0,0,0,0.5)',
-        borderRadius: '0px'
+        labelColor: '#9ca3af',
+        colors: ['#4b7bd1', '#3cb371', '#ffcc00', '#cc3300', '#660099']
       },
       notificationMenu: {
         button: {
           background: 'transparent',
-          textColor: 'var(--fy-colors-text)',
+          textColor: '#ffffff',
           icon: 'bell',
           badgeBackground: '#ffcc00',
           badgeTextColor: '#000000'
         },
         dropdown: {
-          background: '#0e1f3d',
-          borderColor: '#4c8ad3',
-          shadow: '2px 2px 8px rgba(0,0,0,0.8)',
-          width: '280px',
+          background: '#1e1e1e',
+          borderColor: '#2b4f9d',
+          shadow: '2px 2px 4px rgba(0,0,0,0.6)',
+          width: '280px', // Adjusted to match light theme layout
           maxHeight: '350px',
           borderRadius: '0px'
         },
         item: {
           background: 'transparent',
-          hoverBackground: '#4c8ad3',
+          hoverBackground: '#316ac5',
           textColor: '#ffffff',
-          descriptionColor: '#cbd5e1',
+          descriptionColor: '#7b7b7b',
           dividerColor: 'rgba(255,255,255,0.1)',
-          unreadIndicator: '#4c8ad3'
+          unreadIndicator: '#4b7bd1'
+        },
+        config: {
+          showAll: false,
+          limit: 5,
+          allowClear: true,
+          accordionMode: true,
+          showViewAll: true,
+          viewAllPosition: 'footer-right'
         }
       }
+    },
+    scrollbar: {
+      trackBackground: '#000000',
+      thumbBackground: '#2b4f9d',
+      thumbHoverBackground: '#4b7bd1',
+      thumbBorderColor: '#000000'
     }
   },
   componentAnimations: {
@@ -423,6 +444,78 @@ export const windowsXpTheme: ThemeDefinition = {
     'fy-accordion': {
         expand: 'accordion-expand',
         collapse: 'accordion-collapse'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        light: {
+          effects: {
+            button: {
+              background: 'linear-gradient(to bottom, #4b7bd1 0%, #2b4f9d 40%, #214173 100%)',
+              textColor: '#ffffff',
+              borderColor: '#1f4f8b',
+              borderRadius: '3px'
+            }
+          }
+        },
+        dark: {
+          effects: {
+            button: {
+              background: 'linear-gradient(to bottom, #4a4a4a 0%, #3a3a3a 100%)',
+              textColor: '#ffffff',
+              borderColor: '#242424',
+              borderRadius: '3px'
+            }
+          }
+        }
+      },
+      secondary: {
+        light: {
+          effects: {
+            button: {
+              background: 'linear-gradient(to bottom, #3cb371 0%, #2e8b57 100%)',
+              textColor: '#ffffff',
+              borderColor: '#2e8b57',
+              borderRadius: '3px'
+            }
+          }
+        },
+        dark: {
+          effects: {
+            button: {
+              background: 'linear-gradient(to bottom, #2e8b57 0%, #1a5a3a 100%)',
+              textColor: '#ffffff',
+              borderColor: '#1a5a3a',
+              borderRadius: '3px'
+            }
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        light: {
+          effects: {
+            card: {
+              background: '#ffffff',
+              borderColor: '#0053e2',
+              shadow: '0 4px 12px rgba(0,0,0,0.3)',
+              borderRadius: '4px'
+            }
+          }
+        },
+        dark: {
+          effects: {
+            card: {
+              background: '#1e1e1e',
+              borderColor: '#2b4f9d',
+              shadow: '0 4px 12px rgba(0,0,0,0.6)',
+              borderRadius: '4px'
+            }
+          }
+        }
+      }
     }
   }
 };

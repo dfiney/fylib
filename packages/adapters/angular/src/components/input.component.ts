@@ -26,6 +26,7 @@ import { logger } from '@fylib/logger';
       [class.fy-input--status-success]="status === 'success'"
       [class.fy-input--status-error]="status === 'error'"
       [class]="animationClassSuffix"
+      [style]="getHostStyles(customStyles, getVariantStyles(variant))"
     >
       @if (iconLeftName) {
         <fy-icon class="fy-input__icon fy-input__icon--left" [name]="iconLeftName"></fy-icon>
@@ -147,6 +148,7 @@ export class FyInputComponent extends BaseFyComponent<'fy-input'> implements Inp
   @Input() iconRightName?: string;
   @Input() size: NonNullable<InputProps['size']> = InputDefinition.defaultProps!.size!;
   @Input() status: NonNullable<InputProps['status']> = InputDefinition.defaultProps!.status!;
+  @Input() variant: string = 'default';
   @Input() activeAnimations: boolean | null = null;
   @Input() activeEffects: boolean | null = null;
   @Input() customStyles: Record<string, string> | null = null;

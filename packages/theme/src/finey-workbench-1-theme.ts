@@ -283,9 +283,26 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
       secondary: '#636366',
       surface: '#1f1f20'
     },
+    layout: {
+      header: {
+        background: '#1c1c1e',
+        shadow: '0 1px 0 rgba(255,255,255,0.1)',
+        toggle: {
+          background: 'rgba(255,255,255,0.05)',
+          textColor: '#0a84ff'
+        }
+      },
+      sidebar: {
+        background: '#1c1c1e',
+        toggle: {
+          background: 'rgba(255,255,255,0.08)',
+          textColor: '#0a84ff'
+        }
+      }
+    },
     effects: {
       card: {
-        background: '#1f1f20',
+        background: '#2c2c2e',
         borderColor: 'rgba(255,255,255,0.08)',
         dividerColor: 'rgba(255,255,255,0.12)',
         shadow: '0 12px 30px rgba(0,0,0,0.6)'
@@ -374,6 +391,12 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
           unreadIndicator: '#0a84ff'
         }
       }
+    },
+    scrollbar: {
+      trackBackground: 'transparent',
+      thumbBackground: 'rgba(255,255,255,0.2)',
+      thumbHoverBackground: 'rgba(255,255,255,0.3)',
+      thumbBorderColor: 'transparent'
     }
   },
   componentAnimations: {
@@ -404,6 +427,57 @@ export const fineyWorkbench1Theme: ThemeDefinition = {
     },
     'fy-card': {
       enter: 'card-macos-fade-in'
+    }
+  },
+  componentVariants: {
+    'fy-button': {
+      primary: {
+        effects: {
+          button: {
+            background: '#007aff',
+            textColor: '#ffffff',
+            shadow: '0 1px 3px rgba(0,0,0,0.1)'
+          }
+        }
+      },
+      secondary: {
+        effects: {
+          button: {
+            background: 'rgba(0, 122, 255, 0.1)',
+            textColor: '#007aff',
+            borderColor: 'transparent'
+          }
+        }
+      },
+      ghost: {
+        effects: {
+          button: {
+            background: 'transparent',
+            textColor: '#007aff',
+            borderColor: 'rgba(0, 122, 255, 0.2)'
+          }
+        }
+      }
+    },
+    'fy-card': {
+      default: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: 'rgba(0,0,0,0.08)',
+            shadow: '0 1px 3px rgba(0,0,0,0.05)'
+          }
+        }
+      },
+      elevated: {
+        effects: {
+          card: {
+            background: 'var(--fy-colors-surface)',
+            borderColor: 'transparent',
+            shadow: '0 10px 25px rgba(0,0,0,0.08)'
+          }
+        }
+      }
     }
   }
 };

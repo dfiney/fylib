@@ -261,7 +261,7 @@ import { EffectName } from '@fylib/config';
       height: 40px;
       border-radius: var(--fy-layout-header-toggle-borderRadius, 999px);
       border: 1px solid var(--fy-layout-header-toggle-borderColor, transparent);
-      background-color: var(--fy-layout-header-toggle-background, var(--fy-colors-primary, #2563eb));
+      background: var(--fy-layout-header-toggle-background, var(--fy-colors-primary, #2563eb));
       color: var(--fy-layout-header-toggle-textColor, #fff);
       align-items: center;
       justify-content: center;
@@ -396,13 +396,12 @@ import { EffectName } from '@fylib/config';
     .fy-sidebar-toggle {
       display: none;
       border-radius: var(--fy-layout-sidebar-toggle-borderRadius, 999px);
-      background-color: var(--fy-layout-sidebar-toggle-background, var(--fy-colors-primary, #2563eb));
+      background: var(--fy-layout-sidebar-toggle-background, var(--fy-colors-primary, #2563eb));
       color: var(--fy-layout-sidebar-toggle-textColor, #fff);
     }
 
     .fy-slot--content {
       padding: var(--fy-layout-content-padding, var(--fy-spacing-lg, 24px));
-      overflow-y: auto;
     }
 
     @keyframes fy-copyright-shimmer {
@@ -525,7 +524,7 @@ import { EffectName } from '@fylib/config';
         bottom: 0;
         width: var(--fy-layout-sidebar-width, 260px);
         max-width: 80vw;
-        background-color: var(--fy-colors-surface, #fff);
+        background-color: var(--fy-layout-sidebar-background, var(--fy-colors-surface, #fff));
         transform: translateX(-100%);
         opacity: 0;
         transition: transform 0.25s ease-out, opacity 0.25s ease-out;
@@ -556,7 +555,7 @@ import { EffectName } from '@fylib/config';
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--fy-layout-sidebar-toggle-background, var(--fy-colors-primary, #2563eb));
+        background: var(--fy-layout-sidebar-toggle-background, var(--fy-colors-primary, #2563eb));
         color: var(--fy-layout-sidebar-toggle-textColor, #fff);
         box-shadow: 0 8px 24px rgba(0,0,0,0.2);
         cursor: pointer;

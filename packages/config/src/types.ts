@@ -57,7 +57,10 @@ export type ComponentSelector =
   | 'fy-accordion'
   | 'fy-chart'
   | 'fy-toast'
-  | 'fy-notification-menu';
+  | 'fy-notification-menu'
+  | 'fy-nav-link'
+  | 'fy-badge'
+  | 'fy-text';
 
 export type UIEventKey =
   | 'fy-button.click'

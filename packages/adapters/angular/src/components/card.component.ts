@@ -13,7 +13,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
   template: `
     <section
       class="fy-card fy-card--{{variant}} {{ animationClassSuffix }}"
-      [style]="hostStyles"
+      [style]="getHostStyles(customStyles, getVariantStyles(variant))"
     >
       @if (title || hasHeaderSlot) {
         <header class="fy-card__header" [class.fy-card__header--muted]="mutedHeader">

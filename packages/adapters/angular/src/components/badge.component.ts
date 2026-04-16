@@ -1,13 +1,17 @@
 import { Component, Input, ViewEncapsulation, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FyLibService } from '../services/fylib.service';
+import { BaseFyComponent } from '../base/base-component';
 
 @Component({
   selector: 'fy-badge',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <span class="fy-badge" [class.fy-badge--shine]="shineClass()" [ngStyle]="badgeStyle()" >
+    <span class="fy-badge" 
+          [class.fy-badge--shine]="shineClass()" 
+          [ngStyle]="badgeStyle()"
+          [style]="getHostStyles(customStyles, getVariantStyles(variant))">
       <ng-content></ng-content>
       @if (text) {
         <span>{{ text }}</span>
@@ -26,7 +30,7 @@ import { FyLibService } from '../services/fylib.service';
       font-weight: 700;
       line-height: 1;
       border-radius: 8px;
-      background-color: var(--fy-badge-background, #ff4757);
+      background: var(--fy-badge-background, #ff4757);
       color: var(--fy-badge-textColor, #fff);
       box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
       white-space: nowrap;
@@ -53,13 +57,19 @@ import { FyLibService } from '../services/fylib.service';
   `],
   encapsulation: ViewEncapsulation.None
 })
-export class FyBadgeComponent {
-  private fylib = inject(FyLibService);
+export class FyBadgeComponent extends BaseFyComponent<'fy-badge'> {
+  constructor() {
+    super(inject(FyLibService), 'fy-badge');
+  }
+
   @Input() text?: string;
   @Input() background?: string | null;
   @Input() textColor?: string | null;
   @Input() borderRadius?: string | null;
   @Input() shine?: boolean | null;
+  @Input() variant: string = 'default';
+  @Input() customStyles: Record<string, string> | null = null;
+  @Input() activeAnimations: boolean | null = null;
 
   badgeStyle = computed(() => {
     const style: Record<string, string> = {};

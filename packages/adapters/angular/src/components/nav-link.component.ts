@@ -1,6 +1,8 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FyIconComponent } from './icon.component';
+import { BaseFyComponent } from '../base/base-component';
+import { FyLibService } from '../services/fylib.service';
 
 @Component({
   selector: 'fy-nav-link',
@@ -14,7 +16,7 @@ import { FyIconComponent } from './icon.component';
       class="fy-nav-link"
       [class.active]="active"
       [class.fy-nav-link--hover-disabled]="!hoverEnabled"
-      
+      [style]="getHostStyles(customStyles, getVariantStyles(variant))"
     >
       @if (iconName) {
         <fy-icon [name]="iconName" [set]="iconSet" class="fy-nav-link__icon"></fy-icon>
@@ -66,7 +68,11 @@ import { FyIconComponent } from './icon.component';
   `],
   encapsulation: ViewEncapsulation.None
 })
-export class FyNavLinkComponent {
+export class FyNavLinkComponent extends BaseFyComponent<'fy-nav-link'> {
+  constructor() {
+    super(inject(FyLibService), 'fy-nav-link');
+  }
+
   @Input() label: string = '';
   @Input() to?: string;
   @Input() href?: string;
@@ -75,6 +81,9 @@ export class FyNavLinkComponent {
   @Input() hoverEnabled: boolean = true;
   @Input() iconName?: string;
   @Input() iconSet?: 'ph' | 'fa' | 'mdi';
+  @Input() variant: string = 'default';
+  @Input() customStyles: Record<string, string> | null = null;
+  @Input() activeAnimations: boolean | null = null;
 
   get hasProjectedContent(): boolean {
     // Em Angular, checar projeção é não trivial sem ViewChild/ContentChild; simplificado:

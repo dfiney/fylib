@@ -97,6 +97,35 @@ export class ThemeEngine {
     return componentMap[event];
   }
 
+  getComponentVariantTokens(componentSelector: string, variant: string): Partial<DesignTokens> | undefined {
+    if (!this.currentTheme) {
+      return undefined;
+    }
+    const theme = this.themes.get(this.currentTheme);
+    if (!theme || !theme.componentVariants) {
+      return undefined;
+    }
+    const componentMap = theme.componentVariants[componentSelector];
+    if (!componentMap) {
+      return undefined;
+    }
+    const variantData = componentMap[variant];
+    if (!variantData) {
+      return undefined;
+    }
+
+    // Se for a nova estrutura com light/dark
+    if ('light' in variantData || 'dark' in variantData) {
+      const typedVariant = variantData as { light?: DesignTokens; dark?: DesignTokens };
+      return this.currentMode === 'dark' 
+        ? (typedVariant.dark || typedVariant.light) 
+        : typedVariant.light;
+    }
+
+    // Caso contrário, retorna o objeto parcial diretamente (comportamento antigo)
+    return variantData as Partial<DesignTokens>;
+  }
+
   getTokens(): DesignTokens {
     if (!this.currentTheme) {
       throw new Error('No theme set');

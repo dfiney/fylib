@@ -22,7 +22,7 @@ import { BaseFyComponent, FyComponentBaseInputs } from '../base/base-component';
   template: `
     @if (visible) {
       <div class="fy-modal-overlay" (click)="onBackdropClick()"></div>
-      <div class="fy-modal" [ngClass]="['fy-modal--' + size, 'fy-modal--status-' + status, modalAnimClass]">
+      <div class="fy-modal" [ngClass]="['fy-modal--' + size, 'fy-modal--status-' + status, modalAnimClass]" [style]="getHostStyles(customStyles, getVariantStyles(variant))">
         @if (showHeader) {
           <header class="fy-modal__header">
             @if (title) { <h3 class="fy-modal__title">{{ title }}</h3> }
@@ -154,6 +154,7 @@ export class FyModalComponent
   @Input() subtitle?: string;
   @Input() content?: string;
   @Input() size: NonNullable<ModalProps['size']> = ModalDefinition.defaultProps!.size!;
+  @Input() variant: string = 'default';
   @Input() position: NonNullable<ModalProps['position']> = ModalDefinition.defaultProps!.position!;
   @Input() status: NonNullable<ModalProps['status']> = ModalDefinition.defaultProps!.status!;
   @Input() closable: boolean = ModalDefinition.defaultProps!.closable!;

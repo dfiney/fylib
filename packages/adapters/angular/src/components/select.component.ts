@@ -27,6 +27,7 @@ import { ElementRef } from '@angular/core';
       [class.fy-select--status-success]="status === 'success'"
       [class.fy-select--status-error]="status === 'error'"
       [class]="animationClassSuffix"
+      [style]="getHostStyles(customStyles, getVariantStyles(variant))"
     >
       <div
         class="fy-select__control"
@@ -151,6 +152,7 @@ export class FySelectComponent
   @Input() options: { label: string; value: string; disabled?: boolean }[] = [];
   @Input() value?: string | string[];
   @Input() placeholder?: string;
+  @Input() variant: string = 'default';
   @Input() disabled: boolean = SelectDefinition.defaultProps!.disabled!;
   @Input() readonly: boolean = SelectDefinition.defaultProps!.readonly!;
   @Input() size: 'sm' | 'md' | 'lg' = SelectDefinition.defaultProps!.size!;

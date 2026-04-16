@@ -22,8 +22,32 @@ export abstract class BaseFyComponent<TSelector extends ComponentSelector> {
     return resolveAnimationsActive(this.fylib, this.selector, instanceFlag);
   }
 
-  protected getHostStyles(style: Record<string, string> | null | undefined): string {
-    return styleString(style || null);
+  protected getHostStyles(style: Record<string, string> | null | undefined, variantStyles?: Record<string, string> | null): string {
+    const combined = { ...(variantStyles || {}), ...(style || {}) };
+    return styleString(combined);
+  }
+
+  protected getVariantStyles(variant: string): Record<string, string> {
+    const tokens = this.fylib.getComponentVariantTokens(this.selector, variant);
+    if (!tokens) return {};
+    
+    const styles: Record<string, string> = {};
+    this.flattenTokensToVars(tokens, styles);
+    return styles;
+  }
+
+  private flattenTokensToVars(tokens: any, styles: Record<string, string>, prefix = '--fy-') {
+    if (!tokens) return;
+    Object.keys(tokens).forEach(key => {
+      const value = tokens[key];
+      if (value == null) return;
+
+      if (typeof value === 'object' && !Array.isArray(value)) {
+        this.flattenTokensToVars(value, styles, `${prefix}${key}-`);
+      } else {
+        styles[`${prefix}${key}`] = String(value);
+      }
+    });
   }
 
   protected resolveAnim(

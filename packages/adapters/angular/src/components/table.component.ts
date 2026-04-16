@@ -33,7 +33,7 @@ import { FyButtonComponent } from './button.component';
       [class.fy-table--scrollable]="scrollable"
       [class.fy-table--sticky]="stickyHeader"
       [class]="composeAnimClasses(animationClassSuffix)"
-      [style]="getHostStyles(customStyles)"
+      [style]="getHostStyles(customStyles, getVariantStyles(variant))"
       
     >
       <!-- Header / Search / Title -->
@@ -403,8 +403,9 @@ import { FyButtonComponent } from './button.component';
   encapsulation: ViewEncapsulation.None
 })
 export class FyTableComponent extends BaseFyComponent<'fy-table'> implements TableProps, OnInit {
-  @Input() data: any[] = TableDefinition.defaultProps!.data!;
-  @Input() columns: TableColumn[] = TableDefinition.defaultProps!.columns!;
+  @Input() columns: TableColumn[] = [];
+  @Input() data: any[] = [];
+  @Input() variant: NonNullable<TableProps['variant']> = TableDefinition.defaultProps!.variant!;
   @Input() title?: string;
   @Input() subtitle?: string;
   @Input() footer?: string;
@@ -419,9 +420,8 @@ export class FyTableComponent extends BaseFyComponent<'fy-table'> implements Tab
   @Input() searchTargets: string[] = TableDefinition.defaultProps!.searchTargets || [];
   @Input() actions?: TableAction[];
   @Input() rowClickable: boolean = false;
-  @Input() variant: TableProps['variant'] = TableDefinition.defaultProps!.variant!;
   @Input() stickyHeader: boolean = TableDefinition.defaultProps!.stickyHeader!;
-  @Input() scrollable: boolean = TableDefinition.defaultProps!.scrollable!;
+  @Input() scrollable: boolean = true;
   @Input() maxHeight?: string;
   @Input() activeAnimations: boolean | null = null;
   @Input() activeEffects: boolean | null = null;

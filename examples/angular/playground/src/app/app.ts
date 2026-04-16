@@ -23,7 +23,6 @@ export class App implements OnInit {
 
     // SSE é inicializado automaticamente pelo serviço ao ser injetado,
     // mas garantimos que ele está pronto
-    console.log('[Playground] SSE Service Initialized');
   }
 
   toggleMode() {

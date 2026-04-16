@@ -27,7 +27,7 @@ import { FyWebClientService } from '../services/webclient.service';
     FyAccordionComponent
   ],
   template: `
-    <div class="fy-notification-menu">
+    <div class="fy-notification-menu" [style]="getHostStyles(customStyles, getVariantStyles(variant))">
       <!-- Botão de Notificação -->
       <button 
         class="fy-notification-menu__trigger" 
@@ -220,7 +220,7 @@ import { FyWebClientService } from '../services/webclient.service';
       overflow: hidden;
       box-shadow: var(--fy-notificationMenu-dropdown-shadow, 0 10px 40px rgba(0,0,0,0.1));
       border: 1px solid var(--fy-notificationMenu-dropdown-borderColor, rgba(0,0,0,0.08));
-      background-color: var(--fy-notificationMenu-dropdown-background, #fff);
+      background: var(--fy-notificationMenu-dropdown-background, #fff);
       border-radius: var(--fy-notificationMenu-dropdown-borderRadius, 12px);
       max-height: var(--fy-notificationMenu-dropdown-maxHeight, 450px);
     }
@@ -430,6 +430,7 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
     return this._notifications();
   }
 
+  @Input() variant: string = 'default';
   @Input() unreadCount: number = 0;
   
   @Input() showAllNotifications?: boolean;
@@ -470,7 +471,7 @@ export class FyNotificationMenuComponent extends BaseFyComponent<'fy-notificatio
       this._notifications.set(current);
       const limit = this.resolvedConfig().limit;
       this.visibleLimit.set(Math.max(limit ?? 10, 10));
-    }, { allowSignalWrites: true });
+    });
   }
 
   themeTokens = computed(() => this.fylib.tokens().effects?.notificationMenu);

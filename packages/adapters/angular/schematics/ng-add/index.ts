@@ -21,8 +21,8 @@ const THEMES = [
   { id: 'windows-xp', name: 'Legacy XP', color: '#3a6ea5', icon: 'monitor' },
   { id: 'windows-7', name: 'Legacy 7', color: '#2979ff', icon: 'desktop' },
   { id: 'christmas', name: 'Natal', color: '#af111c', icon: 'gift' },
-  { id: 'finey-nexus-1', name: 'Nexus', color: '#6366f1', icon: 'cpu' },
-  { id: 'finey-hub-1', name: 'Hub', color: '#22c55e', icon: 'layout' }
+  { id: 'finey-nexus-1', name: 'Nexus', color: '#22c55e', icon: 'cpu' },
+  { id: 'finey-hub-1', name: 'Hub', color: '#0969da', icon: 'layout' }
 ];
 
 export function ngAdd(options: any): Rule {
@@ -137,7 +137,7 @@ function updateAppComponent(): Rule {
     // 4. Update Class Definition
     content = content.replace(
       /export class (\w+) \{/,
-      `export class $1 implements OnInit {\n  private fylib = inject(FyLibService);\n  private sse = inject(FySSEService);\n  protected readonly mode = signal<'light' | 'dark'>('light');\n  protected readonly themes = ${JSON.stringify(THEMES, null, 2)};\n\n  ngOnInit() {\n    this.fylib.setTheme(themeConfig.theme);\n    this.fylib.setMode(this.mode());\n  }\n\n  changeTheme(theme: string) {\n    this.fylib.setTheme(theme as any);\n  }\n`
+      `export class $1 implements OnInit {\n  private fylib = inject(FyLibService);\n  private sse = inject(FySSEService);\n  protected readonly mode = signal<'light' | 'dark'>('light');\n  protected readonly themes = ${JSON.stringify(THEMES, null, 2)};\n\n  ngOnInit() {\n    this.fylib.setTheme(themeConfig.theme);\n    this.fylib.setMode(this.mode());\n  }\n\n  changeTheme(theme: string) {\n    this.fylib.setTheme(theme as any);\n  }\n\n  toggleMode() {\n    this.mode.set(this.mode() === 'light' ? 'dark' : 'light');\n    this.fylib.setMode(this.mode());\n  }\n`
     );
 
     tree.overwrite(targetPath, content);
@@ -179,6 +179,10 @@ function getWelcomeHTML(): string {
 <div fyThemeVars class="fy-app-container">
   <fy-layout name="app-layout" bgEffect="aurora" [bgEffectIntensity]="0.4">
     <div class="welcome-container">
+      <div class="theme-mode-toggle">
+        <fy-button variant="ghost" [iconName]="mode() === 'light' ? 'moon' : 'sun'" (click)="toggleMode()"></fy-button>
+      </div>
+      
       <fy-card variant="elevated" class="welcome-card">
         <div fy-card-header class="welcome-header">
           <div class="logo-box">
@@ -243,6 +247,13 @@ function getWelcomeHTML(): string {
     padding: 60px 20px;
     overflow-y: auto;
     gap: 40px;
+    position: relative;
+  }
+  .theme-mode-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
   }
   .welcome-card {
     max-width: 600px;
@@ -363,10 +374,11 @@ function createWelcomeComponent(): Rule {
     const componentDir = 'src/app/fylib-welcome';
     if (tree.exists(`${componentDir}/fylib-welcome.component.ts`)) return tree;
 
-    const tsContent = `import { Component } from '@angular/core';
+    const tsContent = `import { Component, inject, OnInit, signal } from '@angular/core';
 import { 
   FyLayoutComponent, FyCardComponent, FyButtonComponent, 
-  FyIconComponent, FyTextComponent, FyThemeVarsDirective 
+  FyIconComponent, FyTextComponent, FyThemeVarsDirective,
+  FyLibService 
 } from '@fylib/adapter-angular';
 
 @Component({
@@ -380,7 +392,8 @@ import {
   styles: [\`
     :host { display: block; height: 100vh; }
     .fy-app-container { height: 100vh; width: 100%; overflow: hidden; }
-    .welcome-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%; padding: 60px 20px; overflow-y: auto; gap: 40px; }
+    .welcome-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100%; padding: 60px 20px; overflow-y: auto; gap: 40px; position: relative; }
+    .theme-mode-toggle { position: absolute; top: 20px; right: 20px; z-index: 100; }
     .welcome-card { max-width: 600px; width: 100%; animation: fadeInScale 0.6s ease-out; flex-shrink: 0; }
     .welcome-header { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 32px 0 16px; }
     .logo-box { background: var(--fy-colors-primary); color: white; padding: 16px; border-radius: 16px; box-shadow: 0 8px 16px rgba(var(--fy-colors-primary-rgb), 0.3); }
@@ -413,14 +426,21 @@ import {
 })
 export class FylibWelcomeComponent implements OnInit {
   private fylib = inject(FyLibService);
+  protected readonly mode = signal<'light' | 'dark'>('light');
   protected readonly themes = ${JSON.stringify(THEMES, null, 2)};
 
   ngOnInit() {
     this.fylib.setTheme('default');
+    this.fylib.setMode(this.mode());
   }
 
   changeTheme(theme: string) {
     this.fylib.setTheme(theme as any);
+  }
+
+  toggleMode() {
+    this.mode.set(this.mode() === 'light' ? 'dark' : 'light');
+    this.fylib.setMode(this.mode());
   }
 }
 `;
