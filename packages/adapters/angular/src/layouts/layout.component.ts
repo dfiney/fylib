@@ -61,10 +61,18 @@ import { EffectName } from '@fylib/config';
 
     /* Ensure content area takes full height and scrolls internally in fixed mode */
     .fy-layout--app-layout:has(.fy-slot--sidebar-fixed) .fy-slot--content,
-    .fy-layout--fixed-height .fy-slot--content {
+    .fy-layout--app-layout:has(.fy-slot--sidebar-fixed) .fy-slot--sidebar,
+    .fy-layout--fixed-height .fy-slot--content,
+    .fy-layout--fixed-height .fy-slot--sidebar {
       height: 100%;
       overflow-y: auto;
       min-height: 0; /* Critical for grid item scrolling */
+    }
+
+    /* Sidebar should not scroll the whole slot, but its internal links area */
+    .fy-layout--app-layout:has(.fy-slot--sidebar-fixed) .fy-slot--sidebar,
+    .fy-layout--fixed-height .fy-slot--sidebar {
+      overflow-y: hidden;
     }
 
     @media (max-width: 768px) {

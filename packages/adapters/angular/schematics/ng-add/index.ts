@@ -191,7 +191,7 @@ function getWelcomeHTML(): string {
   </fy-slot>
 
   <!-- Slot: Sidebar (Catálogo de Temas) -->
-  <fy-slot name="sidebar">
+  <fy-slot name="sidebar" [fixedSidebar]="true">
     <div fy-sidebar-header style="padding: 16px 24px;">
       <fy-text text="Temas Disponíveis" size="sm" [strong]="true" style="opacity: 0.6; text-transform: uppercase; letter-spacing: 1px;"></fy-text>
     </div>
@@ -212,7 +212,7 @@ function getWelcomeHTML(): string {
       }
     </div>
     
-    <div fy-sidebar-footer style="padding: 24px; border-top: 1px solid var(--fy-colors-border);">
+    <div fy-sidebar-footer style="padding: 16px 24px; border-top: 1px solid var(--fy-colors-border);">
        <fy-badge text="v1.0.0" [shine]="true" style="width: 100%; justify-content: center;"></fy-badge>
     </div>
   </fy-slot>
