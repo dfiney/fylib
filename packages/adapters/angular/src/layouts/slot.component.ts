@@ -279,31 +279,38 @@ import { EffectName } from '@fylib/config';
 
     .fy-slot--sidebar {
       min-width: var(--fy-layout-sidebar-width, 260px);
-      padding: var(--fy-layout-sidebar-padding, 16px 0);
+      padding: 0;
       border-right: 1px solid var(--fy-colors-border, rgba(0,0,0,0.1));
       background-color: var(--fy-layout-sidebar-background, var(--fy-colors-surface, transparent));
-    }
-
-    .fy-slot--sidebar-fixed {
+      display: flex;
+      flex-direction: column;
       height: 100%;
       max-height: 100%;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      box-sizing: border-box;
     }
 
     .fy-slot--sidebar .fy-slot__panel {
+      flex: 1;
       height: 100%;
-      display: block;
-      background-color: var(--fy-layout-sidebar-background, var(--fy-colors-surface, #fff));
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: inherit;
       box-shadow: var(--fy-layout-sidebar-shadow, none);
       color: var(--fy-colors-textOverlay, var(--fy-colors-text, inherit));
+      overflow: hidden;
+      box-sizing: border-box;
     }
 
     .fy-slot__sidebar-inner {
+      flex: 1;
       height: 100%;
+      min-height: 0;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+      box-sizing: border-box;
     }
     .fy-slot__sidebar-logo {
       padding: var(--fy-spacing-md, 16px);
