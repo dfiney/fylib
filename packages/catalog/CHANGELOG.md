@@ -1,5 +1,12 @@
 # @fylib/catalog
 
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies [66e6ca9]
+  - @fylib/theme@0.3.4
+
 ## 0.3.4
 
 ### Patch Changes

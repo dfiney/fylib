@@ -1,5 +1,14 @@
 # playground
 
+## 0.0.16
+
+### Patch Changes
+
+- Updated dependencies [66e6ca9]
+  - @fylib/adapter-angular@0.4.6
+  - @fylib/theme@0.3.4
+  - @fylib/catalog@0.3.5
+
 ## 0.0.15
 
 ### Patch Changes
