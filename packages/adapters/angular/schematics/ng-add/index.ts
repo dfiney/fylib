@@ -354,20 +354,36 @@ function updateRoutes(): Rule {
 }
 
 function installDependencies(): Rule {
-  return (_tree: Tree, context: SchematicContext) => {
-    context.addTask(
-      new NodePackageInstallTask({
-        packageName: [
-          '@fylib/core',
-          '@fylib/config',
-          '@fylib/theme',
-          '@fylib/animation',
-          '@fylib/catalog',
-          '@fylib/crypto',
-          '@fylib/logger',
-          '@fylib/adapter-angular',
-        ].join(' '),
-      })
-    );
+  return (tree: Tree, context: SchematicContext) => {
+    const packageJsonPath = '/package.json';
+    if (!tree.exists(packageJsonPath)) return tree;
+
+    const content = tree.read(packageJsonPath)?.toString('utf-8') || '';
+    const json = JSON.parse(content);
+
+    if (!json.dependencies) json.dependencies = {};
+
+    const dependencies = {
+      '@fylib/core': 'latest',
+      '@fylib/config': 'latest',
+      '@fylib/theme': 'latest',
+      '@fylib/animation': 'latest',
+      '@fylib/catalog': 'latest',
+      '@fylib/crypto': 'latest',
+      '@fylib/logger': 'latest',
+      '@fylib/adapter-angular': 'latest',
+      'chart.js': '^4.4.0',
+      'ng2-charts': '^6.0.0'
+    };
+
+    Object.entries(dependencies).forEach(([name, version]) => {
+      // Force update to latest versions
+      json.dependencies[name] = version;
+    });
+
+    tree.overwrite(packageJsonPath, JSON.stringify(json, null, 2));
+
+    context.addTask(new NodePackageInstallTask());
+    return tree;
   };
 }
