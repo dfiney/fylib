@@ -10,6 +10,7 @@ import {
   mergeWith,
   forEach,
   FileEntry,
+  MergeStrategy,
 } from '@angular-devkit/schematics';
 import { strings, Path } from '@angular-devkit/core';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
@@ -53,7 +54,8 @@ function addFiles(): Rule {
         }
         return fileEntry;
       }),
-    ])
+    ]),
+    MergeStrategy.Overwrite
   );
 }
 
